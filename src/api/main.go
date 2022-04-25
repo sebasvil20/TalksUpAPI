@@ -7,7 +7,6 @@ import (
 	"github.com/sebasvil20/TalksUpAPI/src/api/app"
 )
 
-
 var (
 	router *gin.Engine
 )
