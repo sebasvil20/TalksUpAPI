@@ -53,8 +53,5 @@ func (repo *UserRepository) IsEmailTaken(email string) bool {
 	var userCount int
 	db.Raw("SELECT count(user_id) FROM users WHERE email = ?", email).Scan(&userCount)
 
-	if userCount > 0 {
-		return true
-	}
-	return false
+	return userCount > 0
 }

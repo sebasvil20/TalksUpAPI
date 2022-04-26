@@ -5,8 +5,5 @@ import (
 )
 
 func IsDev() bool{
-	if os.Getenv("SCOPE") == "DEV" {
-		return true
-	}
-	return false
+	return os.Getenv("SCOPE") == "DEV"
 }
