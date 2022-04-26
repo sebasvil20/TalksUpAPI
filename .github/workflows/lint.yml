@@ -2,6 +2,9 @@ name: Ling Go Code
 
 on:
   push:
+    branches:
+      - 'main'
+      - 'feature/**'
   pull_request:
     types:
       - opened
