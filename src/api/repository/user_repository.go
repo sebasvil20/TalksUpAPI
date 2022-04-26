@@ -32,10 +32,9 @@ func (repo *UserRepository) CreateUser(bodyUser models.NewUser) (models.User, er
 		return models.User{}, fmt.Errorf("error creating new user: %v", userResp.Error)
 	}
 
-	passHash, _ := utils.HashPassword(bodyUser.Password)
 	passResp := db.Table("passwords").Omit("password_id", "update_date").Create(models.Password{
-		HashedPassword: fmt.Sprintf(passHash),
-		UserID: userID,
+		HashedPassword: utils.HashPassword(bodyUser.Password),
+		UserID:         userID,
 	})
 	if passResp.Error != nil {
 		log.Printf("error creating password: %v", passResp.Error)
