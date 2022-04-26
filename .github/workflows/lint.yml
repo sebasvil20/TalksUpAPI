@@ -1,9 +1,11 @@
 name: Ling Go Code
 
 on:
+  push:
   pull_request:
     types:
       - opened
+      - edited
     branches:
       - 'main'
 
