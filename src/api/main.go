@@ -5,14 +5,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/sebasvil20/TalksUpAPI/src/api/app"
-)
-
-var (
-	router *gin.Engine
+	"github.com/sebasvil20/TalksUpAPI/src/api/config"
 )
 
 func main() {
 	router := gin.Default()
+	config.LoadConfig()
 
 	app.SetURLMappings(router)
 
