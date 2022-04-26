@@ -6,6 +6,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/sebasvil20/TalksUpAPI/src/api/models"
+	"github.com/sebasvil20/TalksUpAPI/src/api/utils"
 )
 
 var (
@@ -13,7 +14,7 @@ var (
 )
 
 func LoadConfig() {
-	if os.Getenv("SCOPE") == "DEV" {
+	if utils.IsDev() {
 		err := godotenv.Load()
 		if err != nil {
 			log.Printf("Error loading .env file, u might be in production or have no .env file")
