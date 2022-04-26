@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS roles
 (
-    role_id   uuid DEFAULT gen_random_uuid() PRIMARY KEY,
-    role_name varchar(20) NOT NULL
+    role_id int PRIMARY KEY,
+    name    varchar(20) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS countries
@@ -36,24 +36,24 @@ CREATE TABLE IF NOT EXISTS passwords
     password_id          uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     hashed_password      varchar(1500) NOT NULL,
     last_hashed_password varchar(1500),
-    update_date          timestamp,
-    user_id              uuid
+    update_date          date,
+    user_id              uuid          NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS users
 (
     user_id         uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     public_name     varchar(50)  NOT NULL,
-    email           varchar(300) NOT NULL,
+    email           varchar(300) NOT NULL UNIQUE,
     first_name      varchar(300) NOT NULL,
     last_name       varchar(300) NOT NULL,
     birth_date      date         NOT NULL,
     phone_number    varchar(30),
     profile_pic_url varchar(1500),
     biography       varchar(1000),
-    lang_id         varchar(3),
-    country_id      varchar(2),
-    role_id         uuid
+    lang_id         varchar(3)   NOT NULL,
+    country_id      varchar(2)   NOT NULL,
+    role_id         int          NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS categories
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS categories
     description    varchar(300) NOT NULL,
     selected_count int  DEFAULT 0,
     icon_url       varchar(1500),
-    lang_id        varchar(3)
+    lang_id        varchar(3)   NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS podcasts
@@ -80,9 +80,9 @@ CREATE TABLE IF NOT EXISTS podcasts
     total_length   varchar(20),
     release_date   date,
     update_date    date,
-    lang_id        varchar(3),
-    platform_id    uuid,
-    author_id      uuid
+    lang_id        varchar(3)    NOT NULL,
+    platform_id    uuid          NOT NULL,
+    author_id      uuid          NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS reviews
@@ -92,9 +92,9 @@ CREATE TABLE IF NOT EXISTS reviews
     review      varchar(500) NOT NULL,
     rate        float        NOT NULL,
     review_date date         NOT NULL,
-    lang_id     varchar(3),
-    user_id     uuid,
-    podcast_id  uuid
+    lang_id     varchar(3)   NOT NULL,
+    user_id     uuid         NOT NULL,
+    podcast_id  uuid         NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS lists
@@ -104,36 +104,36 @@ CREATE TABLE IF NOT EXISTS lists
     description   varchar(500) NOT NULL,
     icon_url      varchar(1000),
     cover_pic_url varchar(1000),
-    likes         int,
-    user_id       uuid
+    likes         int  DEFAULT 0,
+    user_id       uuid         NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS lists_podcast
 (
     lists_podcast_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
-    podcast_id       uuid,
-    list_id          uuid
+    podcast_id       uuid NOT NULL,
+    list_id          uuid NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS category_user
 (
     category_user_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
-    category_id      uuid,
-    user_id          uuid
+    category_id      uuid NOT NULL,
+    user_id          uuid NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS category_podcast
 (
     category_podcast_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
-    podcast_id          uuid,
-    category_id         uuid
+    podcast_id          uuid NOT NULL,
+    category_id         uuid NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS platform_podcast
 (
     platform_podcast_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
-    podcast_id          uuid,
-    platform_id         uuid
+    podcast_id          uuid NOT NULL,
+    platform_id         uuid NOT NULL
 );
 
 -- Foreign keys
@@ -250,7 +250,18 @@ ALTER TABLE lists_podcast
 
 
 -- Default roles
-INSERT INTO roles (role_name)
-VALUES ('admin');
-INSERT INTO roles (role_name)
-VALUES ('user');
+INSERT INTO roles (role_id, name)
+VALUES (1, 'admin');
+INSERT INTO roles (role_id, name)
+VALUES (2, 'user');
+
+
+-- Default langs
+INSERT INTO languages (lang_id, name)
+VALUES ('ES', 'Español');
+INSERT INTO languages (lang_id, name)
+VALUES ('EN', 'English');
+
+
+INSERT INTO countries (country_id, name)
+VALUES ('CO', 'Colombia');
