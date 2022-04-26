@@ -15,5 +15,5 @@ func main() {
 	app.SetURLMappings(router)
 
 	log.Print("Server running")
-	_ = router.Run()
+	router.Run()
 }
