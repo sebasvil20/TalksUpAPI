@@ -19,7 +19,7 @@ Main features
 ## Getting Started
 
 If this is your first time encountering Go, please follow [the instructions](https://golang.org/doc/install) to
-install Go on your computer. The kit requires **Go 1.14 or above**.
+install Go on your computer. The API requires **Go 1.14 or above**.
 
 After installing Go, run the following commands to start experiencing with the API:
 
@@ -50,15 +50,11 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. 
 * `GET /ping`: a healthcheck service provided for health checking purpose
 * `POST /users`: create new user
 
-Try the URL `http://localhost:8080/healthcheck` in a browser, and you should see something like `"PONG"` displayed.
-
-To use the starter kit as a starting point of a real project whose package name is `github.com/abc/xyz`, do a global 
-replacement of the string `github.com/qiangxue/go-rest-api` in all of project files with the string `github.com/abc/xyz`.
-
+Try the URL `http://localhost:8080/ping` in a browser, and you should see something like `"PONG"` displayed.
 
 ## Project Layout
 
-The starter kit uses the following project layout:
+The TalksUpAPI uses the following project layout:
  
 ```
 .
