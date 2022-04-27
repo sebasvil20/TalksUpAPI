@@ -5,7 +5,7 @@
 [![GoDoc reference example](https://img.shields.io/badge/godoc-reference-blue.svg)](https://godoc.org/nanomsg.org/go/mangos/v2) [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
 
 
-Made with ♥️ by [@Sebasvil20](https://www.linkedin.com/in/sebasvil20/) and @Trueni
+Made with ♥️ by [@Sebasvil20](https://www.linkedin.com/in/sebasvil20/) and [@Santisepulveda90](https://www.linkedin.com/in/santiago-sep%C3%BAlveda-bonilla-70ab32208/)
 
 This is the backend API to TalksUp project, a podcast recommendations based on user likes
 
