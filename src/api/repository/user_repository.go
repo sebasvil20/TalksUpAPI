@@ -68,8 +68,5 @@ func (repo *UserRepository) IsLoginOK(email string, password string) bool {
 	db.Raw("SELECT hashed_password FROM passwords WHERE user_id = ?", user.UserID).Scan(&pass)
 
 	err := utils.CheckPasswordHash(password, pass.HashedPassword)
-	if err != nil {
-		return false
-	}
-	return true
+	return err != nil
 }
