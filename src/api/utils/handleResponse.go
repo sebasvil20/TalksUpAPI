@@ -9,10 +9,10 @@ import (
 
 func HandleResponse(c *gin.Context, statusCode int, data interface{}) {
 	if statusCode >= 400 {
-		log.Printf("Error: %v", data)
+		log.Printf("[Error] - %v", data)
 		c.JSON(statusCode, models.APIError{Message: data})
 		return
 	}
-	log.Printf("Request OK: %v", data)
+	log.Printf("[OK] - %v", data)
 	c.JSON(statusCode, data)
 }

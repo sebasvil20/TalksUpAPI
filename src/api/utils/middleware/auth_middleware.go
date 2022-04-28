@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"log"
+	"github.com/sebasvil20/TalksUpAPI/src/api/utils"
 	"net/http"
 	"strings"
 
@@ -13,7 +13,8 @@ func AuthJWT() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
 		if len(strings.TrimSpace(authHeader)) == 0 {
-			c.AbortWithStatus(http.StatusUnauthorized)
+			utils.HandleResponse(c, http.StatusUnauthorized, "auth header required")
+			c.Abort()
 			return
 		}
 
@@ -25,7 +26,8 @@ func AuthJWT() gin.HandlerFunc {
 			return
 		}
 
-		log.Printf("Error: %v", err.Error())
-		c.AbortWithStatus(http.StatusUnauthorized)
+		utils.HandleResponse(c, http.StatusUnauthorized, err.Error())
+		c.Abort()
+		return
 	}
 }
