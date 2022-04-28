@@ -48,10 +48,11 @@ go build src/api/main.go
 
 At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. It provides the following endpoints:
 
-* `GET /ping`: a healthcheck service provided for health checking purpose
-* `POST /users`: create new user
+* `GET /health`: a healthcheck service provided for health checking purpose
+* `POST /users/new`: create new user
+* `POST /users/login`: login with user credentials to receive jwt token
 
-Try the URL `http://localhost:8080/ping` in a browser, and you should see something like `"PONG"` displayed.
+Try the URL `http://localhost:8080/health` in a browser, and you should see something like `"PONG"` displayed.
 
 ## Project Layout
 
@@ -70,6 +71,7 @@ The TalksUpAPI uses the following project layout:
 │        └── service             all business logic
 │        └── utils               several util funcs
 │              └── middleware    middleware funcs to handle api keys and auth
+│              └── auth          jwt related funcs (Generate and validate)
 └── 
 ```
 
