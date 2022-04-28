@@ -10,6 +10,7 @@ Made with ♥️ by [@Sebasvil20](https://www.linkedin.com/in/sebasvil20/) and [
 This is the backend API to TalksUp project, a podcast recommendations based on user likes
 
 Main features
+* API Key required, otherwise API cannot be consumed
 * RESTful endpoints
 * Dependency Injection and N capes structure
 * Standard CRUD operations of a database table
@@ -58,16 +59,17 @@ The TalksUpAPI uses the following project layout:
  
 ```
 .
-├── migrations          SQL Files with db struct
+├── migrations                   SQL Files with db struct
 ├── src                 
-│   └── api             main applications of the project
-│        └── app        dependency injection providers and router handler
-│        └── config     configurations and global vars
-│        └── controllers first cape of API where the request is received
-│        └── models     all API structs
-│        └── repository access to database data
-│        └── service    all business logic
-│        └── utls       several util funcs
+│   └── api                      main applications of the project
+│        └── app                 dependency injection providers and router handler
+│        └── config              configurations and global vars
+│        └── controllers         first cape of API where the request is received
+│        └── models              all API structs
+│        └── repository          access to database data
+│        └── service             all business logic
+│        └── utils               several util funcs
+│              └── middleware    middleware funcs to handle api keys and auth
 └── 
 ```
 
