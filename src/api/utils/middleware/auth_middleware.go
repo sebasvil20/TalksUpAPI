@@ -28,6 +28,5 @@ func AuthJWT() gin.HandlerFunc {
 
 		utils.HandleResponse(c, http.StatusUnauthorized, err.Error())
 		c.Abort()
-		return
 	}
 }
