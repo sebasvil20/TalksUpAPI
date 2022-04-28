@@ -13,6 +13,7 @@ import (
 type IUserRepository interface {
 	CreateUser(bodyUser models.NewUser) (models.User, error)
 	IsEmailTaken(email string) bool
+	IsLoginOK(email string, password string) bool
 }
 
 type UserRepository struct {
@@ -54,4 +55,21 @@ func (repo *UserRepository) IsEmailTaken(email string) bool {
 	db.Raw("SELECT count(user_id) FROM users WHERE email = ?", email).Scan(&userCount)
 
 	return userCount > 0
+}
+
+func (repo *UserRepository) IsLoginOK(email string, password string) bool {
+	db := database.DBConnect()
+	defer database.CloseDBConnection(db)
+
+	var user models.User
+	var pass models.Password
+
+	db.Raw("SELECT user_id, email FROM users WHERE email = ?", email).Scan(&user)
+	db.Raw("SELECT hashed_password FROM passwords WHERE user_id = ?", user.UserID).Scan(&pass)
+
+	err := utils.CheckPasswordHash(password, pass.HashedPassword)
+	if err != nil {
+		return false
+	}
+	return true
 }

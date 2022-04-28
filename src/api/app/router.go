@@ -8,11 +8,12 @@ import (
 
 func SetURLMappings(router *gin.Engine) {
 	providerRoute := StartProviders()
-	router.GET("/", controllers.Ping)
+	router.GET("/health", controllers.Ping)
 
 	users := router.Group("/users")
 	{
 		users.Use(middleware.VerifyAPIKey())
-		users.POST("", providerRoute.UserController.CreateUser)
+		users.POST("/new", providerRoute.UserController.CreateUser)
+		users.POST("/login", providerRoute.UserController.Login)
 	}
 }
