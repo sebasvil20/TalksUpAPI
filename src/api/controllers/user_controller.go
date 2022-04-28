@@ -31,3 +31,18 @@ func (ctrl *UserController) CreateUser(c *gin.Context) {
 	}
 	utils.HandleResponse(c, http.StatusCreated, user)
 }
+
+func (ctrl *UserController) Login(c *gin.Context) {
+	var userLogin models.UserCredentials
+	if err := c.BindJSON(&userLogin); err != nil {
+		utils.HandleResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	token, err := ctrl.UserService.Login(userLogin)
+	if err != nil {
+		utils.HandleResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+	utils.HandleResponse(c, http.StatusCreated, map[string]string{"token": token})
+}

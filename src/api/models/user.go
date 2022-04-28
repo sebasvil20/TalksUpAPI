@@ -29,6 +29,11 @@ type SimplidiedUser struct {
 	Biography     string `json:"biography,omitempty"`
 }
 
+type UserCredentials struct {
+	Email    string `json:"email" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}
+
 type NewUser struct {
 	UserID        uuid.UUID `json:"user_id,omitempty"`
 	PublicName    string    `json:"public_name" binding:"required"`

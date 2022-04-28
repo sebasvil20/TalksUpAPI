@@ -10,7 +10,9 @@ import (
 )
 
 var (
-	DBInfo models.DatabaseInfo
+	DBInfo       models.DatabaseInfo
+	JWTIssuer    string
+	JWTSecretKey string
 )
 
 func LoadConfig() {
@@ -27,4 +29,6 @@ func LoadConfig() {
 	DBInfo.Password = os.Getenv("DB_PASSWORD")
 	DBInfo.Ssl = os.Getenv("DB_SSL")
 	DBInfo.Port = os.Getenv("DB_PORT")
+	JWTIssuer = os.Getenv("JWT_ISSUER")
+	JWTSecretKey = os.Getenv("JWT_SECRET_KEY")
 }

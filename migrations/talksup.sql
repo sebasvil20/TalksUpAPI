@@ -1,3 +1,8 @@
+CREATE TABLE IF NOT EXISTS api_keys
+(
+    api_key uuid DEFAULT gen_random_uuid() PRIMARY KEY
+);
+
 CREATE TABLE IF NOT EXISTS roles
 (
     role_id int PRIMARY KEY,
