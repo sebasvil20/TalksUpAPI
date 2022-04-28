@@ -4,6 +4,10 @@ import (
 	"os"
 )
 
-func IsDev() bool{
+func IsDev() bool {
 	return os.Getenv("SCOPE") == "DEV"
+}
+
+func IsProd() bool {
+	return !IsDev()
 }

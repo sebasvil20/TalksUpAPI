@@ -20,6 +20,7 @@ type UserRepository struct {
 
 func (repo *UserRepository) CreateUser(bodyUser models.NewUser) (models.User, error) {
 	db := database.DBConnect()
+	defer database.CloseDBConnection(db)
 	if db == nil {
 		return models.User{}, fmt.Errorf("internal server error")
 	}
@@ -47,8 +48,8 @@ func (repo *UserRepository) CreateUser(bodyUser models.NewUser) (models.User, er
 }
 
 func (repo *UserRepository) IsEmailTaken(email string) bool {
-
 	db := database.DBConnect()
+	defer database.CloseDBConnection(db)
 	var userCount int
 	db.Raw("SELECT count(user_id) FROM users WHERE email = ?", email).Scan(&userCount)
 
