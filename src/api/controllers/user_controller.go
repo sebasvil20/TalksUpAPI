@@ -10,11 +10,28 @@ import (
 )
 
 type IUserController interface {
+	Login(c *gin.Context)
 	CreateUser(c *gin.Context)
+	GetAllUsers(c *gin.Context)
 }
 
 type UserController struct {
 	UserService services.IUserService
+}
+
+func (ctrl *UserController) Login(c *gin.Context) {
+	var userLogin models.UserCredentials
+	if err := c.BindJSON(&userLogin); err != nil {
+		utils.HandleResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	token, err := ctrl.UserService.Login(userLogin)
+	if err != nil {
+		utils.HandleResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+	utils.HandleResponse(c, http.StatusCreated, map[string]string{"token": token})
 }
 
 func (ctrl *UserController) CreateUser(c *gin.Context) {
@@ -32,17 +49,11 @@ func (ctrl *UserController) CreateUser(c *gin.Context) {
 	utils.HandleResponse(c, http.StatusCreated, user)
 }
 
-func (ctrl *UserController) Login(c *gin.Context) {
-	var userLogin models.UserCredentials
-	if err := c.BindJSON(&userLogin); err != nil {
-		utils.HandleResponse(c, http.StatusBadRequest, err.Error())
-		return
-	}
-
-	token, err := ctrl.UserService.Login(userLogin)
+func (ctrl *UserController) GetAllUsers(c *gin.Context) {
+	users, err := ctrl.UserService.GetAllUsers()
 	if err != nil {
 		utils.HandleResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-	utils.HandleResponse(c, http.StatusCreated, map[string]string{"token": token})
+	utils.HandleResponse(c, http.StatusOK, users)
 }

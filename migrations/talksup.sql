@@ -263,10 +263,62 @@ VALUES (2, 'user');
 
 -- Default langs
 INSERT INTO languages (lang_id, name)
-VALUES ('ES', 'Español');
+VALUES ('ESP', 'Español');
 INSERT INTO languages (lang_id, name)
-VALUES ('EN', 'English');
+VALUES ('ENG', 'English');
 
 
 INSERT INTO countries (country_id, name)
 VALUES ('CO', 'Colombia');
+
+
+-- Stored Procedures
+CREATE OR REPLACE FUNCTION SP_GetAllUsers()
+    RETURNS TABLE
+            (
+                user_id         uuid,
+                public_name     varchar,
+                email           varchar,
+                first_name      varchar,
+                last_name       varchar,
+                birth_date      date,
+                phone_number    varchar,
+                profile_pic_url varchar,
+                biography       varchar,
+                lang            varchar,
+                country         varchar,
+                role            varchar
+            )
+AS
+$$
+SELECT users.user_id,
+       users.public_name,
+       users.email,
+       users.first_name,
+       users.last_name,
+       users.birth_date,
+       users.phone_number,
+       users.profile_pic_url,
+       users.biography,
+       languages.name as lang,
+       countries.name as country,
+       roles.name     as role
+FROM users
+         INNER JOIN roles on roles.role_id = users.role_id
+         INNER JOIN countries on countries.country_id = users.country_id
+         INNER JOIN languages on languages.lang_id = users.lang_id
+$$ LANGUAGE sql;
+
+-- Procedure to get likes by a given user ID
+CREATE OR REPLACE FUNCTION SP_GetLikesByUserID(userID uuid)
+    RETURNS TABLE
+            (
+                name varchar
+            )
+AS
+$$
+SELECT categories.name
+FROM categories
+         INNER JOIN category_user cu on categories.category_id = cu.category_id
+WHERE cu.user_id = userID
+$$ LANGUAGE sql;

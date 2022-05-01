@@ -1,11 +1,11 @@
 package middleware
 
 import (
-	"github.com/sebasvil20/TalksUpAPI/src/api/utils"
 	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sebasvil20/TalksUpAPI/src/api/utils"
 	"github.com/sebasvil20/TalksUpAPI/src/api/utils/auth"
 )
 
