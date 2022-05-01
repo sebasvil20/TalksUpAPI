@@ -9,13 +9,15 @@ import (
 )
 
 type jwtCustomClaims struct {
-	Email string `json:"email"`
+	Email   string `json:"email"`
+	IsAdmin bool
 	jwt.StandardClaims
 }
 
-func GenerateJWT(email string) (string, error) {
+func GenerateJWT(email string, isAdmin bool) (string, error) {
 	claims := &jwtCustomClaims{
 		Email: email,
+		IsAdmin: isAdmin,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
 			Issuer:    config.JWTIssuer,

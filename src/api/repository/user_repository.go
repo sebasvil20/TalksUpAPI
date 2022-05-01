@@ -13,6 +13,7 @@ import (
 type IUserRepository interface {
 	CreateUser(bodyUser models.NewUser) (models.User, error)
 	IsEmailTaken(email string) bool
+	IsAdmin(email string) bool
 	AreCredentialsOK(email string, password string) bool
 	GetAllUsers() ([]models.SimpleUser, error)
 	GetUserByEmail(email string) models.User
@@ -58,6 +59,15 @@ func (repo *UserRepository) IsEmailTaken(email string) bool {
 	db.Raw("SELECT count(user_id) FROM users WHERE email = ?", email).Scan(&userCount)
 
 	return userCount > 0
+}
+
+func (repo *UserRepository) IsAdmin(email string) bool {
+	db := database.DBConnect()
+	defer database.CloseDBConnection(db)
+	var role string
+	db.Raw("SELECT * FROM SP_GetUserRoleByEmail(?)", email).Scan(&role)
+
+	return role == "admin"
 }
 
 func (repo *UserRepository) AreCredentialsOK(email string, password string) bool {

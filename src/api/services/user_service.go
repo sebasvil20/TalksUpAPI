@@ -23,7 +23,7 @@ func (srv *UserService) Login(userCredentials models.UserCredentials) (string, e
 		return "", fmt.Errorf("incorrect email &/or password")
 	}
 
-	jwt, err := auth.GenerateJWT(userCredentials.Email)
+	jwt, err := auth.GenerateJWT(userCredentials.Email, srv.UserRepository.IsAdmin(userCredentials.Email))
 	if err != nil {
 		return "", err
 	}

@@ -313,12 +313,32 @@ $$ LANGUAGE sql;
 CREATE OR REPLACE FUNCTION SP_GetLikesByUserID(userID uuid)
     RETURNS TABLE
             (
+                category_id uuid,
                 name varchar
             )
 AS
 $$
-SELECT categories.name
+SELECT (
+        categories.category_id,
+        categories.name
+           )
 FROM categories
          INNER JOIN category_user cu on categories.category_id = cu.category_id
 WHERE cu.user_id = userID
+$$ LANGUAGE sql;
+
+-- Procedure to get user role by user email
+CREATE OR REPLACE FUNCTION SP_GetUserRoleByEmail(userEmail varchar)
+    RETURNS TABLE
+            (
+                role varchar
+            )
+AS
+$$
+SELECT (
+           roles.name
+           )
+FROM roles
+         INNER JOIN users u on u.role_id = roles.role_id
+WHERE u.email = userEmail
 $$ LANGUAGE sql;
