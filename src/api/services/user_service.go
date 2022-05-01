@@ -16,6 +16,7 @@ type IUserService interface {
 
 type UserService struct {
 	UserRepository repository.IUserRepository
+	CategoryRepository repository.ICategoryRepository
 }
 
 func (srv *UserService) Login(userCredentials models.UserCredentials) (string, error) {
@@ -51,7 +52,7 @@ func (srv *UserService) GetAllUsers() ([]models.SimpleUser, error) {
 	}
 
 	for i, user := range users {
-		likes := srv.UserRepository.GetLikesByUserID(user.UserID.String())
+		likes := srv.CategoryRepository.GetLikesByUserID(user.UserID.String())
 		if len(likes) != 0 {
 			users[i].Likes = likes
 		}

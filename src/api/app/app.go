@@ -23,8 +23,14 @@ var userSet = wire.NewSet(
 	wire.Bind(new(controllers.IUserController), new(*controllers.UserController)),
 )
 
+var categorySet = wire.NewSet(
+	providers.ProvideCategoryRepository,
+	wire.Bind(new(repository.ICategoryRepository), new(*repository.CategoryRepository)),
+)
+
 var setProvider = wire.NewSet(
 	userSet,
+	categorySet,
 	wire.Struct(new(ProviderRoute), "UserController"),
 )
 

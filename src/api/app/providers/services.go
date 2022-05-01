@@ -5,6 +5,9 @@ import (
 	"github.com/sebasvil20/TalksUpAPI/src/api/services"
 )
 
-func ProvideUserService(repository repository.IUserRepository) *services.UserService {
-	return &services.UserService{UserRepository: repository}
+func ProvideUserService(userRepository repository.IUserRepository, categoryRepository repository.ICategoryRepository) *services.UserService {
+	return &services.UserService{
+		UserRepository:     userRepository,
+		CategoryRepository: categoryRepository,
+	}
 }

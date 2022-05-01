@@ -17,7 +17,6 @@ type IUserRepository interface {
 	AreCredentialsOK(email string, password string) bool
 	GetAllUsers() ([]models.SimpleUser, error)
 	GetUserByEmail(email string) models.User
-	GetLikesByUserID(userID string) []models.CategoryPill
 }
 
 type UserRepository struct {
@@ -84,7 +83,7 @@ func (repo *UserRepository) AreCredentialsOK(email string, password string) bool
 	return err == nil
 }
 
-func (repo *UserRepository) GetAllUsers() ([]models.SimpleUser, error){
+func (repo *UserRepository) GetAllUsers() ([]models.SimpleUser, error) {
 	db := database.DBConnect()
 	defer database.CloseDBConnection(db)
 	users := make([]models.SimpleUser, 0)
@@ -104,13 +103,4 @@ func (repo *UserRepository) GetUserByEmail(email string) models.User {
 
 	db.Raw("SELECT * FROM users WHERE email = ?", email).Scan(&user)
 	return user
-}
-
-func (repo *UserRepository) GetLikesByUserID(userID string) []models.CategoryPill {
-	db := database.DBConnect()
-	defer database.CloseDBConnection(db)
-	likes := make([]models.CategoryPill, 0)
-
-	db.Raw("SELECT * FROM SP_GetLikesByUserID(?)", userID).Scan(&likes)
-	return likes
 }
