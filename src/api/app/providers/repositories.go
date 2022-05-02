@@ -7,3 +7,7 @@ import (
 func ProvideUserRepository() *repository.UserRepository {
 	return &repository.UserRepository{}
 }
+
+func ProvideCategoryRepository() *repository.CategoryRepository {
+	return &repository.CategoryRepository{}
+}

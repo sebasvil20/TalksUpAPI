@@ -13,7 +13,10 @@ import (
 type IUserRepository interface {
 	CreateUser(bodyUser models.NewUser) (models.User, error)
 	IsEmailTaken(email string) bool
-	IsLoginOK(email string, password string) bool
+	IsAdmin(email string) bool
+	AreCredentialsOK(email string, password string) bool
+	GetAllUsers() ([]models.SimpleUser, error)
+	GetUserByEmail(email string) models.User
 }
 
 type UserRepository struct {
@@ -57,7 +60,16 @@ func (repo *UserRepository) IsEmailTaken(email string) bool {
 	return userCount > 0
 }
 
-func (repo *UserRepository) IsLoginOK(email string, password string) bool {
+func (repo *UserRepository) IsAdmin(email string) bool {
+	db := database.DBConnect()
+	defer database.CloseDBConnection(db)
+	var role string
+	db.Raw("SELECT * FROM SP_GetUserRoleByEmail(?)", email).Scan(&role)
+
+	return role == "admin"
+}
+
+func (repo *UserRepository) AreCredentialsOK(email string, password string) bool {
 	db := database.DBConnect()
 	defer database.CloseDBConnection(db)
 
@@ -68,5 +80,27 @@ func (repo *UserRepository) IsLoginOK(email string, password string) bool {
 	db.Raw("SELECT hashed_password FROM passwords WHERE user_id = ?", user.UserID).Scan(&pass)
 
 	err := utils.CheckPasswordHash(password, pass.HashedPassword)
-	return !(err != nil)
+	return err == nil
+}
+
+func (repo *UserRepository) GetAllUsers() ([]models.SimpleUser, error) {
+	db := database.DBConnect()
+	defer database.CloseDBConnection(db)
+	users := make([]models.SimpleUser, 0)
+
+	resp := db.Raw("SELECT * FROM SP_GetAllUsers()")
+	if resp.Error != nil {
+		return nil, resp.Error
+	}
+	resp.Scan(&users)
+	return users, nil
+}
+
+func (repo *UserRepository) GetUserByEmail(email string) models.User {
+	db := database.DBConnect()
+	defer database.CloseDBConnection(db)
+	var user models.User
+
+	db.Raw("SELECT * FROM users WHERE email = ?", email).Scan(&user)
+	return user
 }

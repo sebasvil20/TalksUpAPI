@@ -9,12 +9,27 @@ import (
 )
 
 type IUserService interface {
-	CreateUser(user models.NewUser) (models.User, error)
 	Login(userLoginData models.UserCredentials) (string, error)
+	CreateUser(user models.NewUser) (models.User, error)
+	GetAllUsers() ([]models.SimpleUser, error)
 }
 
 type UserService struct {
 	UserRepository repository.IUserRepository
+	CategoryRepository repository.ICategoryRepository
+}
+
+func (srv *UserService) Login(userCredentials models.UserCredentials) (string, error) {
+	if !srv.UserRepository.AreCredentialsOK(userCredentials.Email, userCredentials.Password) {
+		return "", fmt.Errorf("incorrect email &/or password")
+	}
+
+	jwt, err := auth.GenerateJWT(userCredentials.Email, srv.UserRepository.IsAdmin(userCredentials.Email))
+	if err != nil {
+		return "", err
+	}
+
+	return jwt, nil
 }
 
 func (srv *UserService) CreateUser(user models.NewUser) (models.User, error) {
@@ -30,15 +45,18 @@ func (srv *UserService) CreateUser(user models.NewUser) (models.User, error) {
 	return createdUser, nil
 }
 
-func (srv *UserService) Login(userCredentials models.UserCredentials) (string, error) {
-	if !srv.UserRepository.IsLoginOK(userCredentials.Email, userCredentials.Password) {
-		return "", fmt.Errorf("incorrect email &/or password")
-	}
-
-	jwt, err := auth.GenerateJWT(userCredentials.Email)
+func (srv *UserService) GetAllUsers() ([]models.SimpleUser, error) {
+	users, err := srv.UserRepository.GetAllUsers()
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return jwt, nil
+	for i, user := range users {
+		likes := srv.CategoryRepository.GetLikesByUserID(user.UserID.String())
+		if len(likes) != 0 {
+			users[i].Likes = likes
+		}
+	}
+
+	return users, nil
 }

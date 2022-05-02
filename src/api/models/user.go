@@ -19,14 +19,19 @@ type User struct {
 	RoleID        int       `json:"role_id,omitempty"`
 }
 
-type SimplidiedUser struct {
-	PublicName    string `json:"public_name" binding:"required"`
-	Email         string `json:"email" binding:"required"`
-	FirstName     string `json:"first_name" binding:"required"`
-	LastName      string `json:"last_name" binding:"required"`
-	BirthDate     string `json:"birth_date" binding:"required"`
-	ProfilePicURL string `json:"profile_pic_url,omitempty"`
-	Biography     string `json:"biography,omitempty"`
+type SimpleUser struct {
+	UserID        uuid.UUID      `json:"user_id,omitempty"`
+	PublicName    string         `json:"public_name" binding:"required"`
+	Email         string         `json:"email" binding:"required"`
+	FirstName     string         `json:"first_name" binding:"required"`
+	LastName      string         `json:"last_name" binding:"required"`
+	BirthDate     string         `json:"birth_date" binding:"required"`
+	ProfilePicURL string         `json:"profile_pic_url,omitempty"`
+	Biography     string         `json:"biography,omitempty"`
+	Likes         []CategoryPill `json:"likes,omitempty" gorm:"-"`
+	Lang          string         `json:"lang"`
+	Country       string         `json:"country"`
+	Role          string         `json:"role,omitempty"`
 }
 
 type UserCredentials struct {

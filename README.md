@@ -51,6 +51,10 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. 
 * `GET /health`: a healthcheck service provided for health checking purpose
 * `POST /users/new`: create new user
 * `POST /users/login`: login with user credentials to receive jwt token
+* `GET /users`: get all users with their likes *
+* `GET /categories?lang=`: get all categories, optional lang query param e.g. ESP
+
+(*) Admin role required
 
 Try the URL `http://localhost:8080/health` in a browser, and you should see something like `"PONG"` displayed.
 
@@ -62,8 +66,8 @@ The TalksUpAPI uses the following project layout:
 .
 ├── migrations                   SQL Files with db struct
 ├── src                 
-│   └── api                      main applications of the project
-│        └── app                 dependency injection providers and router handler
+│    └── api                      main applications of the project
+│        └── app                 dependency injection providers and router handler
 │        └── config              configurations and global vars
 │        └── controllers         first cape of API where the request is received
 │        └── models              all API structs
