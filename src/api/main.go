@@ -15,5 +15,6 @@ func main() {
 	app.SetURLMappings(router)
 
 	log.Print("Server running")
+	_ = router.SetTrustedProxies(nil)
 	_ = router.Run()
 }

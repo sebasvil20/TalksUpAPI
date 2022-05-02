@@ -8,3 +8,7 @@ import (
 func ProvideUserController(srv services.IUserService) *controllers.UserController {
 	return &controllers.UserController{UserService: srv}
 }
+
+func ProvideCategoryController(srv services.ICategoryService) *controllers.CategoryController {
+	return &controllers.CategoryController{CategoryService: srv}
+}

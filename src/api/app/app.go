@@ -11,7 +11,8 @@ import (
 )
 
 type ProviderRoute struct {
-	UserController *controllers.UserController
+	UserController     *controllers.UserController
+	CategoryController *controllers.CategoryController
 }
 
 var userSet = wire.NewSet(
@@ -26,12 +27,16 @@ var userSet = wire.NewSet(
 var categorySet = wire.NewSet(
 	providers.ProvideCategoryRepository,
 	wire.Bind(new(repository.ICategoryRepository), new(*repository.CategoryRepository)),
+	providers.ProvideCategoryService,
+	wire.Bind(new(services.ICategoryService), new(*services.CategoryService)),
+	providers.ProvideCategoryController,
+	wire.Bind(new(controllers.ICategoryController), new(*controllers.CategoryController)),
 )
 
 var setProvider = wire.NewSet(
 	userSet,
 	categorySet,
-	wire.Struct(new(ProviderRoute), "UserController"),
+	wire.Struct(new(ProviderRoute), "UserController", "CategoryController"),
 )
 
 func StartProviders() *ProviderRoute {

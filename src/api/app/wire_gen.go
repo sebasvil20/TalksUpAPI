@@ -20,8 +20,11 @@ func StartProviders() *ProviderRoute {
 	categoryRepository := providers.ProvideCategoryRepository()
 	userService := providers.ProvideUserService(userRepository, categoryRepository)
 	userController := providers.ProvideUserController(userService)
+	categoryService := providers.ProvideCategoryService(categoryRepository)
+	categoryController := providers.ProvideCategoryController(categoryService)
 	providerRoute := &ProviderRoute{
-		UserController: userController,
+		UserController:     userController,
+		CategoryController: categoryController,
 	}
 	return providerRoute
 }
@@ -29,14 +32,15 @@ func StartProviders() *ProviderRoute {
 // app.go:
 
 type ProviderRoute struct {
-	UserController *controllers.UserController
+	UserController     *controllers.UserController
+	CategoryController *controllers.CategoryController
 }
 
 var userSet = wire.NewSet(providers.ProvideUserRepository, wire.Bind(new(repository.IUserRepository), new(*repository.UserRepository)), providers.ProvideUserService, wire.Bind(new(services.IUserService), new(*services.UserService)), providers.ProvideUserController, wire.Bind(new(controllers.IUserController), new(*controllers.UserController)))
 
-var categorySet = wire.NewSet(providers.ProvideCategoryRepository, wire.Bind(new(repository.ICategoryRepository), new(*repository.CategoryRepository)))
+var categorySet = wire.NewSet(providers.ProvideCategoryRepository, wire.Bind(new(repository.ICategoryRepository), new(*repository.CategoryRepository)), providers.ProvideCategoryService, wire.Bind(new(services.ICategoryService), new(*services.CategoryService)), providers.ProvideCategoryController, wire.Bind(new(controllers.ICategoryController), new(*controllers.CategoryController)))
 
 var setProvider = wire.NewSet(
 	userSet,
-	categorySet, wire.Struct(new(ProviderRoute), "UserController"),
+	categorySet, wire.Struct(new(ProviderRoute), "UserController", "CategoryController"),
 )

@@ -11,3 +11,9 @@ func ProvideUserService(userRepository repository.IUserRepository, categoryRepos
 		CategoryRepository: categoryRepository,
 	}
 }
+
+func ProvideCategoryService(categoryRepository repository.ICategoryRepository) *services.CategoryService {
+	return &services.CategoryService{
+		CategoryRepository: categoryRepository,
+	}
+}

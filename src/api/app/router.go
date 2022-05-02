@@ -18,4 +18,10 @@ func SetURLMappings(router *gin.Engine) {
 		users.POST("/login", providerRoute.UserController.Login)
 		users.POST("/new", providerRoute.UserController.CreateUser)
 	}
+
+	categories := router.Group("/categories")
+	{
+		categories.Use(middleware.VerifyAPIKey())
+		categories.GET("", middleware.AuthJWT(false), providerRoute.CategoryController.GetAllCategories)
+	}
 }
