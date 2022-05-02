@@ -1,32 +1,32 @@
 CREATE TABLE IF NOT EXISTS api_keys
 (
     api_key uuid DEFAULT gen_random_uuid() PRIMARY KEY
-    );
+);
 
 CREATE TABLE IF NOT EXISTS roles
 (
     role_id int PRIMARY KEY,
     name    varchar(20) NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS countries
 (
     country_id varchar(2)  NOT NULL PRIMARY KEY,
     name       varchar(50) NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS languages
 (
     lang_id varchar(3)  NOT NULL PRIMARY KEY,
     name    varchar(50) NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS authors
 (
     author_id       uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     name            varchar(150) NOT NULL,
     profile_pic_url varchar(1500)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS platforms
 (
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS platforms
     name         varchar(50)   NOT NULL,
     redirect_url varchar(1500) NOT NULL,
     logo_url     varchar(1500) NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS passwords
 (
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS passwords
     last_hashed_password varchar(1500),
     update_date          date,
     user_id              uuid          NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS users
 (
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS users
     lang_id         varchar(3)   NOT NULL,
     country_id      varchar(2)   NOT NULL,
     role_id         int          NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS categories
 (
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS categories
     selected_count int  DEFAULT 0,
     icon_url       varchar(1500),
     lang_id        varchar(3)   NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS podcasts
 (
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS podcasts
     lang_id        varchar(3)    NOT NULL,
     platform_id    uuid          NOT NULL,
     author_id      uuid          NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS reviews
 (
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS reviews
     lang_id     varchar(3)   NOT NULL,
     user_id     uuid         NOT NULL,
     podcast_id  uuid         NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS lists
 (
@@ -111,35 +111,35 @@ CREATE TABLE IF NOT EXISTS lists
     cover_pic_url varchar(1000),
     likes         int  DEFAULT 0,
     user_id       uuid         NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS lists_podcast
 (
     lists_podcast_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     podcast_id       uuid NOT NULL,
     list_id          uuid NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS category_user
 (
     category_user_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     category_id      uuid NOT NULL,
     user_id          uuid NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS category_podcast
 (
     category_podcast_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     podcast_id          uuid NOT NULL,
     category_id         uuid NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS platform_podcast
 (
     platform_podcast_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     podcast_id          uuid NOT NULL,
     platform_id         uuid NOT NULL
-    );
+);
 
 -- Foreign keys
 
@@ -160,6 +160,9 @@ ALTER TABLE category_user
         FOREIGN KEY (category_id)
             REFERENCES categories (category_id);
 
+ALTER TAbLE category_user
+    ADD CONSTRAINT category_user_uq UNIQUE (category_id, user_id);
+
 -- Categories table
 ALTER TABLE categories
     ADD CONSTRAINT categories_lang_id_fk
@@ -176,6 +179,9 @@ ALTER TABLE category_podcast
     ADD CONSTRAINT category_podcast_category_id_fk
         FOREIGN KEY (category_id)
             REFERENCES categories (category_id);
+
+ALTER TAbLE category_podcast
+    ADD CONSTRAINT category_podcast_uq UNIQUE (category_id, podcast_id);
 
 -- Users table
 ALTER TABLE users
@@ -291,7 +297,7 @@ FROM users
          INNER JOIN roles on roles.role_id = users.role_id
          INNER JOIN countries on countries.country_id = users.country_id
          INNER JOIN languages on languages.lang_id = users.lang_id
-    $$ LANGUAGE sql;
+$$ LANGUAGE sql;
 
 -- Procedure to get likes by a given user ID
 CREATE OR REPLACE FUNCTION SP_GetLikesByUserID(userID uuid)
@@ -309,7 +315,7 @@ SELECT (
 FROM categories
          INNER JOIN category_user cu on categories.category_id = cu.category_id
 WHERE cu.user_id = userID
-    $$ LANGUAGE sql;
+$$ LANGUAGE sql;
 
 -- Procedure to get user role by user email
 CREATE OR REPLACE FUNCTION SP_GetUserRoleByEmail(userEmail varchar)
@@ -325,7 +331,7 @@ SELECT (
 FROM roles
          INNER JOIN users u on u.role_id = roles.role_id
 WHERE u.email = userEmail
-    $$ LANGUAGE sql;
+$$ LANGUAGE sql;
 
 -- Get all categories with language name
 CREATE OR REPLACE FUNCTION SP_GetAllCategories()
@@ -350,7 +356,7 @@ SELECT (
            )
 FROM categories
          INNER JOIN languages on categories.lang_id = languages.lang_id
-    $$ LANGUAGE sql;
+$$ LANGUAGE sql;
 
 CREATE OR REPLACE FUNCTION SP_GetAllCategoriesByLangCode(langCode varchar)
     RETURNS TABLE
@@ -375,7 +381,7 @@ SELECT (
 FROM categories
          INNER JOIN languages on categories.lang_id = languages.lang_id
 WHERE languages.lang_id = langCode
-    $$ LANGUAGE sql;
+$$ LANGUAGE sql;
 
 
 -- Default roles
@@ -398,7 +404,6 @@ VALUES ('CO', 'Colombia');
 INSERT INTO api_keys (api_key)
 VALUES ('11635d96-098d-4869-b7cf-baeae575ab20');
 
--- GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO apptalksup;
 
 
 -- Example data
@@ -419,9 +424,13 @@ VALUES ('55abaa24-b920-43ea-bf94-aee5f614e326', 'Misterio',
         'Perfectos para una tarde donde te sientes todo un detective', 'ESP');
 INSERT INTO categories (name, description, lang_id)
 VALUES ('Historia', 'Aprende con los mejores en el tema', 'ESP');
+INSERT INTO categories (name, description, lang_id)
+VALUES ('Influencers', 'Escuha la historia de vida de tus influences favoritos', 'ESP');
 
 
 INSERT INTO category_user (category_id, user_id)
 VALUES ('35b2881c-210c-4160-b3f7-6252b9ebee49', '86f45ee6-c5a4-11ec-b46f-6a2f678b91f3');
 INSERT INTO category_user (category_id, user_id)
 VALUES ('55abaa24-b920-43ea-bf94-aee5f614e326', '86f45ee6-c5a4-11ec-b46f-6a2f678b91f3');
+
+-- GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO apptalksup;

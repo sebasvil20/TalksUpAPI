@@ -1,6 +1,9 @@
 package repository
 
 import (
+	"fmt"
+
+	"github.com/google/uuid"
 	"github.com/sebasvil20/TalksUpAPI/src/api/models"
 	"github.com/sebasvil20/TalksUpAPI/src/api/services/database"
 	"gorm.io/gorm"
@@ -9,6 +12,7 @@ import (
 type ICategoryRepository interface {
 	GetLikesByUserID(userID string) []models.CategoryPill
 	GetAllCategories(langCode string) ([]models.SimpleCategory, error)
+	AssociateCategoriesWithUser(categories []string, userID string) error
 }
 
 type CategoryRepository struct {
@@ -39,4 +43,24 @@ func (repo *CategoryRepository) GetAllCategories(langCode string) ([]models.Simp
 	}
 	resp.Scan(&categories)
 	return categories, nil
+}
+
+func (repo *CategoryRepository) AssociateCategoriesWithUser(categories []string, userID string) error {
+	db := database.DBConnect()
+	defer database.CloseDBConnection(db)
+	var errString string
+
+	for _, categoryID := range categories {
+		categoryID, _ := uuid.Parse(categoryID)
+		userID, _ := uuid.Parse(userID)
+		resp := db.Table("category_user").Omit("category_user_id").Create(models.CategoryUser{
+			UserID:         userID,
+			CategoryID:     categoryID,
+		})
+		if resp.Error != nil {
+			errString = fmt.Sprintf("%v - ", resp.Error.Error())
+		}
+	}
+
+	return fmt.Errorf(errString)
 }
