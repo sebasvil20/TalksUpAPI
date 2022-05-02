@@ -422,10 +422,11 @@ VALUES ('35b2881c-210c-4160-b3f7-6252b9ebee49', 'Terror', 'Podcasts que te hacen
 INSERT INTO categories (category_id, name, description, lang_id)
 VALUES ('55abaa24-b920-43ea-bf94-aee5f614e326', 'Misterio',
         'Perfectos para una tarde donde te sientes todo un detective', 'ESP');
-INSERT INTO categories (name, description, lang_id)
-VALUES ('Historia', 'Aprende con los mejores en el tema', 'ESP');
-INSERT INTO categories (name, description, lang_id)
-VALUES ('Influencers', 'Escuha la historia de vida de tus influences favoritos', 'ESP');
+INSERT INTO categories (category_id, name, description, lang_id)
+VALUES ('472aa79f-fc3a-46d7-8b4b-b4fab318bb6b', 'Historia', 'Aprende con los mejores en el tema', 'ESP');
+INSERT INTO categories (category_id, name, description, lang_id)
+VALUES ('f67a4547-31fe-4bba-8556-526cac7f4fa0', 'Influencers', 'Escuha la historia de vida de tus influences favoritos',
+        'ESP');
 
 
 INSERT INTO category_user (category_id, user_id)
@@ -433,4 +434,4 @@ VALUES ('35b2881c-210c-4160-b3f7-6252b9ebee49', '86f45ee6-c5a4-11ec-b46f-6a2f678
 INSERT INTO category_user (category_id, user_id)
 VALUES ('55abaa24-b920-43ea-bf94-aee5f614e326', '86f45ee6-c5a4-11ec-b46f-6a2f678b91f3');
 
--- GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO apptalksup;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO apptalksup;
