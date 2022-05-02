@@ -16,7 +16,7 @@ type IUserRepository interface {
 	IsAdmin(email string) bool
 	AreCredentialsOK(email string, password string) bool
 	GetAllUsers() ([]models.SimpleUser, error)
-	GetUserByEmail(email string) models.User
+	GetUserByEmail(email string) models.SimpleUser
 }
 
 type UserRepository struct {
@@ -96,10 +96,10 @@ func (repo *UserRepository) GetAllUsers() ([]models.SimpleUser, error) {
 	return users, nil
 }
 
-func (repo *UserRepository) GetUserByEmail(email string) models.User {
+func (repo *UserRepository) GetUserByEmail(email string) models.SimpleUser {
 	db := database.DBConnect()
 	defer database.CloseDBConnection(db)
-	var user models.User
+	var user models.SimpleUser
 
 	db.Raw("SELECT * FROM users WHERE email = ?", email).Scan(&user)
 	return user

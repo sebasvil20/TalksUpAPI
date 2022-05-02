@@ -26,3 +26,8 @@ type SimpleCategory struct {
 	IconURL       string    `json:"icon_url,omitempty"`
 	Lang          string    `json:"lang"`
 }
+
+type CategoriesUserAssociation struct {
+	UserID     string   `json:"user_id"`
+	Categories []string `json:"categories"`
+}

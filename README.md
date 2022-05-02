@@ -53,6 +53,7 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. 
 * `POST /users/login`: login with user credentials to receive jwt token
 * `GET /users`: get all users with their likes *
 * `GET /categories?lang=`: get all categories, optional lang query param e.g. ESP
+* `GET /categories/associate`: associate user with a list of categories (likes)
 
 (*) Admin role required
 
