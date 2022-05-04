@@ -17,3 +17,7 @@ func ProvideCategoryService(categoryRepository repository.ICategoryRepository) *
 		CategoryRepository: categoryRepository,
 	}
 }
+
+func ProvideUploaderService() *services.UploaderService {
+	return &services.UploaderService{}
+}
