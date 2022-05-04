@@ -53,9 +53,12 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. 
 * `POST /users/login`: login with user credentials to receive jwt token
 * `GET /users`: get all users with their likes *
 * `GET /categories?lang=`: get all categories, optional lang query param e.g. ESP
+* `POST /categories`: create new category **
 * `GET /categories/associate`: associate user with a list of categories (likes)
 
 (*) Admin role required
+
+(**) Admin role not required but admin approval required
 
 Try the URL `http://localhost:8080/health` in a browser, and you should see something like `"PONG"` displayed.
 
