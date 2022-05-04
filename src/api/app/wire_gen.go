@@ -22,9 +22,12 @@ func StartProviders() *ProviderRoute {
 	userController := providers.ProvideUserController(userService)
 	categoryService := providers.ProvideCategoryService(categoryRepository)
 	categoryController := providers.ProvideCategoryController(categoryService)
+	uploaderService := providers.ProvideUploaderService()
+	uploaderController := providers.ProvideUploaderController(uploaderService)
 	providerRoute := &ProviderRoute{
 		UserController:     userController,
 		CategoryController: categoryController,
+		UploaderController: uploaderController,
 	}
 	return providerRoute
 }
@@ -34,13 +37,17 @@ func StartProviders() *ProviderRoute {
 type ProviderRoute struct {
 	UserController     *controllers.UserController
 	CategoryController *controllers.CategoryController
+	UploaderController *controllers.UploaderController
 }
 
 var userSet = wire.NewSet(providers.ProvideUserRepository, wire.Bind(new(repository.IUserRepository), new(*repository.UserRepository)), providers.ProvideUserService, wire.Bind(new(services.IUserService), new(*services.UserService)), providers.ProvideUserController, wire.Bind(new(controllers.IUserController), new(*controllers.UserController)))
 
 var categorySet = wire.NewSet(providers.ProvideCategoryRepository, wire.Bind(new(repository.ICategoryRepository), new(*repository.CategoryRepository)), providers.ProvideCategoryService, wire.Bind(new(services.ICategoryService), new(*services.CategoryService)), providers.ProvideCategoryController, wire.Bind(new(controllers.ICategoryController), new(*controllers.CategoryController)))
 
+var uploaderSet = wire.NewSet(providers.ProvideUploaderService, wire.Bind(new(services.IUploaderService), new(*services.UploaderService)), providers.ProvideUploaderController, wire.Bind(new(controllers.IUploaderController), new(*controllers.UploaderController)))
+
 var setProvider = wire.NewSet(
 	userSet,
-	categorySet, wire.Struct(new(ProviderRoute), "UserController", "CategoryController"),
+	categorySet,
+	uploaderSet, wire.Struct(new(ProviderRoute), "UserController", "CategoryController", "UploaderController"),
 )

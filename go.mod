@@ -3,6 +3,10 @@ module github.com/sebasvil20/TalksUpAPI
 go 1.16
 
 require (
+	github.com/aws/aws-sdk-go-v2 v1.16.3 // indirect
+	github.com/aws/aws-sdk-go-v2/config v1.15.4 // indirect
+	github.com/aws/aws-sdk-go-v2/credentials v1.12.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.26.8 // indirect
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-playground/validator/v10 v10.10.1 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible

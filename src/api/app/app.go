@@ -13,6 +13,7 @@ import (
 type ProviderRoute struct {
 	UserController     *controllers.UserController
 	CategoryController *controllers.CategoryController
+	UploaderController *controllers.UploaderController
 }
 
 var userSet = wire.NewSet(
@@ -33,10 +34,18 @@ var categorySet = wire.NewSet(
 	wire.Bind(new(controllers.ICategoryController), new(*controllers.CategoryController)),
 )
 
+var uploaderSet = wire.NewSet(
+	providers.ProvideUploaderService,
+	wire.Bind(new(services.IUploaderService), new(*services.UploaderService)),
+	providers.ProvideUploaderController,
+	wire.Bind(new(controllers.IUploaderController), new(*controllers.UploaderController)),
+)
+
 var setProvider = wire.NewSet(
 	userSet,
 	categorySet,
-	wire.Struct(new(ProviderRoute), "UserController", "CategoryController"),
+	uploaderSet,
+	wire.Struct(new(ProviderRoute), "UserController", "CategoryController", "UploaderController"),
 )
 
 func StartProviders() *ProviderRoute {

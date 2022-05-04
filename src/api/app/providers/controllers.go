@@ -12,3 +12,7 @@ func ProvideUserController(srv services.IUserService) *controllers.UserControlle
 func ProvideCategoryController(srv services.ICategoryService) *controllers.CategoryController {
 	return &controllers.CategoryController{CategoryService: srv}
 }
+
+func ProvideUploaderController(srv services.IUploaderService) *controllers.UploaderController {
+	return &controllers.UploaderController{UploaderService: srv}
+}
