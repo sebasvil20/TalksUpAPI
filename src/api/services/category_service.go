@@ -8,6 +8,7 @@ import (
 type ICategoryService interface {
 	GetAllCategories(langCode string) ([]models.SimpleCategory, error)
 	AssociateCategoriesWithUser(associationData models.CategoriesUserAssociation) error
+	CreateCategory(category models.Category) (models.Category, error)
 }
 
 type CategoryService struct {
@@ -30,4 +31,13 @@ func (srv *CategoryService) AssociateCategoriesWithUser(associationData models.C
 	}
 
 	return nil
+}
+
+func (srv *CategoryService) CreateCategory(category models.Category) (models.Category, error) {
+	categoryResp, err := srv.CategoryRepository.CreateCategory(category)
+	if err != nil {
+		return models.Category{}, err
+	}
+
+	return categoryResp, nil
 }

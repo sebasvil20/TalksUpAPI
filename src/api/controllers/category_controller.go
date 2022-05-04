@@ -13,6 +13,7 @@ import (
 type ICategoryController interface {
 	GetAllCategories(c *gin.Context)
 	AssociateCategoriesWithUser(c *gin.Context)
+	CreateCategory(c *gin.Context)
 }
 
 type CategoryController struct {
@@ -41,4 +42,19 @@ func (ctrl *CategoryController) AssociateCategoriesWithUser(c *gin.Context) {
 		return
 	}
 	utils.HandleResponse(c, http.StatusCreated, map[string]string{"Message": "Associated succesfully"})
+}
+
+func (ctrl *CategoryController) CreateCategory(c *gin.Context) {
+	var categoryBody models.Category
+	if err := c.BindJSON(&categoryBody); err != nil {
+		utils.HandleResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	category, err := ctrl.CategoryService.CreateCategory(categoryBody)
+	if err != nil {
+		utils.HandleResponse(c, http.StatusBadRequest, fmt.Sprintf("error creating category: %v", err.Error()))
+		return
+	}
+	utils.HandleResponse(c, http.StatusCreated, category)
 }
