@@ -55,6 +55,7 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. 
 * `GET /categories?lang=`: get all categories, optional lang query param e.g. ESP
 * `POST /categories`: create new category **
 * `GET /categories/associate`: associate user with a list of categories (likes)
+* `PUT /upload`: requires a form-data content type with a file on it. Uploads an image and returns the cdn url
 
 (*) Admin role required
 
