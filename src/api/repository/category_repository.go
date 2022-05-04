@@ -2,6 +2,7 @@ package repository
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/google/uuid"
 	"github.com/sebasvil20/TalksUpAPI/src/api/models"
@@ -13,6 +14,7 @@ type ICategoryRepository interface {
 	GetLikesByUserID(userID string) []models.CategoryPill
 	GetAllCategories(langCode string) ([]models.SimpleCategory, error)
 	AssociateCategoriesWithUser(categories []string, userID string) error
+	CreateCategory(category models.Category) (models.Category, error)
 }
 
 type CategoryRepository struct {
@@ -63,4 +65,20 @@ func (repo *CategoryRepository) AssociateCategoriesWithUser(categories []string,
 	}
 
 	return fmt.Errorf(errString)
+}
+
+func (repo *CategoryRepository) CreateCategory(category models.Category) (models.Category, error) {
+	db := database.DBConnect()
+	defer database.CloseDBConnection(db)
+
+	categoryID, _ := uuid.NewUUID()
+	category.CategoryID = categoryID
+	resp := db.Table("categories").Create(category)
+	if resp.Error != nil {
+		log.Printf("error creating new category: %v", resp.Error)
+		return models.Category{}, fmt.Errorf("error creating new category: %v", resp.Error)
+	}
+
+	db.Raw("SELECT * FROM users WHERE user_id = ?", categoryID).Scan(&category)
+	return category, nil
 }

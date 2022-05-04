@@ -25,9 +25,6 @@ type UserRepository struct {
 func (repo *UserRepository) CreateUser(bodyUser models.NewUser) (models.User, error) {
 	db := database.DBConnect()
 	defer database.CloseDBConnection(db)
-	if db == nil {
-		return models.User{}, fmt.Errorf("internal server error")
-	}
 
 	userID, _ := uuid.NewUUID()
 	user := bodyUser.ToUser(userID, 2)

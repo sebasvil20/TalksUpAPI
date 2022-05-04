@@ -23,6 +23,7 @@ func SetURLMappings(router *gin.Engine) {
 	{
 		categories.Use(middleware.VerifyAPIKey())
 		categories.GET("", middleware.AuthJWT(false), providerRoute.CategoryController.GetAllCategories)
+		categories.POST("",  middleware.AuthJWT(false), providerRoute.CategoryController.CreateCategory)
 		categories.POST("/associate", middleware.AuthJWT(false), providerRoute.CategoryController.AssociateCategoriesWithUser)
 	}
 }
