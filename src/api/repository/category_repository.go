@@ -2,6 +2,7 @@ package repository
 
 import (
 	"fmt"
+	"github.com/sebasvil20/TalksUpAPI/src/api/utils"
 	"log"
 
 	"github.com/google/uuid"
@@ -56,8 +57,8 @@ func (repo *CategoryRepository) AssociateCategoriesWithUser(categories []string,
 		categoryID, _ := uuid.Parse(categoryID)
 		userID, _ := uuid.Parse(userID)
 		resp := db.Table("category_user").Omit("category_user_id").Create(models.CategoryUser{
-			UserID:         userID,
-			CategoryID:     categoryID,
+			UserID:     userID,
+			CategoryID: categoryID,
 		})
 		if resp.Error != nil {
 			errString = fmt.Sprintf("%v - ", resp.Error.Error())
@@ -73,12 +74,12 @@ func (repo *CategoryRepository) CreateCategory(category models.Category) (models
 
 	categoryID, _ := uuid.NewUUID()
 	category.CategoryID = categoryID
+	category.Name = utils.GetStandarString(category.Name)
 	resp := db.Table("categories").Create(category)
 	if resp.Error != nil {
 		log.Printf("error creating new category: %v", resp.Error)
 		return models.Category{}, fmt.Errorf("error creating new category: %v", resp.Error)
 	}
 
-	db.Raw("SELECT * FROM users WHERE user_id = ?", categoryID).Scan(&category)
 	return category, nil
 }

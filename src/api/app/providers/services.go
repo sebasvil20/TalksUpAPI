@@ -21,3 +21,9 @@ func ProvideCategoryService(categoryRepository repository.ICategoryRepository) *
 func ProvideUploaderService() *services.UploaderService {
 	return &services.UploaderService{}
 }
+
+func ProvidePodcastService(podcastRepository repository.IPodcastRepository) *services.PodcastService {
+	return &services.PodcastService{
+		PodcastRepository: podcastRepository,
+	}
+}

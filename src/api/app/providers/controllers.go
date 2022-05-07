@@ -16,3 +16,7 @@ func ProvideCategoryController(srv services.ICategoryService) *controllers.Categ
 func ProvideUploaderController(srv services.IUploaderService) *controllers.UploaderController {
 	return &controllers.UploaderController{UploaderService: srv}
 }
+
+func ProvidePodcastController(srv services.IPodcastService) *controllers.PodcastController {
+	return &controllers.PodcastController{PodcastService: srv}
+}
