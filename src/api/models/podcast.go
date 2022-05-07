@@ -5,21 +5,21 @@ import (
 )
 
 type Podcast struct {
-	PodcastID     uuid.UUID   `json:"podcast_id,omitempty"`
-	Name          string      `json:"name" binding:"required"`
-	Description   string      `json:"description" binding:"required"`
-	TotalViews    int         `json:"total_views,omitempty"`
-	RedirectURL   string      `json:"redirect_url" binding:"required"`
-	CoverPicURL   string      `json:"cover_pic_url,omitempty"`
-	TrailerURL    string      `json:"trailer_url,omitempty"`
-	Rating        float64     `json:"rating,omitempty"`
-	TotalEpisodes int         `json:"total_episodes,omitempty"`
-	TotalLength   string      `json:"total_length,omitempty"`
-	ReleaseDate   string      `json:"release_date,omitempty"`
-	UpdateDate    string      `json:"update_date,omitempty"`
-	Categories    []uuid.UUID `json:"categories,omitempty" gorm:"-"`
-	LangID        string      `json:"lang_id" binding:"required"`
-	AuthorID      string      `json:"author_id" binding:"required"`
+	PodcastID     uuid.UUID         `json:"podcast_id,omitempty"`
+	Name          string            `json:"name" binding:"required"`
+	Description   string            `json:"description" binding:"required"`
+	TotalViews    int               `json:"total_views,omitempty"`
+	CoverPicURL   string            `json:"cover_pic_url,omitempty"`
+	TrailerURL    string            `json:"trailer_url,omitempty"`
+	Rating        float64           `json:"rating,omitempty"`
+	TotalEpisodes int               `json:"total_episodes,omitempty"`
+	TotalLength   string            `json:"total_length,omitempty"`
+	ReleaseDate   string            `json:"release_date,omitempty"`
+	UpdateDate    string            `json:"update_date,omitempty"`
+	Categories    []uuid.UUID       `json:"categories,omitempty" gorm:"-"`
+	LangID        string            `json:"lang_id" binding:"required"`
+	AuthorID      string            `json:"author_id" binding:"required"`
+	Platforms     []PlatformPodcast `json:"platforms,omitempty" gorm:"-"`
 }
 
 type CompletePodcast struct {
@@ -27,7 +27,6 @@ type CompletePodcast struct {
 	Name          string         `json:"name" binding:"required"`
 	Description   string         `json:"description" binding:"required"`
 	TotalViews    int            `json:"total_views,omitempty"`
-	RedirectURL   string         `json:"redirect_url" binding:"required"`
 	CoverPicURL   string         `json:"cover_pic_url,omitempty"`
 	TrailerURL    string         `json:"trailer_url,omitempty"`
 	Rating        float64        `json:"rating,omitempty"`
@@ -47,7 +46,6 @@ func (pod *Podcast) ToCompletePodcast() CompletePodcast {
 		Name:          pod.Name,
 		Description:   pod.Description,
 		TotalViews:    pod.TotalViews,
-		RedirectURL:   pod.RedirectURL,
 		CoverPicURL:   pod.CoverPicURL,
 		TrailerURL:    pod.TrailerURL,
 		Rating:        pod.Rating,
