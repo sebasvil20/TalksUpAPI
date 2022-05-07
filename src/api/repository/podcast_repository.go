@@ -57,6 +57,13 @@ func (repo *PodcastRepository) CreatePodcast(podcast models.Podcast) (models.Pod
 		}
 	}
 
+	if len(podcast.Platforms) > 0 {
+		for i := range podcast.Platforms {
+			podcast.Platforms[i].PodcastID = podcastID
+			db.Table("platform_podcast").Omit("platform_podcast_id").Create(podcast.Platforms[i])
+		}
+	}
+
 	if resp.Error != nil {
 		log.Printf("error creating new podcast: %v", resp.Error)
 		return models.Podcast{}, fmt.Errorf("error creating new podcast: %v", resp.Error)
