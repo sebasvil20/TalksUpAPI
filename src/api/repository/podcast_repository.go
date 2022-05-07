@@ -1,12 +1,17 @@
 package repository
 
 import (
+	"fmt"
+	"github.com/google/uuid"
 	"github.com/sebasvil20/TalksUpAPI/src/api/models"
 	"github.com/sebasvil20/TalksUpAPI/src/api/services/database"
+	"github.com/sebasvil20/TalksUpAPI/src/api/utils"
+	"log"
 )
 
 type IPodcastRepository interface {
 	GetAllPodcasts(langID string) []models.CompletePodcast
+	CreatePodcast(podcast models.Podcast) (models.Podcast, error)
 }
 
 type PodcastRepository struct {
@@ -32,4 +37,29 @@ func (repo *PodcastRepository) GetAllPodcasts(langID string) []models.CompletePo
 		completePodcasts = append(completePodcasts, podcast)
 	}
 	return completePodcasts
+}
+
+func (repo *PodcastRepository) CreatePodcast(podcast models.Podcast) (models.Podcast, error) {
+	db := database.DBConnect()
+	defer database.CloseDBConnection(db)
+	podcastID, _ := uuid.NewUUID()
+	podcast.PodcastID = podcastID
+	podcast.Name = utils.GetStandarString(podcast.Name)
+	resp := db.Table("podcasts").Create(podcast)
+
+	if len(podcast.Categories) > 0 {
+		for _, category := range podcast.Categories {
+			db.Table("category_podcast").Omit("category_podcast_id").Create(models.CategoryPodcast{
+				PodcastID:  podcastID,
+				CategoryID: category,
+			})
+		}
+	}
+
+	if resp.Error != nil {
+		log.Printf("error creating new podcast: %v", resp.Error)
+		return models.Podcast{}, fmt.Errorf("error creating new podcast: %v", resp.Error)
+	}
+
+	return podcast, nil
 }

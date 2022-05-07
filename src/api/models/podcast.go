@@ -5,32 +5,33 @@ import (
 )
 
 type Podcast struct {
-	PodcastID     uuid.UUID `json:"podcast_id,omitempty"`
-	Name          string    `json:"name" binding:"required"`
-	Description   string    `json:"description" binding:"required"`
-	TotalViews    string    `json:"total_views"`
-	RedirectURL   string    `json:"redirect_url" binding:"required"`
-	CoverPicURL   string    `json:"cover_pic_url,omitempty"`
-	TrailerURL    string    `json:"trailer_url,omitempty"`
-	Rating        string    `json:"rating,omitempty"`
-	TotalEpisodes string    `json:"total_episodes,omitempty"`
-	TotalLength   string    `json:"total_length,omitempty"`
-	ReleaseDate   string    `json:"release_date,omitempty"`
-	UpdateDate    string    `json:"update_date,omitempty"`
-	LangID        string    `json:"lang_id" binding:"required"`
-	AuthorID      string    `json:"author_id" binding:"required"`
+	PodcastID     uuid.UUID   `json:"podcast_id,omitempty"`
+	Name          string      `json:"name" binding:"required"`
+	Description   string      `json:"description" binding:"required"`
+	TotalViews    int         `json:"total_views,omitempty"`
+	RedirectURL   string      `json:"redirect_url" binding:"required"`
+	CoverPicURL   string      `json:"cover_pic_url,omitempty"`
+	TrailerURL    string      `json:"trailer_url,omitempty"`
+	Rating        float64     `json:"rating,omitempty"`
+	TotalEpisodes int         `json:"total_episodes,omitempty"`
+	TotalLength   string      `json:"total_length,omitempty"`
+	ReleaseDate   string      `json:"release_date,omitempty"`
+	UpdateDate    string      `json:"update_date,omitempty"`
+	Categories    []uuid.UUID `json:"categories,omitempty" gorm:"-"`
+	LangID        string      `json:"lang_id" binding:"required"`
+	AuthorID      string      `json:"author_id" binding:"required"`
 }
 
 type CompletePodcast struct {
 	PodcastID     uuid.UUID      `json:"podcast_id,omitempty"`
 	Name          string         `json:"name" binding:"required"`
 	Description   string         `json:"description" binding:"required"`
-	TotalViews    string         `json:"total_views"`
+	TotalViews    int            `json:"total_views,omitempty"`
 	RedirectURL   string         `json:"redirect_url" binding:"required"`
 	CoverPicURL   string         `json:"cover_pic_url,omitempty"`
 	TrailerURL    string         `json:"trailer_url,omitempty"`
-	Rating        string         `json:"rating"`
-	TotalEpisodes string         `json:"total_episodes,omitempty"`
+	Rating        float64        `json:"rating,omitempty"`
+	TotalEpisodes int            `json:"total_episodes,omitempty"`
 	TotalLength   string         `json:"total_length,omitempty"`
 	ReleaseDate   string         `json:"release_date,omitempty"`
 	UpdateDate    string         `json:"update_date,omitempty"`
@@ -57,6 +58,6 @@ func (pod *Podcast) ToCompletePodcast() CompletePodcast {
 		LangID:        pod.LangID,
 		Categories:    []CategoryPill{},
 		Author:        Author{},
-		Platforms:      []Platform{},
+		Platforms:     []Platform{},
 	}
 }
