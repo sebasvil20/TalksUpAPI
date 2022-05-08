@@ -50,7 +50,7 @@ go build src/api/main.go
 At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. It provides the following endpoints:
 
 | Method | Endpoint | Description |
-    | --- | --- | --- |
+| --- | --- | --- |
 | `GET` | `/health` | Healthcheck service provided for health checking purpose |
 | `POST` | `/users/login` | Login with user credentials to receive jwt token |
 | `POST` | `/users/new` | Create new user |
