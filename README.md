@@ -63,9 +63,9 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. 
 | `GET` | `/podcasts` | Get all podcasts with fully info (categories, author, lang, platforms) |
 | `PUT` | `/upload` | Requires a form-data content type with a file on it. Uploads an image and returns the cdn url |
 
-(*) Admin role required
+>(*) Admin role required
 
-(**) Admin role not required but admin approval required
+>(**) Admin role not required but admin approval required
 
 Try the URL `http://localhost:8080/health` in a browser, and you should see something like `"PONG"` displayed.
 
@@ -77,7 +77,7 @@ The TalksUpAPI uses the following project layout:
 .
 ├── migrations                   SQL Files with db struct
 ├── src                 
-│    └── api                      main applications of the project
+│    └── api                     main applications of the project
 │        └── app                 dependency injection providers and router handler
 │        └── config              configurations and global vars
 │        └── controllers         first cape of API where the request is received
