@@ -53,7 +53,7 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. 
 | --- | --- | --- |
 | `GET` | `/health` | Healthcheck service provided for health checking purpose |
 | `POST` | `/users/login` | Login with user credentials to receive jwt token |
-| `POST` | `/users/new` | Create new user |
+| `POST` | `/users` | Create new user |
 | `GET` | `/users` | Get all users with their likes * |
 | `POST` | `/users/associate` | Associate user with a list of categories (likes) |
 | `GET` | `/categories?lang=` | Get all categories, optional lang query param e.g. ESP |
