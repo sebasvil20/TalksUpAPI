@@ -424,6 +424,44 @@ FROM platforms
 WHERE pp.podcast_id = podcastID
 $$ LANGUAGE sql;
 
+CREATE
+    OR REPLACE FUNCTION SP_GetPodcastsByCategoryID(categoryID uuid)
+    RETURNS TABLE
+            (
+                podcast_id     uuid,
+                name           varchar,
+                total_views    int,
+                cover_pic_url  varchar,
+                trailer_url    varchar,
+                rating         float,
+                total_episodes int,
+                total_length   varchar,
+                release_date   date,
+                update_date    date,
+                lang_id        varchar,
+                author_id      uuid
+            )
+AS
+$$
+SELECT (
+        podcasts.podcast_id,
+        podcasts.name,
+        podcasts.total_views,
+        podcasts.cover_pic_url,
+        podcasts.trailer_url,
+        podcasts.rating,
+        podcasts.total_episodes,
+        podcasts.total_length,
+        podcasts.release_date,
+        podcasts.update_date,
+        podcasts.lang_id,
+        podcasts.author_id
+           )
+FROM podcasts
+         INNER JOIN category_podcast cp on podcasts.podcast_id = cp.podcast_id
+WHERE cp.category_id = categoryID
+$$ LANGUAGE sql;
+
 -- Default roles
 INSERT INTO roles (role_id, name)
 VALUES (1, 'admin');
@@ -517,3 +555,4 @@ VALUES ('eb4b1438-da09-4b37-be59-4d921aeba947', '57a179b8-d692-4c04-85f7-f95004f
         'https://open.spotify.com/show/17dk0hYDmVq7EzGXC8y4u6');
 
 -- GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO apptalksup;
+
