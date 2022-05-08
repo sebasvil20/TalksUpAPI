@@ -49,16 +49,19 @@ go build src/api/main.go
 
 At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. It provides the following endpoints:
 
-* `GET /health`: a healthcheck service provided for health checking purpose
-* `POST /users/new`: create new user
-* `POST /users/login`: login with user credentials to receive jwt token
-* `GET /users`: get all users with their likes *
-* `GET /categories?lang=`: get all categories, optional lang query param e.g. ESP
-* `POST /categories`: create new category **
-* `GET /categories/associate`: associate user with a list of categories (likes)
-* `PUT /upload`: requires a form-data content type with a file on it. Uploads an image and returns the cdn url
-* `POST /podcasts`: create new podcast **
-* `GET /podcasts`: get all podcasts with fully info (categories, author, lang, platforms)
+| Method | Endpoint | Description |
+    | --- | --- | --- |
+| `GET` | `/health` | Healthcheck service provided for health checking purpose |
+| `POST` | `/users/login` | Login with user credentials to receive jwt token |
+| `POST` | `/users/new` | Create new user |
+| `GET` | `/users` | Get all users with their likes * |
+| `GET` | `/categories?lang=` | Get all categories, optional lang query param e.g. ESP |
+| `GET` | `/categories` | Get all users with their likes * |
+| `POST` | `/categories` | Create new category ** |
+| `POST` | `/categories/associate` | Associate user with a list of categories (likes) |
+| `POST` | `/podcasts` | Create new podcast ** |
+| `GET` | `/podcasts` | Get all podcasts with fully info (categories, author, lang, platforms) |
+| `PUT` | `/upload` | Requires a form-data content type with a file on it. Uploads an image and returns the cdn url |
 
 (*) Admin role required
 
