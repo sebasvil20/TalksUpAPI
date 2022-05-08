@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	"fmt"
 	"log"
 
@@ -17,6 +18,7 @@ type IUserRepository interface {
 	AreCredentialsOK(email string, password string) bool
 	GetAllUsers() ([]models.SimpleUser, error)
 	GetUserByEmail(email string) models.SimpleUser
+	AssociateCategoriesWithUser(categories []string, userID string) error
 }
 
 type UserRepository struct {
@@ -100,4 +102,29 @@ func (repo *UserRepository) GetUserByEmail(email string) models.SimpleUser {
 
 	db.Raw("SELECT * FROM users WHERE email = ?", email).Scan(&user)
 	return user
+}
+
+func (repo *UserRepository) AssociateCategoriesWithUser(categories []string, userID string) error {
+	db := database.DBConnect()
+	defer database.CloseDBConnection(db)
+	var errString string
+
+	for _, categoryID := range categories {
+		categoryID, _ := uuid.Parse(categoryID)
+		userID, _ := uuid.Parse(userID)
+		resp := db.Table("category_user").Omit("category_user_id").Create(models.CategoryUser{
+			UserID:     userID,
+			CategoryID: categoryID,
+		})
+		if resp.Error != nil {
+			errString = fmt.Sprintf("%v - %v", errString, resp.Error.Error())
+		}
+	}
+
+	if errString != "" {
+		errString = fmt.Sprintf("error associating podcast with categories: %v", errString)
+		log.Print(errString)
+		return errors.New(errString)
+	}
+	return nil
 }

@@ -12,10 +12,11 @@ type IUserService interface {
 	Login(userLoginData models.UserCredentials) (string, error)
 	CreateUser(user models.NewUser) (models.User, error)
 	GetAllUsers() ([]models.SimpleUser, error)
+	AssociateCategoriesWithUser(associationData models.CategoriesUserAssociation) error
 }
 
 type UserService struct {
-	UserRepository repository.IUserRepository
+	UserRepository     repository.IUserRepository
 	CategoryRepository repository.ICategoryRepository
 }
 
@@ -59,4 +60,13 @@ func (srv *UserService) GetAllUsers() ([]models.SimpleUser, error) {
 	}
 
 	return users, nil
+}
+
+func (srv *UserService) AssociateCategoriesWithUser(associationData models.CategoriesUserAssociation) error {
+	err := srv.UserRepository.AssociateCategoriesWithUser(associationData.Categories, associationData.UserID)
+	if err.Error() != "" {
+		return err
+	}
+
+	return nil
 }

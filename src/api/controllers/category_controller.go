@@ -12,7 +12,6 @@ import (
 
 type ICategoryController interface {
 	GetAllCategories(c *gin.Context)
-	AssociateCategoriesWithUser(c *gin.Context)
 	CreateCategory(c *gin.Context)
 }
 
@@ -27,22 +26,6 @@ func (ctrl *CategoryController) GetAllCategories(c *gin.Context) {
 		return
 	}
 	utils.HandleResponse(c, http.StatusOK, categories, nil)
-}
-
-func (ctrl *CategoryController) AssociateCategoriesWithUser(c *gin.Context) {
-	var associationData models.CategoriesUserAssociation
-	if err := c.BindJSON(&associationData); err != nil {
-		utils.HandleResponse(c, http.StatusBadRequest, nil, err)
-		return
-	}
-
-	err := ctrl.CategoryService.AssociateCategoriesWithUser(associationData)
-	if err != nil {
-		utils.HandleResponse(c, http.StatusBadRequest, nil,
-			fmt.Errorf("error associating some categories: %v", err.Error()))
-		return
-	}
-	utils.HandleResponse(c, http.StatusCreated, nil, nil)
 }
 
 func (ctrl *CategoryController) CreateCategory(c *gin.Context) {

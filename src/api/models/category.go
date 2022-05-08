@@ -25,6 +25,7 @@ type SimpleCategory struct {
 	SelectedCount int       `json:"selected_count,omitempty"`
 	IconURL       string    `json:"icon_url,omitempty"`
 	Lang          string    `json:"lang"`
+	TotalPodcasts int       `json:"total_podcasts,omitempty"`
 }
 
 type CategoriesUserAssociation struct {

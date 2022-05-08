@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"errors"
 	"fmt"
 	"log"
 
@@ -15,7 +14,6 @@ import (
 type ICategoryRepository interface {
 	GetLikesByUserID(userID string) []models.CategoryPill
 	GetAllCategories(langCode string) ([]models.SimpleCategory, error)
-	AssociateCategoriesWithUser(categories []string, userID string) error
 	CreateCategory(category models.Category) (models.Category, error)
 }
 
@@ -46,32 +44,11 @@ func (repo *CategoryRepository) GetAllCategories(langCode string) ([]models.Simp
 		return nil, resp.Error
 	}
 	resp.Scan(&categories)
+	for i, category := range categories {
+		db.Raw("SELECT count(category_id) FROM category_podcast WHERE category_id = ?", category.CategoryID).Scan(&categories[i].TotalPodcasts)
+	}
+
 	return categories, nil
-}
-
-func (repo *CategoryRepository) AssociateCategoriesWithUser(categories []string, userID string) error {
-	db := database.DBConnect()
-	defer database.CloseDBConnection(db)
-	var errString string
-
-	for _, categoryID := range categories {
-		categoryID, _ := uuid.Parse(categoryID)
-		userID, _ := uuid.Parse(userID)
-		resp := db.Table("category_user").Omit("category_user_id").Create(models.CategoryUser{
-			UserID:     userID,
-			CategoryID: categoryID,
-		})
-		if resp.Error != nil {
-			errString = fmt.Sprintf("%v - %v", errString, resp.Error.Error())
-		}
-	}
-
-	if errString != "" {
-		errString = fmt.Sprintf("error associating podcast with categories: %v", errString)
-		log.Print(errString)
-		return errors.New(errString)
-	}
-	return nil
 }
 
 func (repo *CategoryRepository) CreateCategory(category models.Category) (models.Category, error) {

@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,6 +14,7 @@ type IUserController interface {
 	Login(c *gin.Context)
 	CreateUser(c *gin.Context)
 	GetAllUsers(c *gin.Context)
+	AssociateCategoriesWithUser(c *gin.Context)
 }
 
 type UserController struct {
@@ -56,4 +58,20 @@ func (ctrl *UserController) GetAllUsers(c *gin.Context) {
 		return
 	}
 	utils.HandleResponse(c, http.StatusOK, users, nil)
+}
+
+func (ctrl *UserController) AssociateCategoriesWithUser(c *gin.Context) {
+	var associationData models.CategoriesUserAssociation
+	if err := c.BindJSON(&associationData); err != nil {
+		utils.HandleResponse(c, http.StatusBadRequest, nil, err)
+		return
+	}
+
+	err := ctrl.UserService.AssociateCategoriesWithUser(associationData)
+	if err != nil {
+		utils.HandleResponse(c, http.StatusBadRequest, nil,
+			fmt.Errorf("error associating some categories: %v", err.Error()))
+		return
+	}
+	utils.HandleResponse(c, http.StatusCreated, nil, nil)
 }

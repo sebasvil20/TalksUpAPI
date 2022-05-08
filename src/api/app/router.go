@@ -17,6 +17,7 @@ func SetURLMappings(router *gin.Engine) {
 
 		users.POST("/login", providerRoute.UserController.Login)
 		users.POST("/new", providerRoute.UserController.CreateUser)
+		users.POST("/associate", middleware.AuthJWT(false), providerRoute.UserController.AssociateCategoriesWithUser)
 	}
 
 	categories := router.Group("/categories")
@@ -24,7 +25,6 @@ func SetURLMappings(router *gin.Engine) {
 		categories.Use(middleware.VerifyAPIKey())
 		categories.GET("", middleware.AuthJWT(false), providerRoute.CategoryController.GetAllCategories)
 		categories.POST("", middleware.AuthJWT(false), providerRoute.CategoryController.CreateCategory)
-		categories.POST("/associate", middleware.AuthJWT(false), providerRoute.CategoryController.AssociateCategoriesWithUser)
 	}
 
 	podcasts := router.Group("/podcasts")
