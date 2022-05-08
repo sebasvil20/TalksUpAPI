@@ -55,10 +55,10 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. 
 | `POST` | `/users/login` | Login with user credentials to receive jwt token |
 | `POST` | `/users/new` | Create new user |
 | `GET` | `/users` | Get all users with their likes * |
+| `POST` | `/users/associate` | Associate user with a list of categories (likes) |
 | `GET` | `/categories?lang=` | Get all categories, optional lang query param e.g. ESP |
 | `GET` | `/categories` | Get all users with their likes * |
 | `POST` | `/categories` | Create new category ** |
-| `POST` | `/categories/associate` | Associate user with a list of categories (likes) |
 | `POST` | `/podcasts` | Create new podcast ** |
 | `POST` | `/podcasts/associate` | Associate podcast with a list of categories |
 | `GET` | `/podcasts?category_id=&lang=` | Get all podcasts with fully info (categories, author, lang, platforms) |
