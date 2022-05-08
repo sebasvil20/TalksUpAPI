@@ -101,7 +101,7 @@ func (repo *PodcastRepository) AssociateCategoriesWithPodcast(categories []uuid.
 
 	if errString != "" {
 		errString = fmt.Sprintf("error associating podcast with categories: %v", errString)
-		log.Printf(errString)
+		log.Print(errString)
 		return errors.New(errString)
 	}
 	return nil

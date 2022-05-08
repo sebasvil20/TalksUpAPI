@@ -517,4 +517,3 @@ VALUES ('eb4b1438-da09-4b37-be59-4d921aeba947', '57a179b8-d692-4c04-85f7-f95004f
         'https://open.spotify.com/show/17dk0hYDmVq7EzGXC8y4u6');
 
 -- GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO apptalksup;
-
