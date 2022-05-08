@@ -61,7 +61,7 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. 
 | `POST` | `/categories/associate` | Associate user with a list of categories (likes) |
 | `POST` | `/podcasts` | Create new podcast ** |
 | `POST` | `/podcasts/associate` | Associate podcast with a list of categories |
-| `GET` | `/podcasts` | Get all podcasts with fully info (categories, author, lang, platforms) |
+| `GET` | `/podcasts?category_id=&lang=` | Get all podcasts with fully info (categories, author, lang, platforms) |
 | `PUT` | `/upload` | Requires a form-data content type with a file on it. Uploads an image and returns the cdn url |
 
 >(*) Admin role required

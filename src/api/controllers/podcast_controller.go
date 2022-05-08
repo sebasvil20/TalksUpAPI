@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -20,7 +21,13 @@ type PodcastController struct {
 }
 
 func (ctrl *PodcastController) GetAllPodcasts(c *gin.Context) {
-	podcasts := ctrl.PodcastService.GetAllPodcasts(c.Query("lang"))
+	lang := c.Query("lang")
+	category := c.Query("category_id")
+	if lang != "" && category != "" {
+		utils.HandleResponse(c, http.StatusBadRequest, nil, errors.New("only one filter allowed"))
+		return
+	}
+	podcasts := ctrl.PodcastService.GetAllPodcasts(lang, category)
 	utils.HandleResponse(c, http.StatusOK, podcasts, nil)
 }
 
