@@ -9,6 +9,6 @@ type CategoryPodcast struct {
 }
 
 type CategoryPodcastAssociation struct {
-	PodcastID         uuid.UUID
-	Categories        []uuid.UUID
+	PodcastID  uuid.UUID   `json:"podcast_id"`
+	Categories []uuid.UUID `json:"categories"`
 }

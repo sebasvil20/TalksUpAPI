@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS podcasts
 (
     podcast_id     uuid  DEFAULT gen_random_uuid() PRIMARY KEY,
     name           varchar(100) NOT NULL,
-    description    varchar(300) NOT NULL,
+    description    varchar(500) NOT NULL,
     total_views    int   DEFAULT 0,
     cover_pic_url  varchar(1000),
     trailer_url    varchar(1000),
@@ -449,7 +449,7 @@ VALUES ('11635d96-098d-4869-b7cf-baeae575ab20');
 INSERT INTO users (user_id, public_name, email, first_name, last_name, birth_date, phone_number, profile_pic_url,
                    biography, lang_id, country_id, role_id)
 VALUES ('86f45ee6-c5a4-11ec-b46f-6a2f678b91f3', 'hinval', 'sebasvil20@gmail.com', 'Sebastian', 'Villegas',
-        '2002 - 08 - 12',
+        '2002-08-12',
         '3053190789', null, null, 'ESP', 'CO', 1);
 
 INSERT INTO passwords (password_id, hashed_password, user_id)
@@ -462,10 +462,10 @@ VALUES ('35b2881c-210c-4160-b3f7-6252b9ebee49', 'Terror', 'Podcasts que te hacen
         'Perfectos para una tarde donde te sientes todo un detective', 'ESP'),
        ('472aa79f-fc3a-46d7-8b4b-b4fab318bb6b', 'Historia', 'Aprende con los mejores en el tema', 'ESP'),
        ('f67a4547-31fe-4bba-8556-526cac7f4fa0', 'Influencers',
-        'Escuha la historia de vida de tus influences favoritos',
+        'Escucha la historia de vida de tus influences favoritos',
         'ESP'),
        ('2da2f856-e235-436c-bdce-7471b0162846', 'Psicología', 'Análisis', 'ESP'),
-       ('73220619 - faf6 - 498d - 8800 - e1d5f468d88a ', 'Filosofía', 'Reflexiones', 'ESP')
+       ('73220619-faf6-498d-8800-e1d5f468d88a', 'Filosofía', 'Reflexiones', 'ESP')
 ;
 
 INSERT INTO category_user (category_id, user_id)
@@ -493,21 +493,21 @@ VALUES ('57a179b8-d692-4c04-85f7-f95004f86565', 'Colombia Paranormal',
         0,
         'https://i.scdn.co/image/f87fb665cf17b6332cd51c8f3076e5613cbf2d08',
         'https://open.spotify.com/episode/5pJJYf5rxQIWYTnBsf75tg?si=tPDe2CT3Su-sGI9XV7lZJA',
-        0, 75, '15h', '2020 - 06 - 01 ', '2022 - 05 - 06 ', 'ESP',
+        0, 75, '15h', '2020-06-01 ', '2022-05-06', 'ESP',
         '2eaed1aa-0993-48c5-b95c-c0c2bb43ad1a'),
        ('a6d465df-738c-4974-a5bc-6c2bdf8780e6', 'Filosofía, Psicología e Historias varias',
         'Relatos breves de filosofía, Psicología e Historias varias, con biografías y algunas reflexiones, leyendas y fantasías.',
         0,
         'https://i.scdn.co/image/2bc2a9e504540994ea5bfbe55e8c358c8db5c96b',
         'https://open.spotify.com/episode/4sv9Pu5rH4hgr6bBZ4i5s0?si=vVnRH4UZTH2oi4fdSbzIRQ',
-        0, 177, '36h', '2020 - 03 - 01 ', '2022 - 05 - 06 ', 'ESP',
+        0, 177, '36h', '2020-03-01', '2022-05-06', 'ESP',
         '546e8d6a-f13e-405b-8bff-977463b691bb');
 
 INSERT INTO category_podcast (category_id, podcast_id)
 VALUES ('35b2881c-210c-4160-b3f7-6252b9ebee49', '57a179b8-d692-4c04-85f7-f95004f86565'),
        ('55abaa24-b920-43ea-bf94-aee5f614e326', '57a179b8-d692-4c04-85f7-f95004f86565'),
        ('472aa79f-fc3a-46d7-8b4b-b4fab318bb6b', 'a6d465df-738c-4974-a5bc-6c2bdf8780e6'),
-       ('73220619 - faf6 - 498d - 8800 - e1d5f468d88a ', 'a6d465df-738c-4974-a5bc-6c2bdf8780e6'),
+       ('73220619-faf6-498d-8800-e1d5f468d88a', 'a6d465df-738c-4974-a5bc-6c2bdf8780e6'),
        ('2da2f856-e235-436c-bdce-7471b0162846', 'a6d465df-738c-4974-a5bc-6c2bdf8780e6');
 
 INSERT INTO platform_podcast (platform_id, podcast_id, redirect_url)

@@ -1,13 +1,14 @@
 package repository
 
 import (
+	"errors"
 	"fmt"
-	"github.com/sebasvil20/TalksUpAPI/src/api/utils"
 	"log"
 
 	"github.com/google/uuid"
 	"github.com/sebasvil20/TalksUpAPI/src/api/models"
 	"github.com/sebasvil20/TalksUpAPI/src/api/services/database"
+	"github.com/sebasvil20/TalksUpAPI/src/api/utils"
 	"gorm.io/gorm"
 )
 
@@ -61,11 +62,16 @@ func (repo *CategoryRepository) AssociateCategoriesWithUser(categories []string,
 			CategoryID: categoryID,
 		})
 		if resp.Error != nil {
-			errString = fmt.Sprintf("%v - ", resp.Error.Error())
+			errString = fmt.Sprintf("%v - %v", errString, resp.Error.Error())
 		}
 	}
 
-	return fmt.Errorf(errString)
+	if errString != "" {
+		errString = fmt.Sprintf("error associating podcast with categories: %v", errString)
+		log.Printf(errString)
+		return errors.New(errString)
+	}
+	return nil
 }
 
 func (repo *CategoryRepository) CreateCategory(category models.Category) (models.Category, error) {

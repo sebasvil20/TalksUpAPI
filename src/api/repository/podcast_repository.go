@@ -1,14 +1,15 @@
 package repository
 
 import (
+	"errors"
 	"fmt"
-	"gorm.io/gorm"
 	"log"
 
 	"github.com/google/uuid"
 	"github.com/sebasvil20/TalksUpAPI/src/api/models"
 	"github.com/sebasvil20/TalksUpAPI/src/api/services/database"
 	"github.com/sebasvil20/TalksUpAPI/src/api/utils"
+	"gorm.io/gorm"
 )
 
 type IPodcastRepository interface {
@@ -77,8 +78,8 @@ func (repo *PodcastRepository) CreatePodcast(podcast models.Podcast) (models.Com
 
 	if errString != "" {
 		errString = fmt.Sprintf("Podcast was created but an error occured while associations: %v", errString)
-		log.Printf("%v", fmt.Errorf(errString))
-		return podcastFullInfo, fmt.Errorf(errString)
+		log.Printf("%v", errString)
+		return podcastFullInfo, errors.New(errString)
 	}
 	return podcastFullInfo, nil
 }
@@ -94,11 +95,16 @@ func (repo *PodcastRepository) AssociateCategoriesWithPodcast(categories []uuid.
 			CategoryID: categoryID,
 		})
 		if resp.Error != nil {
-			log.Printf("error associating podcast with categories")
 			errString = fmt.Sprintf("%v - %v", errString, resp.Error.Error())
 		}
 	}
-	return fmt.Errorf(errString)
+
+	if errString != "" {
+		errString = fmt.Sprintf("error associating podcast with categories: %v", errString)
+		log.Printf(errString)
+		return errors.New(errString)
+	}
+	return nil
 }
 
 func getExtraPodcastInfo(db *gorm.DB, podcast models.CompletePodcast, authorID uuid.UUID) models.CompletePodcast {
