@@ -7,3 +7,8 @@ type CategoryPodcast struct {
 	PodcastID         uuid.UUID
 	CategoryID        uuid.UUID
 }
+
+type CategoryPodcastAssociation struct {
+	PodcastID         uuid.UUID
+	Categories        []uuid.UUID
+}

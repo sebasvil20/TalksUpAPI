@@ -31,7 +31,7 @@ func (ctrl *UserController) Login(c *gin.Context) {
 		utils.HandleResponse(c, http.StatusBadRequest, nil, err)
 		return
 	}
-	utils.HandleResponse(c, http.StatusCreated, map[string]string{"token": token}, nil)
+	utils.HandleResponse(c, http.StatusOK, map[string]string{"token": token}, nil)
 }
 
 func (ctrl *UserController) CreateUser(c *gin.Context) {

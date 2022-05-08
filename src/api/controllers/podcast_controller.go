@@ -12,6 +12,7 @@ import (
 type IPodcastController interface {
 	GetAllPodcasts(c *gin.Context)
 	CreatePodcast(c *gin.Context)
+	AssociateCategoriesWithPodcast(c *gin.Context)
 }
 
 type PodcastController struct {
@@ -32,8 +33,23 @@ func (ctrl *PodcastController) CreatePodcast(c *gin.Context) {
 
 	podcast, err := ctrl.PodcastService.CreatePodcast(podcastBody)
 	if err != nil {
-		utils.HandleResponse(c, http.StatusBadRequest, podcast, err)
+		utils.HandleResponse(c, http.StatusMultiStatus, podcast, err)
 		return
 	}
 	utils.HandleResponse(c, http.StatusOK, podcast, nil)
+}
+
+func (ctrl *PodcastController) AssociateCategoriesWithPodcast(c *gin.Context) {
+	var associationBody models.CategoryPodcastAssociation
+	if err := c.BindJSON(&associationBody); err != nil {
+		utils.HandleResponse(c, http.StatusBadRequest, nil, err)
+		return
+	}
+
+	err := ctrl.PodcastService.AssociateCategoriesWithPodcast(associationBody)
+	if err != nil {
+		utils.HandleResponse(c, http.StatusMultiStatus, nil, err)
+		return
+	}
+	utils.HandleResponse(c, http.StatusOK, nil, nil)
 }
