@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -14,13 +15,13 @@ func VerifyAPIKey() gin.HandlerFunc {
 		if utils.IsProd() {
 			apiKey := c.Request.Header.Get("api-key")
 			if len(strings.TrimSpace(apiKey)) == 0 {
-				utils.HandleResponse(c, http.StatusBadRequest, "API Key required")
+				utils.HandleResponse(c, http.StatusBadRequest, nil, fmt.Errorf("API Key required"))
 				c.Abort()
 				return
 			}
 			keyRepo := repository.APIKeysRepository{}
 			if !keyRepo.ValidateAPIKey(c.Request.Header.Get("api-key")) {
-				utils.HandleResponse(c, http.StatusBadRequest, "Invalid API Key")
+				utils.HandleResponse(c, http.StatusBadRequest, nil, fmt.Errorf("invalid API Key"))
 				c.Abort()
 				return
 			}

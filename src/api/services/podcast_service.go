@@ -7,7 +7,7 @@ import (
 
 type IPodcastService interface {
 	GetAllPodcasts(langID string) []models.CompletePodcast
-	CreatePodcast(podcast models.Podcast) (models.Podcast, error)
+	CreatePodcast(podcast models.Podcast) (models.CompletePodcast, error)
 }
 
 type PodcastService struct {
@@ -19,6 +19,6 @@ func (srv *PodcastService) GetAllPodcasts(langID string) []models.CompletePodcas
 	return podcasts
 }
 
-func (srv *PodcastService) CreatePodcast(podcast models.Podcast) (models.Podcast, error) {
+func (srv *PodcastService) CreatePodcast(podcast models.Podcast) (models.CompletePodcast, error) {
 	return srv.PodcastRepository.CreatePodcast(podcast)
 }

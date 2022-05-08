@@ -22,38 +22,38 @@ type UserController struct {
 func (ctrl *UserController) Login(c *gin.Context) {
 	var userLogin models.UserCredentials
 	if err := c.BindJSON(&userLogin); err != nil {
-		utils.HandleResponse(c, http.StatusBadRequest, err.Error())
+		utils.HandleResponse(c, http.StatusBadRequest, nil, err)
 		return
 	}
 
 	token, err := ctrl.UserService.Login(userLogin)
 	if err != nil {
-		utils.HandleResponse(c, http.StatusBadRequest, err.Error())
+		utils.HandleResponse(c, http.StatusBadRequest, nil, err)
 		return
 	}
-	utils.HandleResponse(c, http.StatusCreated, map[string]string{"token": token})
+	utils.HandleResponse(c, http.StatusCreated, map[string]string{"token": token}, nil)
 }
 
 func (ctrl *UserController) CreateUser(c *gin.Context) {
 	var userBody models.NewUser
 	if err := c.BindJSON(&userBody); err != nil {
-		utils.HandleResponse(c, http.StatusBadRequest, err.Error())
+		utils.HandleResponse(c, http.StatusBadRequest, nil, err)
 		return
 	}
 
 	user, err := ctrl.UserService.CreateUser(userBody)
 	if err != nil {
-		utils.HandleResponse(c, http.StatusBadRequest, err.Error())
+		utils.HandleResponse(c, http.StatusBadRequest, nil, err)
 		return
 	}
-	utils.HandleResponse(c, http.StatusCreated, user)
+	utils.HandleResponse(c, http.StatusCreated, user, nil)
 }
 
 func (ctrl *UserController) GetAllUsers(c *gin.Context) {
 	users, err := ctrl.UserService.GetAllUsers()
 	if err != nil {
-		utils.HandleResponse(c, http.StatusBadRequest, err.Error())
+		utils.HandleResponse(c, http.StatusBadRequest, nil, err)
 		return
 	}
-	utils.HandleResponse(c, http.StatusOK, users)
+	utils.HandleResponse(c, http.StatusOK, users, nil)
 }
