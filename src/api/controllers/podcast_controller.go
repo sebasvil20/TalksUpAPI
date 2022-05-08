@@ -20,20 +20,20 @@ type PodcastController struct {
 
 func (ctrl *PodcastController) GetAllPodcasts(c *gin.Context) {
 	podcasts := ctrl.PodcastService.GetAllPodcasts(c.Query("lang"))
-	utils.HandleResponse(c, http.StatusOK, podcasts)
+	utils.HandleResponse(c, http.StatusOK, podcasts, nil)
 }
 
 func (ctrl *PodcastController) CreatePodcast(c *gin.Context) {
 	var podcastBody models.Podcast
 	if err := c.BindJSON(&podcastBody); err != nil {
-		utils.HandleResponse(c, http.StatusBadRequest, err.Error())
+		utils.HandleResponse(c, http.StatusBadRequest, nil, err)
 		return
 	}
 
 	podcast, err := ctrl.PodcastService.CreatePodcast(podcastBody)
 	if err != nil {
-		utils.HandleResponse(c, http.StatusBadRequest, err.Error())
+		utils.HandleResponse(c, http.StatusBadRequest, podcast, err)
 		return
 	}
-	utils.HandleResponse(c, http.StatusOK, podcast)
+	utils.HandleResponse(c, http.StatusOK, podcast, nil)
 }

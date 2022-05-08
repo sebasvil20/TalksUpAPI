@@ -22,8 +22,8 @@ func (ctrl *UploaderController) UploadFile(c *gin.Context) {
 	_ = c.ShouldBind(&form)
 	url, err := ctrl.UploaderService.UploadImage(form)
 	if err != nil {
-		utils.HandleResponse(c, http.StatusBadRequest, err.Error())
+		utils.HandleResponse(c, http.StatusBadRequest, url, err)
 		return
 	}
-	utils.HandleResponse(c, http.StatusOK, map[string]string{"url": url})
+	utils.HandleResponse(c, http.StatusOK, map[string]string{"url": url}, nil)
 }

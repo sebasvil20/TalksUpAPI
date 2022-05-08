@@ -18,7 +18,7 @@ type Podcast struct {
 	UpdateDate    string            `json:"update_date,omitempty"`
 	Categories    []uuid.UUID       `json:"categories,omitempty" gorm:"-"`
 	LangID        string            `json:"lang_id" binding:"required"`
-	AuthorID      string            `json:"author_id" binding:"required"`
+	AuthorID      uuid.UUID            `json:"author_id" binding:"required"`
 	Platforms     []PlatformPodcast `json:"platforms,omitempty" gorm:"-"`
 }
 

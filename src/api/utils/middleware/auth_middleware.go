@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -14,7 +15,7 @@ func AuthJWT(needsAdmin bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
 		if len(strings.TrimSpace(authHeader)) == 0 {
-			utils.HandleResponse(c, http.StatusUnauthorized, "auth header required")
+			utils.HandleResponse(c, http.StatusUnauthorized, nil, fmt.Errorf("auth header required"))
 			c.Abort()
 			return
 		}
@@ -30,7 +31,7 @@ func AuthJWT(needsAdmin bool) gin.HandlerFunc {
 			}
 
 			if !claims["IsAdmin"].(bool) {
-				utils.HandleResponse(c, http.StatusUnauthorized, "only admins allowed")
+				utils.HandleResponse(c, http.StatusUnauthorized, nil, fmt.Errorf("only admins allowed"))
 				c.Abort()
 			}
 
@@ -38,7 +39,7 @@ func AuthJWT(needsAdmin bool) gin.HandlerFunc {
 			return
 		}
 
-		utils.HandleResponse(c, http.StatusUnauthorized, err.Error())
+		utils.HandleResponse(c, http.StatusUnauthorized, nil, err)
 		c.Abort()
 	}
 }
