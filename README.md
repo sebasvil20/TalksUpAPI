@@ -11,10 +11,10 @@ This is the backend API to TalksUp project, a podcast recommendations based on u
 
 Main features
 
+* RESTful API
 * API Key required, otherwise API cannot be consumed
-* RESTful endpoints
-* Dependency Injection and N capes structure
-* Standard CRUD operations of a database table
+* Dependency Injection
+* Standard CRUD operations on database tables
 * JWT-based authentication
 * Environment dependent application configuration management
 
