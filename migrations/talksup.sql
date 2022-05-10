@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS authors
 (
     author_id       uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     name            varchar(150) NOT NULL,
+    biography       varchar(500),
     profile_pic_url varchar(1500)
 );
 
@@ -142,8 +143,8 @@ CREATE TABLE IF NOT EXISTS platform_podcast
 CREATE TABLE IF NOT EXISTS likes
 (
     like_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
-    list_id          uuid          NOT NULL,
-    user_id         uuid          NOT NULL
+    list_id uuid NOT NULL,
+    user_id uuid NOT NULL
 );
 
 
@@ -454,6 +455,7 @@ CREATE
             (
                 podcast_id     uuid,
                 name           varchar,
+                description    varchar,
                 total_views    int,
                 cover_pic_url  varchar,
                 trailer_url    varchar,
@@ -470,6 +472,7 @@ $$
 SELECT (
         podcasts.podcast_id,
         podcasts.name,
+        podcasts.description,
         podcasts.total_views,
         podcasts.cover_pic_url,
         podcasts.trailer_url,

@@ -27,3 +27,9 @@ func ProvidePodcastService(podcastRepository repository.IPodcastRepository) *ser
 		PodcastRepository: podcastRepository,
 	}
 }
+
+func ProvideAuthorService(authorRepository repository.IAuthorRepository) *services.AuthorService {
+	return &services.AuthorService{
+		AuthorRepository: authorRepository,
+	}
+}

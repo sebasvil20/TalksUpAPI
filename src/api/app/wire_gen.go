@@ -27,11 +27,15 @@ func StartProviders() *ProviderRoute {
 	podcastRepository := providers.ProvidePodcastRepository()
 	podcastService := providers.ProvidePodcastService(podcastRepository)
 	podcastController := providers.ProvidePodcastController(podcastService)
+	authorRepository := providers.ProvideAuthorRepository(podcastRepository)
+	authorService := providers.ProvideAuthorService(authorRepository)
+	authorController := providers.ProvideAuthorController(authorService)
 	providerRoute := &ProviderRoute{
 		UserController:     userController,
 		CategoryController: categoryController,
 		UploaderController: uploaderController,
 		PodcastController:  podcastController,
+		AuthorController:   authorController,
 	}
 	return providerRoute
 }
@@ -43,6 +47,7 @@ type ProviderRoute struct {
 	CategoryController *controllers.CategoryController
 	UploaderController *controllers.UploaderController
 	PodcastController  *controllers.PodcastController
+	AuthorController   *controllers.AuthorController
 }
 
 var userSet = wire.NewSet(providers.ProvideUserRepository, wire.Bind(new(repository.IUserRepository), new(*repository.UserRepository)), providers.ProvideUserService, wire.Bind(new(services.IUserService), new(*services.UserService)), providers.ProvideUserController, wire.Bind(new(controllers.IUserController), new(*controllers.UserController)))
@@ -53,9 +58,13 @@ var uploaderSet = wire.NewSet(providers.ProvideUploaderService, wire.Bind(new(se
 
 var podcastSet = wire.NewSet(providers.ProvidePodcastRepository, wire.Bind(new(repository.IPodcastRepository), new(*repository.PodcastRepository)), providers.ProvidePodcastService, wire.Bind(new(services.IPodcastService), new(*services.PodcastService)), providers.ProvidePodcastController, wire.Bind(new(controllers.IPodcastController), new(*controllers.PodcastController)))
 
+var authorSet = wire.NewSet(providers.ProvideAuthorRepository, wire.Bind(new(repository.IAuthorRepository), new(*repository.AuthorRepository)), providers.ProvideAuthorService, wire.Bind(new(services.IAuthorService), new(*services.AuthorService)), providers.ProvideAuthorController, wire.Bind(new(controllers.IAuthorController), new(*controllers.AuthorController)))
+
 var setProvider = wire.NewSet(
 	userSet,
 	categorySet,
 	uploaderSet,
-	podcastSet, wire.Struct(new(ProviderRoute), "UserController", "CategoryController", "UploaderController", "PodcastController"),
+	podcastSet,
+	authorSet, wire.Struct(new(ProviderRoute), "UserController", "CategoryController", "UploaderController",
+		"PodcastController", "AuthorController"),
 )

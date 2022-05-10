@@ -35,8 +35,17 @@ func SetURLMappings(router *gin.Engine) {
 		podcasts.POST("/associate", middleware.AuthJWT(true), providerRoute.PodcastController.AssociateCategoriesWithPodcast)
 	}
 
+	authors := router.Group("/authors")
+	{
+		authors.Use(middleware.VerifyAPIKey())
+		authors.GET("", middleware.AuthJWT(false), providerRoute.AuthorController.GetAllAuthors)
+		authors.GET("/:author_id", middleware.AuthJWT(false), providerRoute.AuthorController.GetAuthorByID)
+		authors.POST("", middleware.AuthJWT(true), providerRoute.AuthorController.CreateAuthor)
+	}
+
 	uploader := router.Group("/upload")
 	{
+		authors.Use(middleware.VerifyAPIKey())
 		uploader.PUT("", providerRoute.UploaderController.UploadFile)
 	}
 }
