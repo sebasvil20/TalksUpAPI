@@ -16,6 +16,7 @@ type PodcastService struct {
 }
 
 func (srv *PodcastService) GetAllPodcasts(langID string, categoryID string) []models.CompletePodcast {
+
 	return srv.PodcastRepository.GetAllPodcasts(langID, categoryID)
 }
 

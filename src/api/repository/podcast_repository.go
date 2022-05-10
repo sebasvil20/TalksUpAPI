@@ -13,7 +13,7 @@ import (
 )
 
 type IPodcastRepository interface {
-	GetAllPodcasts(langID string, categoryID string) []models.CompletePodcast
+	GetAllPodcasts(langID string, categoryID string, authorID ...string) []models.CompletePodcast
 	CreatePodcast(podcast models.Podcast) (models.CompletePodcast, error)
 	AssociateCategoriesWithPodcast(categories []uuid.UUID, podcastID uuid.UUID) error
 }
@@ -21,21 +21,28 @@ type IPodcastRepository interface {
 type PodcastRepository struct {
 }
 
-func (repo *PodcastRepository) GetAllPodcasts(langID string, categoryID string) []models.CompletePodcast {
+func (repo *PodcastRepository) GetAllPodcasts(langID string, categoryID string, authorID ...string) []models.CompletePodcast {
 	db := database.DBConnect()
 	defer database.CloseDBConnection(db)
 	dbPodcasts := make([]models.Podcast, 0)
 	completePodcasts := make([]models.CompletePodcast, 0)
 
+	var query string
+
 	if langID == "" && categoryID == "" {
-		db.Raw("SELECT * FROM podcasts").Scan(&dbPodcasts)
+		query = db.ToSQL(func(tx *gorm.DB) *gorm.DB { return db.Raw("SELECT * FROM podcasts") })
 	}
 	if langID != "" {
-		db.Raw("SELECT * FROM podcasts WHERE lang_id=?", langID).Scan(&dbPodcasts)
+		query = db.ToSQL(func(tx *gorm.DB) *gorm.DB { return db.Raw("SELECT * FROM podcasts WHERE lang_id=?", langID) })
 	}
 	if categoryID != "" {
-		db.Raw("SELECT * FROM SP_GetPodcastsByCategoryID(?)", categoryID).Scan(&dbPodcasts)
+		query = db.ToSQL(func(tx *gorm.DB) *gorm.DB { return db.Raw("SELECT * FROM SP_GetPodcastsByCategoryID(?)", categoryID) })
 	}
+	if len(authorID) > 0 {
+		query = db.ToSQL(func(tx *gorm.DB) *gorm.DB { return db.Raw("SELECT * FROM podcasts WHERE author_id=?", authorID[0]) })
+	}
+
+	db.Raw(query).Scan(&dbPodcasts)
 
 	for _, dbPodcast := range dbPodcasts {
 		podcast := dbPodcast.ToCompletePodcast()

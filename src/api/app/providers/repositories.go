@@ -15,3 +15,9 @@ func ProvideCategoryRepository() *repository.CategoryRepository {
 func ProvidePodcastRepository() *repository.PodcastRepository {
 	return &repository.PodcastRepository{}
 }
+
+func ProvideAuthorRepository(podcastRepository repository.IPodcastRepository) *repository.AuthorRepository {
+	return &repository.AuthorRepository{
+		PodcastRepository: podcastRepository,
+	}
+}

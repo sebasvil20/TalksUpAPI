@@ -20,3 +20,7 @@ func ProvideUploaderController(srv services.IUploaderService) *controllers.Uploa
 func ProvidePodcastController(srv services.IPodcastService) *controllers.PodcastController {
 	return &controllers.PodcastController{PodcastService: srv}
 }
+
+func ProvideAuthorController(srv services.IAuthorService) *controllers.AuthorController {
+	return &controllers.AuthorController{AuthorService: srv}
+}
