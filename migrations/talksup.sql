@@ -139,6 +139,14 @@ CREATE TABLE IF NOT EXISTS platform_podcast
     redirect_url        varchar(1000) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS likes
+(
+    like_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+    list_id          uuid          NOT NULL,
+    user_id         uuid          NOT NULL
+);
+
+
 -- Foreign keys
 
 -- Passwords table
@@ -146,6 +154,17 @@ ALTER TABLE passwords
     ADD CONSTRAINT password_user_id_fk
         FOREIGN KEY (user_id)
             REFERENCES users (user_id);
+
+-- Likes table
+ALTER TABLE likes
+    ADD CONSTRAINT likes_user_id_fk
+        FOREIGN KEY (user_id)
+            REFERENCES users (user_id);
+
+ALTER TABLE likes
+    ADD CONSTRAINT likes_list_id_fk
+        FOREIGN KEY (list_id)
+            REFERENCES lists (list_id);
 
 -- Category_user table
 ALTER TABLE category_user
@@ -259,6 +278,7 @@ ALTER TABLE lists_podcast
 -- Stored Procedures
 --
 
+-- SP to get all users with full info
 CREATE
     OR REPLACE FUNCTION SP_GetAllUsers()
     RETURNS TABLE
@@ -296,7 +316,7 @@ FROM users
          INNER JOIN languages on languages.lang_id = users.lang_id
 $$ LANGUAGE sql;
 
--- Procedure to get likes by a given user ID
+-- SP to get likes by a given user ID
 CREATE
     OR REPLACE FUNCTION SP_GetLikesByUserID(userID uuid)
     RETURNS TABLE
@@ -358,6 +378,7 @@ FROM categories
          INNER JOIN languages on categories.lang_id = languages.lang_id
 $$ LANGUAGE sql;
 
+-- SP to get all categories by lang code
 CREATE
     OR REPLACE FUNCTION SP_GetAllCategoriesByLangCode(langCode varchar)
     RETURNS TABLE
@@ -384,6 +405,7 @@ FROM categories
 WHERE languages.lang_id = langCode
 $$ LANGUAGE sql;
 
+-- SP to get all categories of a podcast
 CREATE
     OR REPLACE FUNCTION SP_GetPodcastCategories(podcastID uuid)
     RETURNS TABLE
@@ -402,6 +424,7 @@ FROM categories
 WHERE cp.podcast_id = podcastID
 $$ LANGUAGE sql;
 
+-- SP to get all platfors of a podcast
 CREATE
     OR REPLACE FUNCTION SP_GetPodcastPlatform(podcastID uuid)
     RETURNS TABLE
@@ -424,6 +447,7 @@ FROM platforms
 WHERE pp.podcast_id = podcastID
 $$ LANGUAGE sql;
 
+-- SP to get all podcasts by category id
 CREATE
     OR REPLACE FUNCTION SP_GetPodcastsByCategoryID(categoryID uuid)
     RETURNS TABLE
@@ -488,11 +512,16 @@ INSERT INTO users (user_id, public_name, email, first_name, last_name, birth_dat
                    biography, lang_id, country_id, role_id)
 VALUES ('86f45ee6-c5a4-11ec-b46f-6a2f678b91f3', 'hinval', 'sebasvil20@gmail.com', 'Sebastian', 'Villegas',
         '2002-08-12',
-        '3053190789', null, null, 'ESP', 'CO', 1);
+        '3053190789', null, null, 'ESP', 'CO', 1),
+       ('2bac0baa-cef6-11ec-b31f-acde48001122', 'Trueni', 'sansepulveda90@gmail.com', 'Santiago', 'Sepulveda',
+        '2000-02-08',
+        '3016395335', null, null, 'ESP', 'CO', 1);
 
 INSERT INTO passwords (password_id, hashed_password, user_id)
 VALUES ('1b937b4b-b43f-4a70-8b0b-2255c2615151', '$2a$14$nP6hIrQ/.Uf2Ll8sA88zjuy01KmY/DzyVExkt3XKNpMO2073i9Smy',
-        '86f45ee6-c5a4-11ec-b46f-6a2f678b91f3');
+        '86f45ee6-c5a4-11ec-b46f-6a2f678b91f3'),
+       ('7c750388-683a-46c0-920e-0aa763eb65c4', '$2a$14$O893ha7HsJFYaf9gpKsxBO2jpowoSAum76ygPG0OTj9VVVJOfihn6',
+        '2bac0baa-cef6-11ec-b31f-acde48001122');
 
 INSERT INTO categories (category_id, name, description, lang_id)
 VALUES ('35b2881c-210c-4160-b3f7-6252b9ebee49', 'Terror', 'Podcasts que te hacen la piel de gallina', 'ESP'),
