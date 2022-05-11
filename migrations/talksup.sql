@@ -118,6 +118,7 @@ CREATE TABLE IF NOT EXISTS lists_podcast
     list_id          uuid NOT NULL
 );
 
+
 CREATE TABLE IF NOT EXISTS category_user
 (
     category_user_id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -165,7 +166,10 @@ ALTER TABLE likes
 ALTER TABLE likes
     ADD CONSTRAINT likes_list_id_fk
         FOREIGN KEY (list_id)
-            REFERENCES lists (list_id);
+            REFERENCES lists (list_id) ON DELETE CASCADE;
+
+ALTER TABLE likes
+    ADD CONSTRAINT likes_list_user_uq UNIQUE (user_id, list_id);
 
 -- Category_user table
 ALTER TABLE category_user
@@ -273,11 +277,21 @@ ALTER TABLE lists_podcast
 ALTER TABLE lists_podcast
     ADD CONSTRAINT lists_podcast_list_id_fk
         FOREIGN KEY (list_id)
-            REFERENCES lists (list_id);
+            REFERENCES lists (list_id) ON DELETE cascade;
 
---
--- Stored Procedures
---
+ALTER TAbLE lists_podcast
+    ADD CONSTRAINT list_podcast_uq UNIQUE (list_id, podcast_id);
+
+
+/*
+=================================
+=================================
+
+Stored Procedures
+
+=================================
+=================================
+*/
 
 -- SP to get all users with full info
 CREATE
@@ -489,6 +503,109 @@ FROM podcasts
 WHERE cp.category_id = categoryID
 $$ LANGUAGE sql;
 
+
+-- SP to get all podcasts that belongs to a list
+CREATE
+    OR REPLACE FUNCTION SP_GetPodcastsInList(listID uuid)
+    RETURNS TABLE
+            (
+                podcast_id     uuid,
+                name           varchar,
+                description    varchar,
+                total_views    int,
+                cover_pic_url  varchar,
+                trailer_url    varchar,
+                rating         float,
+                total_episodes int,
+                total_length   varchar,
+                release_date   date,
+                update_date    date,
+                lang_id        varchar,
+                author_id      uuid
+            )
+AS
+$$
+SELECT (
+        podcasts.podcast_id,
+        podcasts.name,
+        podcasts.description,
+        podcasts.total_views,
+        podcasts.cover_pic_url,
+        podcasts.trailer_url,
+        podcasts.rating,
+        podcasts.total_episodes,
+        podcasts.total_length,
+        podcasts.release_date,
+        podcasts.update_date,
+        podcasts.lang_id,
+        podcasts.author_id
+           )
+FROM podcasts
+         INNER JOIN lists_podcast lp on podcasts.podcast_id = lp.podcast_id
+WHERE lp.list_id = listID
+$$ LANGUAGE sql;
+
+
+/*
+=================================
+=================================
+
+Triggers
+
+=================================
+=================================
+*/
+
+-- Triger to sum up likes
+
+CREATE OR REPLACE FUNCTION TRG_SumLikes()
+    RETURNS trigger AS
+$$
+BEGIN
+    UPDATE lists SET likes = lists.likes + 1 WHERE lists.list_id = NEW.list_id;
+    RETURN NEW;
+
+END;
+
+$$
+    LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION TRG_RestLikes()
+    RETURNS trigger AS
+$$
+BEGIN
+    UPDATE lists SET likes = (lists.likes - 1) WHERE lists.list_id = OLD.list_id;
+    RETURN OLD;
+
+END;
+
+$$
+    LANGUAGE 'plpgsql';
+
+
+CREATE TRIGGER SumListsLikes
+    AFTER INSERT
+    ON likes
+    FOR EACH ROW
+EXECUTE PROCEDURE TRG_SumLikes();
+
+CREATE TRIGGER RestListsLikes
+    BEFORE DELETE
+    ON likes
+    FOR EACH ROW
+EXECUTE PROCEDURE TRG_RestLikes();
+
+
+
+
+/*
+=================================
+=================================
+Example data
+=================================
+=================================
+   */
+
 -- Default roles
 INSERT INTO roles (role_id, name)
 VALUES (1, 'admin');
@@ -509,8 +626,6 @@ VALUES ('CO', 'Colombia');
 INSERT INTO api_keys (api_key)
 VALUES ('11635d96-098d-4869-b7cf-baeae575ab20');
 
--- Example data
--- REMOVE WHEN PROD!!
 INSERT INTO users (user_id, public_name, email, first_name, last_name, birth_date, phone_number, profile_pic_url,
                    biography, lang_id, country_id, role_id)
 VALUES ('86f45ee6-c5a4-11ec-b46f-6a2f678b91f3', 'hinval', 'sebasvil20@gmail.com', 'Sebastian', 'Villegas',
@@ -588,3 +703,14 @@ VALUES ('eb4b1438-da09-4b37-be59-4d921aeba947', '57a179b8-d692-4c04-85f7-f95004f
 
 -- GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO apptalksup;
 
+
+
+
+-- DELETE FROM lists WHERE list_id='43f3e1dc-70c0-4f2d-88a4-355e8050a661';
+INSERT INTO public.lists (list_id, name, description, icon_url, cover_pic_url, likes, user_id) VALUES ('43f3e1dc-70c0-4f2d-88a4-355e8050a661', 'Lista de prueba', 'Testing likesss', null, null, 0, '86f45ee6-c5a4-11ec-b46f-6a2f678b91f3');
+
+INSERT INTO public.likes (like_id, list_id, user_id) VALUES ('38fbeab4-9cdb-4fe0-b22a-5153681731ce', '43f3e1dc-70c0-4f2d-88a4-355e8050a661', '86f45ee6-c5a4-11ec-b46f-6a2f678b91f3');
+INSERT INTO public.likes (like_id, list_id, user_id) VALUES ('34a2c938-8a90-4f89-aa72-cfb0a35da75c', '43f3e1dc-70c0-4f2d-88a4-355e8050a661', '2bac0baa-cef6-11ec-b31f-acde48001122');
+
+INSERT INTO public.lists_podcast (lists_podcast_id, podcast_id, list_id) VALUES ('e54eed98-df85-488b-b260-a3f248d704c8', '57a179b8-d692-4c04-85f7-f95004f86565', '43f3e1dc-70c0-4f2d-88a4-355e8050a661');
+INSERT INTO public.lists_podcast (lists_podcast_id, podcast_id, list_id) VALUES ('4956baab-c863-4192-89a9-5695beb5caaf', 'a6d465df-738c-4974-a5bc-6c2bdf8780e6', '43f3e1dc-70c0-4f2d-88a4-355e8050a661');
