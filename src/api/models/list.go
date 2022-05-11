@@ -26,6 +26,7 @@ type DetailedList struct {
 }
 
 type Like struct {
+	LikeID uuid.UUID `json:"like_id"`
 	UserID uuid.UUID `json:"user_id,omitempty" binding:"required"`
 	ListID uuid.UUID `json:"list_id,omitempty" binding:"required"`
 }
