@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS podcasts
 (
     podcast_id     uuid  DEFAULT gen_random_uuid() PRIMARY KEY,
     name           varchar(100) NOT NULL,
-    description    varchar(500) NOT NULL,
+    description    varchar(800) NOT NULL,
     total_views    int   DEFAULT 0,
     cover_pic_url  varchar(1000),
     trailer_url    varchar(1000),
@@ -195,7 +195,7 @@ ALTER TABLE categories
 ALTER TABLE category_podcast
     ADD CONSTRAINT category_podcast_podcast_id_fk
         FOREIGN KEY (podcast_id)
-            REFERENCES podcasts (podcast_id);
+            REFERENCES podcasts (podcast_id) ON DELETE cascade;
 
 ALTER TABLE category_podcast
     ADD CONSTRAINT category_podcast_category_id_fk
@@ -241,7 +241,7 @@ ALTER TABLE reviews
 ALTER TABLE platform_podcast
     ADD CONSTRAINT platform_podcast_podcast_id_fk
         FOREIGN KEY (podcast_id)
-            REFERENCES podcasts (podcast_id);
+            REFERENCES podcasts (podcast_id) ON DELETE cascade;
 
 ALTER TABLE platform_podcast
     ADD CONSTRAINT platform_podcast_platform_id_fk
@@ -714,3 +714,6 @@ INSERT INTO public.likes (like_id, list_id, user_id) VALUES ('34a2c938-8a90-4f89
 
 INSERT INTO public.lists_podcast (lists_podcast_id, podcast_id, list_id) VALUES ('e54eed98-df85-488b-b260-a3f248d704c8', '57a179b8-d692-4c04-85f7-f95004f86565', '43f3e1dc-70c0-4f2d-88a4-355e8050a661');
 INSERT INTO public.lists_podcast (lists_podcast_id, podcast_id, list_id) VALUES ('4956baab-c863-4192-89a9-5695beb5caaf', 'a6d465df-738c-4974-a5bc-6c2bdf8780e6', '43f3e1dc-70c0-4f2d-88a4-355e8050a661');
+
+
+

@@ -67,7 +67,7 @@ func (repo *PodcastRepository) CreatePodcast(podcast models.Podcast) (models.Com
 
 	if len(podcast.Categories) > 0 {
 		catErr := repo.AssociateCategoriesWithPodcast(podcast.Categories, podcastID)
-		if catErr.Error() != "" {
+		if catErr != nil {
 			errString = fmt.Sprintf("%v - %v", errString, catErr.Error())
 		}
 	}

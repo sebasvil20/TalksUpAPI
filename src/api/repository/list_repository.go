@@ -1,8 +1,10 @@
 package repository
 
 import (
+	"errors"
 	"fmt"
 	"gorm.io/gorm"
+	"log"
 
 	"github.com/google/uuid"
 	"github.com/sebasvil20/TalksUpAPI/src/api/models"
@@ -15,6 +17,7 @@ type IListRepository interface {
 	LikeList(listID uuid.UUID, userID uuid.UUID) error
 	DeleteList(listID string) error
 	GetListByID(listID string) models.DetailedList
+	AssociatePodcastsWithList(associationData models.ListPodcastAssociation) (models.DetailedList, error)
 }
 
 type ListRepository struct {
@@ -95,4 +98,28 @@ func (repo *ListRepository) GetListByID(listID string) models.DetailedList {
 	}
 
 	return list
+}
+
+func (repo *ListRepository) AssociatePodcastsWithList(associationData models.ListPodcastAssociation) (models.DetailedList, error) {
+	db := database.DBConnect()
+	defer database.CloseDBConnection(db)
+	var errString string
+	for _, podcast := range associationData.Podcasts {
+		resp := db.Table("lists_podcast").Omit("lists_podcast_id").Create(models.ListsPodcast{
+			ListID:    associationData.ListID,
+			PodcastID: podcast,
+		})
+
+		if resp.Error != nil {
+			errString = fmt.Sprintf("%v - %v", errString, resp.Error.Error())
+		}
+	}
+
+	if errString != "" {
+		errString = fmt.Sprintf("error associating some podcast with lists: %v", errString)
+		log.Print(errString)
+		return models.DetailedList{}, errors.New(errString)
+	}
+
+	return repo.GetListByID(associationData.ListID.String()), nil
 }

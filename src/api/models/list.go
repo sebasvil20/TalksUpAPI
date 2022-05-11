@@ -30,3 +30,13 @@ type Like struct {
 	UserID uuid.UUID `json:"user_id,omitempty" binding:"required"`
 	ListID uuid.UUID `json:"list_id,omitempty" binding:"required"`
 }
+
+type ListPodcastAssociation struct {
+	ListID   uuid.UUID   `json:"user_id" binding:"required"`
+	Podcasts []uuid.UUID `json:"podcasts" binding:"required"`
+}
+
+type ListsPodcast struct {
+	ListID    uuid.UUID
+	PodcastID uuid.UUID
+}

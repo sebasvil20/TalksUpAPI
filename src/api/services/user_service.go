@@ -64,7 +64,7 @@ func (srv *UserService) GetAllUsers() ([]models.SimpleUser, error) {
 
 func (srv *UserService) AssociateCategoriesWithUser(associationData models.CategoriesUserAssociation) error {
 	err := srv.UserRepository.AssociateCategoriesWithUser(associationData.Categories, associationData.UserID)
-	if err.Error() != "" {
+	if err != nil {
 		return err
 	}
 

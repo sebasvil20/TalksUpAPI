@@ -91,13 +91,14 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. 
 
 ### Lists
 
-| Method   | Endpoint      | Description               |
-|----------|---------------|---------------------------|
-| `GET`    | `/lists`      | Get all podcast list      |
-| `GET`    | `/lists/:id`  | Get detailed podcast list |
-| `POST`   | `/lists`      | Create new list           |
-| `POST`   | `/lists/like` | Likes a list              |
-| `DELETE` | `/lists/:id`  | Delete a list             |
+| Method   | Endpoint           | Description                               |
+|----------|--------------------|-------------------------------------------|
+| `GET`    | `/lists`           | Get all podcast list                      |
+| `GET`    | `/lists/:id`       | Get detailed podcast list                 |
+| `POST`   | `/lists`           | Create new list                           |
+| `POST`   | `/lists/associate` | Associate a slice of podcasts with a list |
+| `POST`   | `/lists/like`      | Likes a list                              |
+| `DELETE` | `/lists/:id`       | Delete a list                             |
 
 > (*) Admin role required
 

@@ -6,8 +6,8 @@ import (
 
 type Podcast struct {
 	PodcastID     uuid.UUID         `json:"podcast_id,omitempty"`
-	Name          string            `json:"name" binding:"required"`
-	Description   string            `json:"description" binding:"required"`
+	Name          string            `json:"name,omitempty" binding:"required"`
+	Description   string            `json:"description,omitempty" binding:"required"`
 	TotalViews    int               `json:"total_views,omitempty"`
 	CoverPicURL   string            `json:"cover_pic_url,omitempty"`
 	TrailerURL    string            `json:"trailer_url,omitempty"`
@@ -17,15 +17,15 @@ type Podcast struct {
 	ReleaseDate   string            `json:"release_date,omitempty"`
 	UpdateDate    string            `json:"update_date,omitempty"`
 	Categories    []uuid.UUID       `json:"categories,omitempty" gorm:"-"`
-	LangID        string            `json:"lang_id" binding:"required"`
-	AuthorID      uuid.UUID            `json:"author_id" binding:"required"`
+	LangID        string            `json:"lang_id,omitempty" binding:"required"`
+	AuthorID      uuid.UUID         `json:"author_id,omitempty" binding:"required"`
 	Platforms     []PlatformPodcast `json:"platforms,omitempty" gorm:"-"`
 }
 
 type CompletePodcast struct {
 	PodcastID     uuid.UUID      `json:"podcast_id,omitempty"`
-	Name          string         `json:"name" binding:"required"`
-	Description   string         `json:"description" binding:"required"`
+	Name          string         `json:"name,omitempty" binding:"required"`
+	Description   string         `json:"description,omitempty" binding:"required"`
 	TotalViews    int            `json:"total_views,omitempty"`
 	CoverPicURL   string         `json:"cover_pic_url,omitempty"`
 	TrailerURL    string         `json:"trailer_url,omitempty"`

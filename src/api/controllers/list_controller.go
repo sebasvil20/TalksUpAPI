@@ -16,6 +16,7 @@ type IListController interface {
 	LikeList(c *gin.Context)
 	DeleteList(c *gin.Context)
 	GetListByID(c *gin.Context)
+	AssociatePodcastsWithList(c *gin.Context)
 }
 
 type ListController struct {
@@ -80,5 +81,20 @@ func (ctrl *ListController) GetListByID(c *gin.Context) {
 	}
 
 	list := ctrl.ListService.GetListByID(listID)
+	utils.HandleResponse(c, http.StatusOK, list, nil)
+}
+
+func (ctrl *ListController) AssociatePodcastsWithList(c *gin.Context) {
+	var associationData models.ListPodcastAssociation
+	if err := c.BindJSON(&associationData); err != nil {
+		utils.HandleResponse(c, http.StatusBadRequest, nil, err)
+		return
+	}
+
+	list, err := ctrl.ListService.AssociatePodcastsWithList(associationData)
+	if err != nil {
+		utils.HandleResponse(c, http.StatusBadRequest, list, err)
+		return
+	}
 	utils.HandleResponse(c, http.StatusOK, list, nil)
 }

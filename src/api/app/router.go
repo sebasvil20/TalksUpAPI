@@ -50,6 +50,7 @@ func SetURLMappings(router *gin.Engine) {
 		lists.GET("/:id", middleware.AuthJWT(false), providerRoute.ListController.GetListByID)
 		lists.POST("", middleware.AuthJWT(false), providerRoute.ListController.CreateList)
 		lists.POST("/like", middleware.AuthJWT(false), providerRoute.ListController.LikeList)
+		lists.POST("/associate", middleware.AuthJWT(false), providerRoute.ListController.AssociatePodcastsWithList)
 		lists.DELETE("/:id", middleware.AuthJWT(false), providerRoute.ListController.DeleteList)
 	}
 
