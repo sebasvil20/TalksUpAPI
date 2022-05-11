@@ -26,7 +26,8 @@ type ListRepository struct {
 func (repo *ListRepository) CreateList(list models.List) (models.List, error) {
 	db := database.DBConnect()
 	defer database.CloseDBConnection(db)
-
+	listID, _ := uuid.NewUUID()
+	list.ListID = listID
 	resp := db.Table("lists").Create(list)
 	if resp.Error != nil {
 		return models.List{}, fmt.Errorf("error creating list: %v", resp.Error.Error())

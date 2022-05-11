@@ -32,7 +32,7 @@ type Like struct {
 }
 
 type ListPodcastAssociation struct {
-	ListID   uuid.UUID   `json:"user_id" binding:"required"`
+	ListID   uuid.UUID   `json:"list_id" binding:"required"`
 	Podcasts []uuid.UUID `json:"podcasts" binding:"required"`
 }
 
