@@ -33,3 +33,9 @@ func ProvideAuthorService(authorRepository repository.IAuthorRepository) *servic
 		AuthorRepository: authorRepository,
 	}
 }
+
+func ProvideListService(listRepository repository.IListRepository) *services.ListService {
+	return &services.ListService{
+		ListRepository: listRepository,
+	}
+}

@@ -21,3 +21,7 @@ func ProvideAuthorRepository(podcastRepository repository.IPodcastRepository) *r
 		PodcastRepository: podcastRepository,
 	}
 }
+
+func ProvideListRepository() *repository.ListRepository {
+	return &repository.ListRepository{}
+}

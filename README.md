@@ -48,6 +48,7 @@ go build src/api/main.go
 ```
 
 At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. It provides the following endpoints:
+
 ### Utils
 
 | Method | Endpoint                       | Description                                                                                   |
@@ -56,6 +57,7 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. 
 | `PUT`  | `/upload`                      | Requires a form-data content type with a file on it. Uploads an image and returns the cdn url |
 
 ### Users
+
 | Method | Endpoint                       | Description                                                                                   |
 |--------|--------------------------------|-----------------------------------------------------------------------------------------------|
 | `POST` | `/users/login`                 | Login with user credentials to receive jwt token                                              |
@@ -63,33 +65,43 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. 
 | `GET`  | `/users`                       | Get all users with their likes *                                                              |
 | `POST` | `/users/associate`             | Associate user with a list of categories (likes)                                              |
 
-
 ### Categories
+
 | Method | Endpoint                       | Description                                                                                   |
 |--------|--------------------------------|-----------------------------------------------------------------------------------------------|
 | `GET`  | `/categories?lang=`            | Get all categories, optional lang query param e.g. ESP                                        |
 | `GET`  | `/categories`                  | Get all users with their likes *                                                              |
 | `POST` | `/categories`                  | Create new category **                                                                        |
 
-
 ### Authors
+
 | Method | Endpoint                       | Description                                                                                   |
 |--------|--------------------------------|-----------------------------------------------------------------------------------------------|
 | `POST` | `/authors`                     | Create new author **                                                                          |
 | `GET`  | `/authors`                     | Get all authors                                                                               |
 | `GET`  | `/authors/:authod_id`          | Get author by id. Returns author info and its podcasts                                        |
 
-
 ### Podcasts
+
 | Method | Endpoint                       | Description                                                                                   |
 |--------|--------------------------------|-----------------------------------------------------------------------------------------------|
 | `POST` | `/podcasts`                    | Create new podcast **                                                                         |
 | `POST` | `/podcasts/associate`          | Associate podcast with a list of categories                                                   |
 | `GET`  | `/podcasts?category_id=&lang=` | Get all podcasts with fully info (categories, author, lang, platforms)                        |
 
->(*) Admin role required
+### Lists
 
->(**) Admin role not required but admin approval required
+| Method   | Endpoint      | Description               |
+|----------|---------------|---------------------------|
+| `GET`    | `/lists`      | Get all podcast list      |
+| `GET`    | `/lists/:id`  | Get detailed podcast list |
+| `POST`   | `/lists`      | Create new list           |
+| `POST`   | `/lists/like` | Likes a list              |
+| `DELETE` | `/lists/:id`  | Delete a list             |
+
+> (*) Admin role required
+
+> (**) Admin role not required but admin approval required
 
 Try the URL `http://localhost:8080/health` in a browser, and you should see something like `"PONG"` displayed.
 
