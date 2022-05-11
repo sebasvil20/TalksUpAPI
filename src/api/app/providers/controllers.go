@@ -24,3 +24,7 @@ func ProvidePodcastController(srv services.IPodcastService) *controllers.Podcast
 func ProvideAuthorController(srv services.IAuthorService) *controllers.AuthorController {
 	return &controllers.AuthorController{AuthorService: srv}
 }
+
+func ProvideListController(srv services.IListService) *controllers.ListController {
+	return &controllers.ListController{ListService: srv}
+}

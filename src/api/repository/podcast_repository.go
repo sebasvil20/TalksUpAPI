@@ -46,7 +46,7 @@ func (repo *PodcastRepository) GetAllPodcasts(langID string, categoryID string, 
 
 	for _, dbPodcast := range dbPodcasts {
 		podcast := dbPodcast.ToCompletePodcast()
-		podcastFullInfo := getExtraPodcastInfo(db, podcast, dbPodcast.AuthorID)
+		podcastFullInfo := GetExtraPodcastInfo(db, podcast, dbPodcast.AuthorID)
 		completePodcasts = append(completePodcasts, podcastFullInfo)
 	}
 	return completePodcasts
@@ -85,7 +85,7 @@ func (repo *PodcastRepository) CreatePodcast(podcast models.Podcast) (models.Com
 
 	var podcastFullInfo models.CompletePodcast
 	db.Raw("SELECT * FROM podcasts WHERE podcast_id=?", podcast.PodcastID).Scan(&podcast)
-	podcastFullInfo = getExtraPodcastInfo(db, podcast.ToCompletePodcast(), podcast.AuthorID)
+	podcastFullInfo = GetExtraPodcastInfo(db, podcast.ToCompletePodcast(), podcast.AuthorID)
 
 	if errString != "" {
 		errString = fmt.Sprintf("Podcast was created but an error occured while associations: %v", errString)
@@ -118,7 +118,7 @@ func (repo *PodcastRepository) AssociateCategoriesWithPodcast(categories []uuid.
 	return nil
 }
 
-func getExtraPodcastInfo(db *gorm.DB, podcast models.CompletePodcast, authorID uuid.UUID) models.CompletePodcast {
+func GetExtraPodcastInfo(db *gorm.DB, podcast models.CompletePodcast, authorID uuid.UUID) models.CompletePodcast {
 	db.Raw("SELECT * FROM authors WHERE author_id=?", authorID).Scan(&podcast.Author)
 	db.Raw("SELECT * FROM SP_GetPodcastPlatform(?)", podcast.PodcastID).Scan(&podcast.Platforms)
 	db.Raw("SELECT * FROM SP_GetPodcastCategories(?)", podcast.PodcastID).Scan(&podcast.Categories)

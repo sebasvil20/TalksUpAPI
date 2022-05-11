@@ -16,6 +16,7 @@ type ProviderRoute struct {
 	UploaderController *controllers.UploaderController
 	PodcastController  *controllers.PodcastController
 	AuthorController   *controllers.AuthorController
+	ListController     *controllers.ListController
 }
 
 var userSet = wire.NewSet(
@@ -61,14 +62,24 @@ var authorSet = wire.NewSet(
 	wire.Bind(new(controllers.IAuthorController), new(*controllers.AuthorController)),
 )
 
+var listSet = wire.NewSet(
+	providers.ProvideListRepository,
+	wire.Bind(new(repository.IListRepository), new(*repository.ListRepository)),
+	providers.ProvideListService,
+	wire.Bind(new(services.IListService), new(*services.ListService)),
+	providers.ProvideListController,
+	wire.Bind(new(controllers.IListController), new(*controllers.ListController)),
+)
+
 var setProvider = wire.NewSet(
 	userSet,
 	categorySet,
 	uploaderSet,
 	podcastSet,
 	authorSet,
+	listSet,
 	wire.Struct(new(ProviderRoute), "UserController", "CategoryController", "UploaderController",
-		"PodcastController", "AuthorController"),
+		"PodcastController", "AuthorController", "ListController"),
 )
 
 func StartProviders() *ProviderRoute {

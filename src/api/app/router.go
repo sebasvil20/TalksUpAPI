@@ -43,6 +43,16 @@ func SetURLMappings(router *gin.Engine) {
 		authors.POST("", middleware.AuthJWT(true), providerRoute.AuthorController.CreateAuthor)
 	}
 
+	lists := router.Group("/lists")
+	{
+		lists.Use(middleware.VerifyAPIKey())
+		lists.GET("", middleware.AuthJWT(false), providerRoute.ListController.GetAllLists)
+		lists.GET("/:id", middleware.AuthJWT(false), providerRoute.ListController.GetListByID)
+		lists.POST("", middleware.AuthJWT(false), providerRoute.ListController.CreateList)
+		lists.POST("/like", middleware.AuthJWT(false), providerRoute.ListController.LikeList)
+		lists.DELETE("/:id", middleware.AuthJWT(false), providerRoute.ListController.DeleteList)
+	}
+
 	uploader := router.Group("/upload")
 	{
 		authors.Use(middleware.VerifyAPIKey())
