@@ -2,6 +2,7 @@ package repository
 
 import (
 	"fmt"
+	"gorm.io/gorm"
 
 	"github.com/google/uuid"
 	"github.com/sebasvil20/TalksUpAPI/src/api/models"
@@ -47,11 +48,18 @@ func (repo *ListRepository) GetAllLists() []models.List {
 func (repo *ListRepository) LikeList(listID uuid.UUID, userID uuid.UUID) error {
 	db := database.DBConnect()
 	defer database.CloseDBConnection(db)
+	var like models.Like
+	var resp *gorm.DB
+	db.Raw("SELECT * FROM likes WHERE user_id=? and list_id=?", userID, listID).Scan(&like)
+	if like.LikeID == uuid.Nil {
+		resp = db.Table("likes").Omit("like_id").Create(models.Like{
+			UserID: userID,
+			ListID: listID,
+		})
+	} else {
+		resp = db.Table("likes").Where("like_id=?", like.LikeID).Delete(models.Like{})
+	}
 
-	resp := db.Table("likes").Omit("like_id").Create(models.Like{
-		UserID: userID,
-		ListID: listID,
-	})
 	if resp.Error != nil {
 		return fmt.Errorf("error liking list: %v", resp.Error.Error())
 	}
