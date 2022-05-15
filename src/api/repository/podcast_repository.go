@@ -122,5 +122,7 @@ func GetExtraPodcastInfo(db *gorm.DB, podcast models.CompletePodcast, authorID u
 	db.Raw("SELECT * FROM authors WHERE author_id=?", authorID).Scan(&podcast.Author)
 	db.Raw("SELECT * FROM SP_GetPodcastPlatform(?)", podcast.PodcastID).Scan(&podcast.Platforms)
 	db.Raw("SELECT * FROM SP_GetPodcastCategories(?)", podcast.PodcastID).Scan(&podcast.Categories)
+	podcast.ReleaseDate = utils.ParseDate(podcast.ReleaseDate)
+	podcast.UpdateDate = utils.ParseDate(podcast.UpdateDate)
 	return podcast
 }

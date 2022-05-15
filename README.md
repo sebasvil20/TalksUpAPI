@@ -58,12 +58,13 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. 
 
 ### Users
 
-| Method | Endpoint                       | Description                                                                                   |
-|--------|--------------------------------|-----------------------------------------------------------------------------------------------|
-| `POST` | `/users/login`                 | Login with user credentials to receive jwt token                                              |
-| `POST` | `/users`                       | Create new user                                                                               |
-| `GET`  | `/users`                       | Get all users with their likes *                                                              |
-| `POST` | `/users/associate`             | Associate user with a list of categories (likes)                                              |
+| Method | Endpoint                  | Description                                      |
+|--------|---------------------------|--------------------------------------------------|
+| `GET`  | `/users`                  | Get all users with their likes *                 |
+| `GET`  | `/users/:user_id/reviews` | Get all reviews by user id                       |
+| `POST` | `/users/login`            | Login with user credentials to receive jwt token |
+| `POST` | `/users`                  | Create new user                                  |
+| `POST` | `/users/associate`        | Associate user with a list of categories (likes) |
 
 ### Categories
 
@@ -77,17 +78,18 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. 
 
 | Method | Endpoint                       | Description                                                                                   |
 |--------|--------------------------------|-----------------------------------------------------------------------------------------------|
-| `POST` | `/authors`                     | Create new author **                                                                          |
 | `GET`  | `/authors`                     | Get all authors                                                                               |
 | `GET`  | `/authors/:authod_id`          | Get author by id. Returns author info and its podcasts                                        |
+| `POST` | `/authors`                     | Create new author **                                                                          |
 
 ### Podcasts
 
-| Method | Endpoint                       | Description                                                                                   |
-|--------|--------------------------------|-----------------------------------------------------------------------------------------------|
-| `POST` | `/podcasts`                    | Create new podcast **                                                                         |
-| `POST` | `/podcasts/associate`          | Associate podcast with a list of categories                                                   |
-| `GET`  | `/podcasts?category_id=&lang=` | Get all podcasts with fully info (categories, author, lang, platforms)                        |
+| Method | Endpoint                        | Description                                                            |
+|--------|---------------------------------|------------------------------------------------------------------------|
+| `GET`  | `/podcasts?category_id=&lang=`  | Get all podcasts with fully info (categories, author, lang, platforms) |
+| `GET`  | `/podcasts/:podcast_id/reviews` | Get all reviews by podcast id                                          |
+| `POST` | `/podcasts`                     | Create new podcast **                                                  |
+| `POST` | `/podcasts/associate`           | Associate podcast with a list of categories                            |
 
 ### Lists
 
