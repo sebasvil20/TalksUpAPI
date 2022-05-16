@@ -13,7 +13,7 @@ const (
 func ParseDate(dateStr string) string {
 	i := strings.Index(dateStr, "T")
 	str := dateStr[:len(dateStr)-i]
-	return fmt.Sprintf(str)
+	return fmt.Sprint(str)
 }
 
 func GetNowDate() string {
