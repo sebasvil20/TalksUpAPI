@@ -102,6 +102,12 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. 
 | `POST`   | `/lists/like`      | Likes a list                              |
 | `DELETE` | `/lists/:id`       | Delete a list                             |
 
+### Reviews
+
+| Method   | Endpoint   | Description                 |
+|----------|------------|-----------------------------|
+| `POST`   | `/reviews` | Create review for a podcast |
+
 > (*) Admin role required
 
 > (**) Admin role not required but admin approval required
