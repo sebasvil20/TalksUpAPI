@@ -39,3 +39,9 @@ func ProvideListService(listRepository repository.IListRepository) *services.Lis
 		ListRepository: listRepository,
 	}
 }
+
+func ProvideReviewService(reviewRepository repository.IReviewRepository) *services.ReviewService {
+	return &services.ReviewService{
+		ReviewRepository: reviewRepository,
+	}
+}

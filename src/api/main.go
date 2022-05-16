@@ -16,5 +16,5 @@ func main() {
 
 	log.Print("Server running")
 	_ = router.SetTrustedProxies(nil)
-	_ = router.Run()
+	_ = router.Run(":8080")
 }

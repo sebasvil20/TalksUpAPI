@@ -19,20 +19,23 @@ func StartProviders() *ProviderRoute {
 	userRepository := providers.ProvideUserRepository()
 	categoryRepository := providers.ProvideCategoryRepository()
 	userService := providers.ProvideUserService(userRepository, categoryRepository)
-	userController := providers.ProvideUserController(userService)
+	reviewRepository := providers.ProvideReviewRepository()
+	reviewService := providers.ProvideReviewService(reviewRepository)
+	userController := providers.ProvideUserController(userService, reviewService)
 	categoryService := providers.ProvideCategoryService(categoryRepository)
 	categoryController := providers.ProvideCategoryController(categoryService)
 	uploaderService := providers.ProvideUploaderService()
 	uploaderController := providers.ProvideUploaderController(uploaderService)
 	podcastRepository := providers.ProvidePodcastRepository()
 	podcastService := providers.ProvidePodcastService(podcastRepository)
-	podcastController := providers.ProvidePodcastController(podcastService)
+	podcastController := providers.ProvidePodcastController(podcastService, reviewService)
 	authorRepository := providers.ProvideAuthorRepository(podcastRepository)
 	authorService := providers.ProvideAuthorService(authorRepository)
 	authorController := providers.ProvideAuthorController(authorService)
 	listRepository := providers.ProvideListRepository()
 	listService := providers.ProvideListService(listRepository)
 	listController := providers.ProvideListController(listService)
+	reviewController := providers.ProvideReviewController(reviewService)
 	providerRoute := &ProviderRoute{
 		UserController:     userController,
 		CategoryController: categoryController,
@@ -40,6 +43,7 @@ func StartProviders() *ProviderRoute {
 		PodcastController:  podcastController,
 		AuthorController:   authorController,
 		ListController:     listController,
+		ReviewController:   reviewController,
 	}
 	return providerRoute
 }
@@ -53,6 +57,7 @@ type ProviderRoute struct {
 	PodcastController  *controllers.PodcastController
 	AuthorController   *controllers.AuthorController
 	ListController     *controllers.ListController
+	ReviewController   *controllers.ReviewController
 }
 
 var userSet = wire.NewSet(providers.ProvideUserRepository, wire.Bind(new(repository.IUserRepository), new(*repository.UserRepository)), providers.ProvideUserService, wire.Bind(new(services.IUserService), new(*services.UserService)), providers.ProvideUserController, wire.Bind(new(controllers.IUserController), new(*controllers.UserController)))
@@ -67,12 +72,15 @@ var authorSet = wire.NewSet(providers.ProvideAuthorRepository, wire.Bind(new(rep
 
 var listSet = wire.NewSet(providers.ProvideListRepository, wire.Bind(new(repository.IListRepository), new(*repository.ListRepository)), providers.ProvideListService, wire.Bind(new(services.IListService), new(*services.ListService)), providers.ProvideListController, wire.Bind(new(controllers.IListController), new(*controllers.ListController)))
 
+var reviewSet = wire.NewSet(providers.ProvideReviewRepository, wire.Bind(new(repository.IReviewRepository), new(*repository.ReviewRepository)), providers.ProvideReviewService, wire.Bind(new(services.IReviewService), new(*services.ReviewService)), providers.ProvideReviewController, wire.Bind(new(controllers.IReviewController), new(*controllers.ReviewController)))
+
 var setProvider = wire.NewSet(
 	userSet,
 	categorySet,
 	uploaderSet,
 	podcastSet,
 	authorSet,
-	listSet, wire.Struct(new(ProviderRoute), "UserController", "CategoryController", "UploaderController",
-		"PodcastController", "AuthorController", "ListController"),
+	listSet,
+	reviewSet, wire.Struct(new(ProviderRoute), "UserController", "CategoryController", "UploaderController",
+		"PodcastController", "AuthorController", "ListController", "ReviewController"),
 )

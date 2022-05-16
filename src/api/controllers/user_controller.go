@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -15,10 +16,12 @@ type IUserController interface {
 	CreateUser(c *gin.Context)
 	GetAllUsers(c *gin.Context)
 	AssociateCategoriesWithUser(c *gin.Context)
+	GetAllReviews(c *gin.Context)
 }
 
 type UserController struct {
-	UserService services.IUserService
+	UserService   services.IUserService
+	ReviewService services.IReviewService
 }
 
 func (ctrl *UserController) Login(c *gin.Context) {
@@ -74,4 +77,14 @@ func (ctrl *UserController) AssociateCategoriesWithUser(c *gin.Context) {
 		return
 	}
 	utils.HandleResponse(c, http.StatusCreated, nil, nil)
+}
+
+func (ctrl *UserController) GetAllReviews(c *gin.Context) {
+	userID := c.Param("user_id")
+	if userID == "" {
+		utils.HandleResponse(c, http.StatusBadRequest, nil, errors.New("user_id not given"))
+		return
+	}
+	reviews := ctrl.ReviewService.GetReviewsByUserID(userID)
+	utils.HandleResponse(c, http.StatusOK, reviews, nil)
 }

@@ -1,0 +1,907 @@
+{
+	"info": {
+		"_postman_id": "9a2bfc28-2de4-45bf-81b1-4e3eb7cab838",
+		"name": "TalksUp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"jwt-token\", pm.response.json().data.token)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"sebasvil20@gmail.com\",\n    \"password\": \"genericPassword\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/users/login",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"public_name\": \"Trueni\",\n    \"email\": \"sansepulveda90@gmail.com\",\n    \"password\": \"genericPassword\",\n    \"first_name\": \"Santiago\",\n    \"last_name\": \"Sepulveda\",\n    \"birth_date\": \"2000-02-08\",\n    \"phone_number\": \"3016395335\",\n    \"lang_id\" : \"ESP\",\n    \"country_id\": \"CO\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/users/new",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"users",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Associate categories with user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_id\": \"2bac0baa-cef6-11ec-b31f-acde48001122\",\n    \"categories\": [\n        \"472aa79f-fc3a-46d7-8b4b-b4fab318bb6b\",\n        \"f67a4547-31fe-4bba-8556-526cac7f4fa0\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/users/associate",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"users",
+								"associate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseUrl}}/users",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Create category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Negocios y tecnología\",\n    \"description\": \"Inversiones, criptomonedas, poder y mas en Negocios y Tecnología\",\n    \"icon_url\": \"https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/83b0103a-d194-11ec-a455-acde48001122.png\",\n    \"lang_id\": \"ESP\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/categories",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all categories",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseUrl}}/categories?lang=ESP",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"categories"
+							],
+							"query": [
+								{
+									"key": "lang",
+									"value": "ESP"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authors",
+			"item": [
+				{
+					"name": "Create author",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Andrés Acevedo Niño\",\n    \"biography\": \"Andrés Acevedo Niño es cofundador de 13% Pasión por el trabajo, el principal podcast en español en temas de carrera profesional y trabajo. Escribe para CUMBRE, la plataforma especializada en liderazgo del Colegio de Estudios Superiores en Administración (CESA).\",\n    \"profile_pic_url\": \"https://media-exp1.licdn.com/dms/image/C4E03AQF0CTQHw-w-Vg/profile-displayphoto-shrink_200_200/0/1593875094690e=1657756800&v=beta&t=p2K6fDY_S64XiWkxNZUdr6PYbC1DA7xBWfbSJvqsUdU\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/authors",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"authors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all authors",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseUrl}}/authors",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"authors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get author by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseUrl}}/authors/:author_id",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"authors",
+								":author_id"
+							],
+							"variable": [
+								{
+									"key": "author_id",
+									"value": "e2ba8436-d160-11ec-86d2-acde48001122"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Podcasts",
+			"item": [
+				{
+					"name": "Create podcast",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"13%\",\n    \"description\": \"Contamos historias de personas que aman lo que hacen. Son una minoría especial: no odian los lunes, ni esperan toda la semana a que llegue el viernes.\",\n    \"cover_pic_url\": \"https://i.scdn.co/image/75f167805352b849105b87f889f521243c4af71f\",\n    \"total_episodes\": 78,\n    \"total_length\": \"40h\",\n    \"release_date\": \"2018-01-20\",\n    \"update_date\": \"2022-03-27\",\n    \"lang_id\": \"ESP\",\n    \"author_id\": \"a857e002-d194-11ec-a455-acde48001122\",\n    \"platforms\": [\n        {\n            \"platform_id\": \"eb4b1438-da09-4b37-be59-4d921aeba947\",\n            \"redirect_url\": \"https://open.spotify.com/show/3PR2zd9DZNCDWefPlVwCA2\"\n        }\n    ],\n    \"categories\": [\n        \"9562cf3e-d194-11ec-a455-acde48001122\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/podcasts",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"podcasts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Associate categories with podcast",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"podcast_id\": \"58a734ee-ce8e-11ec-9d9c-acde48001122\",\n    \"categories\": [\n        \"b381f016-ce8e-11ec-9d9c-acde48001122\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/podcasts/associate",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"podcasts",
+								"associate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all podcasts",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseUrl}}/podcasts?lang=ESP",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"podcasts"
+							],
+							"query": [
+								{
+									"key": "lang",
+									"value": "ESP"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all podcasts by category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseUrl}}/podcasts?category_id=73220619-faf6-498d-8800-e1d5f468d88a",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"podcasts"
+							],
+							"query": [
+								{
+									"key": "category_id",
+									"value": "73220619-faf6-498d-8800-e1d5f468d88a"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Lists",
+			"item": [
+				{
+					"name": "Get all lists",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseUrl}}/lists",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"lists"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get list by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseUrl}}/lists/:id",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"lists",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "43f3e1dc-70c0-4f2d-88a4-355e8050a661"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Lo mejor de la comedia\",\n    \"description\": \"Riete a carjadas por horas y horas\",\n    \"icon_url\": \"\",\n    \"cover_pic_url\": \"\",\n    \"user_id\": \"86f45ee6-c5a4-11ec-b46f-6a2f678b91f3\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/lists",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"lists"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Associate podcasts with list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"list_id\": \"0bd3b64e-d170-11ec-ae9f-acde48001122\",\n    \"podcasts\": [\n        \"304f7b64-d16d-11ec-8bd1-acde48001122\",\n        \"fd9fadaa-d16d-11ec-8bd1-acde48001122\",\n        \"dec1ec4c-d16b-11ec-8bd1-acde48001122\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/lists/associate",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"lists",
+								"associate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Like list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_id\": \"86f45ee6-c5a4-11ec-b46f-6a2f678b91f3\",\n    \"list_id\": \"0bd3b64e-d170-11ec-ae9f-acde48001122\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/lists/like",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"lists",
+								"like"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseUrl}}/lists/:id",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"lists",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "0bd3b64e-d170-11ec-ae9f-acde48001122"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Utils",
+			"item": [
+				{
+					"name": "HealthCheck",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseUrl}}/health",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload file",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/jvillega/Desktop/tech-bus.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/upload",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"upload"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "jwt-token",
+			"value": ""
+		},
+		{
+			"key": "api-key",
+			"value": ""
+		}
+	]
+}
