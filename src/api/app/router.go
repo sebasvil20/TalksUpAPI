@@ -14,11 +14,10 @@ func SetURLMappings(router *gin.Engine) {
 	{
 		users.Use(middleware.VerifyAPIKey())
 		users.GET("", middleware.AuthJWT(true), providerRoute.UserController.GetAllUsers)
-
+		users.GET("/:user_id/reviews", middleware.AuthJWT(false), providerRoute.UserController.GetAllReviews)
 		users.POST("/login", providerRoute.UserController.Login)
 		users.POST("", providerRoute.UserController.CreateUser)
 		users.POST("/associate", middleware.AuthJWT(false), providerRoute.UserController.AssociateCategoriesWithUser)
-		users.GET("/:user_id/reviews", middleware.AuthJWT(false), providerRoute.UserController.GetAllReviews)
 	}
 
 	categories := router.Group("/categories")
@@ -32,9 +31,10 @@ func SetURLMappings(router *gin.Engine) {
 	{
 		podcasts.Use(middleware.VerifyAPIKey())
 		podcasts.GET("", middleware.AuthJWT(false), providerRoute.PodcastController.GetAllPodcasts)
+		podcasts.GET("/:podcast_id", middleware.AuthJWT(false), providerRoute.PodcastController.GetPodcastByID)
+		podcasts.GET("/:podcast_id/reviews", middleware.AuthJWT(false), providerRoute.PodcastController.GetAllReviews)
 		podcasts.POST("", middleware.AuthJWT(true), providerRoute.PodcastController.CreatePodcast)
 		podcasts.POST("/associate", middleware.AuthJWT(true), providerRoute.PodcastController.AssociateCategoriesWithPodcast)
-		podcasts.GET("/:podcast_id/reviews", middleware.AuthJWT(false), providerRoute.PodcastController.GetAllReviews)
 	}
 
 	authors := router.Group("/authors")

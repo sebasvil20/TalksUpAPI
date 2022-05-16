@@ -169,6 +169,47 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get all reviews by user id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseUrl}}/users/:user_id/reviews",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"users",
+								":user_id",
+								"reviews"
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": "2bac0baa-cef6-11ec-b31f-acde48001122"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -543,6 +584,87 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get all reviews by podcast id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseUrl}}/podcasts/:podcast_id/reviews",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"podcasts",
+								":podcast_id",
+								"reviews"
+							],
+							"variable": [
+								{
+									"key": "podcast_id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get podcast by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseUrl}}/podcasts/:podcast_id",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"podcasts",
+								":podcast_id"
+							],
+							"variable": [
+								{
+									"key": "podcast_id",
+									"value": "57a179b8-d692-4c04-85f7-f95004f86565"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -785,6 +907,53 @@
 									"key": "id",
 									"value": "0bd3b64e-d170-11ec-ae9f-acde48001122"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reviews",
+			"item": [
+				{
+					"name": "Create review",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Increible podcast, 10/10\",\n    \"review\": \"Me gusta mucho como el autor relata los toques misticos. Su voz es inquietante.\",\n    \"rate\": 3,\n    \"lang_id\": \"ESP\",\n    \"podcast_id\": \"57a179b8-d692-4c04-85f7-f95004f86565\",\n    \"user_id\": \"2bac0baa-cef6-11ec-b31f-acde48001122\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/reviews",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"reviews"
 							]
 						}
 					},

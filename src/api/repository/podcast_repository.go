@@ -14,6 +14,7 @@ import (
 
 type IPodcastRepository interface {
 	GetAllPodcasts(langID string, categoryID string, authorID ...string) []models.CompletePodcast
+	GetPodcastByID(podcastID string) models.CompletePodcast
 	CreatePodcast(podcast models.Podcast) (models.CompletePodcast, error)
 	AssociateCategoriesWithPodcast(categories []uuid.UUID, podcastID uuid.UUID) error
 }
@@ -50,6 +51,16 @@ func (repo *PodcastRepository) GetAllPodcasts(langID string, categoryID string, 
 		completePodcasts = append(completePodcasts, podcastFullInfo)
 	}
 	return completePodcasts
+}
+
+func (repo *PodcastRepository) GetPodcastByID(podcastID string) models.CompletePodcast {
+	db := database.DBConnect()
+	defer database.CloseDBConnection(db)
+	var dbPodcast models.Podcast
+	db.Raw("SELECT * FROM podcasts WHERE podcast_id=?", podcastID).Scan(&dbPodcast)
+	podcast := dbPodcast.ToCompletePodcast()
+	podcastFullInfo := GetExtraPodcastInfo(db, podcast, dbPodcast.AuthorID)
+	return podcastFullInfo
 }
 
 func (repo *PodcastRepository) CreatePodcast(podcast models.Podcast) (models.CompletePodcast, error) {

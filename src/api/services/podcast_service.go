@@ -7,6 +7,7 @@ import (
 
 type IPodcastService interface {
 	GetAllPodcasts(langID string, categoryID string) []models.CompletePodcast
+	GetPodcastByID(podcastID string) models.CompletePodcast
 	CreatePodcast(podcast models.Podcast) (models.CompletePodcast, error)
 	AssociateCategoriesWithPodcast(associationData models.CategoryPodcastAssociation) error
 }
@@ -16,8 +17,11 @@ type PodcastService struct {
 }
 
 func (srv *PodcastService) GetAllPodcasts(langID string, categoryID string) []models.CompletePodcast {
-
 	return srv.PodcastRepository.GetAllPodcasts(langID, categoryID)
+}
+
+func (srv *PodcastService) GetPodcastByID(podcastID string) models.CompletePodcast {
+	return srv.PodcastRepository.GetPodcastByID(podcastID)
 }
 
 func (srv *PodcastService) CreatePodcast(podcast models.Podcast) (models.CompletePodcast, error) {

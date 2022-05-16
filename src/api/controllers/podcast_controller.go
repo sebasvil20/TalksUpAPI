@@ -12,6 +12,7 @@ import (
 
 type IPodcastController interface {
 	GetAllPodcasts(c *gin.Context)
+	GetPodcastByID(c *gin.Context)
 	CreatePodcast(c *gin.Context)
 	AssociateCategoriesWithPodcast(c *gin.Context)
 	GetAllReviews(c *gin.Context)
@@ -33,6 +34,16 @@ func (ctrl *PodcastController) GetAllPodcasts(c *gin.Context) {
 	utils.HandleResponse(c, http.StatusOK, podcasts, nil)
 }
 
+func (ctrl *PodcastController) GetPodcastByID(c *gin.Context) {
+	podcastID := c.Param("podcast_id")
+	if podcastID == "" {
+		utils.HandleResponse(c, http.StatusBadRequest, nil, errors.New("podcast_id not given"))
+		return
+	}
+	podcast := ctrl.PodcastService.GetPodcastByID(podcastID)
+	utils.HandleResponse(c, http.StatusOK, podcast, nil)
+}
+
 func (ctrl *PodcastController) CreatePodcast(c *gin.Context) {
 	var podcastBody models.Podcast
 	if err := c.BindJSON(&podcastBody); err != nil {
@@ -42,7 +53,7 @@ func (ctrl *PodcastController) CreatePodcast(c *gin.Context) {
 
 	podcast, err := ctrl.PodcastService.CreatePodcast(podcastBody)
 	if err != nil {
-		utils.HandleResponse(c, http.StatusMultiStatus, podcast, err)
+		utils.HandleResponse(c, http.StatusBadRequest, podcast, err)
 		return
 	}
 	utils.HandleResponse(c, http.StatusOK, podcast, nil)
