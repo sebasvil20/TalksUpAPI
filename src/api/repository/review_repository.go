@@ -2,12 +2,13 @@ package repository
 
 import (
 	"fmt"
+	"log"
+	
 	"github.com/google/uuid"
 	"github.com/sebasvil20/TalksUpAPI/src/api/models"
 	"github.com/sebasvil20/TalksUpAPI/src/api/services/database"
 	"github.com/sebasvil20/TalksUpAPI/src/api/utils"
 	"gorm.io/gorm"
-	"log"
 )
 
 type IReviewRepository interface {

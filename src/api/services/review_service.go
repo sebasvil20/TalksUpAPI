@@ -16,11 +16,7 @@ type ReviewService struct {
 }
 
 func (srv *ReviewService) CreateReview(review models.Review) (models.Review, error) {
-	review, err := srv.ReviewRepository.CreateReview(review)
-	if err != nil {
-		return models.Review{}, err
-	}
-	return review, nil
+	return srv.ReviewRepository.CreateReview(review)
 }
 
 func (srv *ReviewService) GetReviewsByPodcastID(podcastID string) []models.Review {
@@ -29,5 +25,4 @@ func (srv *ReviewService) GetReviewsByPodcastID(podcastID string) []models.Revie
 
 func (srv *ReviewService) GetReviewsByUserID(userID string) []models.Review {
 	return srv.ReviewRepository.GetReviewsByUserID(userID)
-
 }
