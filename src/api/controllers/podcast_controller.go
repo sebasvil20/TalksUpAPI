@@ -14,10 +14,12 @@ type IPodcastController interface {
 	GetAllPodcasts(c *gin.Context)
 	CreatePodcast(c *gin.Context)
 	AssociateCategoriesWithPodcast(c *gin.Context)
+	GetAllReviews(c *gin.Context)
 }
 
 type PodcastController struct {
 	PodcastService services.IPodcastService
+	ReviewService  services.IReviewService
 }
 
 func (ctrl *PodcastController) GetAllPodcasts(c *gin.Context) {
@@ -59,4 +61,14 @@ func (ctrl *PodcastController) AssociateCategoriesWithPodcast(c *gin.Context) {
 		return
 	}
 	utils.HandleResponse(c, http.StatusOK, nil, nil)
+}
+
+func (ctrl *PodcastController) GetAllReviews(c *gin.Context) {
+	podcastID := c.Param("podcast_id")
+	if podcastID == "" {
+		utils.HandleResponse(c, http.StatusBadRequest, nil, errors.New("podcast_id not given"))
+		return
+	}
+	reviews := ctrl.ReviewService.GetReviewsByPodcastID(podcastID)
+	utils.HandleResponse(c, http.StatusOK, reviews, nil)
 }

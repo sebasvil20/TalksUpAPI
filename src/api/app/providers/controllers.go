@@ -5,8 +5,8 @@ import (
 	"github.com/sebasvil20/TalksUpAPI/src/api/services"
 )
 
-func ProvideUserController(srv services.IUserService) *controllers.UserController {
-	return &controllers.UserController{UserService: srv}
+func ProvideUserController(srv services.IUserService, reviewSrv services.IReviewService) *controllers.UserController {
+	return &controllers.UserController{UserService: srv, ReviewService: reviewSrv}
 }
 
 func ProvideCategoryController(srv services.ICategoryService) *controllers.CategoryController {
@@ -17,8 +17,8 @@ func ProvideUploaderController(srv services.IUploaderService) *controllers.Uploa
 	return &controllers.UploaderController{UploaderService: srv}
 }
 
-func ProvidePodcastController(srv services.IPodcastService) *controllers.PodcastController {
-	return &controllers.PodcastController{PodcastService: srv}
+func ProvidePodcastController(srv services.IPodcastService, reviewSrv services.IReviewService) *controllers.PodcastController {
+	return &controllers.PodcastController{PodcastService: srv, ReviewService: reviewSrv}
 }
 
 func ProvideAuthorController(srv services.IAuthorService) *controllers.AuthorController {
@@ -27,4 +27,8 @@ func ProvideAuthorController(srv services.IAuthorService) *controllers.AuthorCon
 
 func ProvideListController(srv services.IListService) *controllers.ListController {
 	return &controllers.ListController{ListService: srv}
+}
+
+func ProvideReviewController(srv services.IReviewService) *controllers.ReviewController {
+	return &controllers.ReviewController{ReviewService: srv}
 }
