@@ -64,8 +64,8 @@ func (ctrl *PodcastController) AssociateCategoriesWithPodcast(c *gin.Context) {
 }
 
 func (ctrl *PodcastController) GetAllReviews(c *gin.Context) {
-	podcastID := c.Param("podcas_id")
-	if podcastID != "" {
+	podcastID := c.Param("podcast_id")
+	if podcastID == "" {
 		utils.HandleResponse(c, http.StatusBadRequest, nil, errors.New("podcast_id not given"))
 		return
 	}

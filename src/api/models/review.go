@@ -11,5 +11,6 @@ type Review struct {
 	Rate       float32   `json:"rate,omitempty" binding:"required"`
 	ReviewDate string    `json:"review_date,omitempty"`
 	LangID     string    `json:"lang_id,omitempty" binding:"required"`
+	UserID     string    `json:"user_id,omitempty" binding:"required"`
 	PodcastID  string    `json:"podcast_id,omitempty" binding:"required"`
 }

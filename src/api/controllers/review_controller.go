@@ -26,7 +26,7 @@ func (ctrl *ReviewController) CreateReview(c *gin.Context) {
 
 	review, err := ctrl.ReviewService.CreateReview(reviewBody)
 	if err != nil {
-		utils.HandleResponse(c, http.StatusBadRequest, review, err)
+		utils.HandleResponse(c, http.StatusBadRequest, nil, err)
 		return
 	}
 	utils.HandleResponse(c, http.StatusOK, review, nil)
