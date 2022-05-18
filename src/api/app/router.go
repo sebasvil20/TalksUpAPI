@@ -20,6 +20,13 @@ func SetURLMappings(router *gin.Engine) {
 		MaxAge:           12 * time.Hour,
 	}))
 
+	auth := router.Group("/auth")
+	{
+		auth.Use(middleware.VerifyAPIKey())
+		auth.POST("/login", providerRoute.UserController.Login)
+		auth.GET("/validate", middleware.AuthJWT(false), providerRoute.UserController.ValidateToken)
+	}
+
 	users := router.Group("/users")
 	{
 		users.Use(middleware.VerifyAPIKey())

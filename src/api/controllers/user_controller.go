@@ -13,6 +13,7 @@ import (
 
 type IUserController interface {
 	Login(c *gin.Context)
+	ValidateToken(c *gin.Context)
 	CreateUser(c *gin.Context)
 	GetAllUsers(c *gin.Context)
 	AssociateCategoriesWithUser(c *gin.Context)
@@ -37,6 +38,10 @@ func (ctrl *UserController) Login(c *gin.Context) {
 		return
 	}
 	utils.HandleResponse(c, http.StatusOK, map[string]string{"token": token}, nil)
+}
+
+func (ctrl *UserController) ValidateToken(c *gin.Context) {
+	utils.HandleResponse(c, http.StatusOK, nil, nil)
 }
 
 func (ctrl *UserController) CreateUser(c *gin.Context) {
