@@ -1,14 +1,24 @@
 package app
 
 import (
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/sebasvil20/TalksUpAPI/src/api/controllers"
 	"github.com/sebasvil20/TalksUpAPI/src/api/utils/middleware"
+	"time"
 )
 
 func SetURLMappings(router *gin.Engine) {
 	providerRoute := StartProviders()
 	router.GET("/health", controllers.Ping)
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"PUT", "PATCH", "GET", "OPTIONS", "DELETE", "UPDATE"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Content-Lengt", "Accept-Encoding", "Authorization", "api-key"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 
 	users := router.Group("/users")
 	{
