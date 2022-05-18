@@ -1,11 +1,12 @@
 package app
 
 import (
+	"time"
+	
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/sebasvil20/TalksUpAPI/src/api/controllers"
 	"github.com/sebasvil20/TalksUpAPI/src/api/utils/middleware"
-	"time"
 )
 
 func SetURLMappings(router *gin.Engine) {
