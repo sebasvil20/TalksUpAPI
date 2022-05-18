@@ -15,6 +15,7 @@ type IUserController interface {
 	Login(c *gin.Context)
 	ValidateToken(c *gin.Context)
 	CreateUser(c *gin.Context)
+	UpdateUser(c *gin.Context)
 	GetAllUsers(c *gin.Context)
 	AssociateCategoriesWithUser(c *gin.Context)
 	GetAllReviews(c *gin.Context)
@@ -57,6 +58,21 @@ func (ctrl *UserController) CreateUser(c *gin.Context) {
 		return
 	}
 	utils.HandleResponse(c, http.StatusCreated, user, nil)
+}
+
+func (ctrl *UserController) UpdateUser(c *gin.Context) {
+	var userBody models.User
+	if err := c.BindJSON(&userBody); err != nil {
+		utils.HandleResponse(c, http.StatusBadRequest, nil, err)
+		return
+	}
+	actualUserID, _ := c.Get("UserID")
+	user, err := ctrl.UserService.UpdateUser(userBody, actualUserID.(string))
+	if err != nil {
+		utils.HandleResponse(c, http.StatusBadRequest, nil, err)
+		return
+	}
+	utils.HandleResponse(c, http.StatusOK, user, nil)
 }
 
 func (ctrl *UserController) GetAllUsers(c *gin.Context) {

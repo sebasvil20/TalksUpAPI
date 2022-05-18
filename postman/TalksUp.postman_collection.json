@@ -62,6 +62,40 @@
 					"response": []
 				},
 				{
+					"name": "Validate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseUrl}}/auth/validate",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"auth",
+								"validate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create user",
 					"request": {
 						"method": "POST",
@@ -74,7 +108,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"public_name\": \"Trueni\",\n    \"email\": \"sansepulveda90@gmail.com\",\n    \"password\": \"genericPassword\",\n    \"first_name\": \"Santiago\",\n    \"last_name\": \"Sepulveda\",\n    \"birth_date\": \"2000-02-08\",\n    \"phone_number\": \"3016395335\",\n    \"lang_id\" : \"ESP\",\n    \"country_id\": \"CO\"\n}",
+							"raw": "{\n    \"public_name\": \"Generic1\",\n    \"email\": \"asdsadasd@gmail.com\",\n    \"password\": \"genericPassword\",\n    \"lang_id\" : \"ESP\",\n    \"country_id\": \"CO\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -82,13 +116,44 @@
 							}
 						},
 						"url": {
-							"raw": "{{BaseUrl}}/users/new",
+							"raw": "{{BaseUrl}}/users",
 							"host": [
 								"{{BaseUrl}}"
 							],
 							"path": [
-								"users",
-								"new"
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_id\": \"c0244dc7-26e8-4543-aced-d68703a91b59\",\n    \"first_name\": \"Trueni cambiado 3\",\n    \"last_name\": \"Apllido cambiado 3\",\n    \"birth_date\": \"2222-10-08\",\n    \"profile_pic_url\": \"https://m.media-amazon.com/images/I/A1XmpeEe4BL.png\",\n    \"phone_number\": \"3016395339\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/users",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"users"
 							]
 						}
 					},
@@ -1024,7 +1089,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/Users/jvillega/Desktop/tech-bus.png"
+									"src": []
 								}
 							]
 						},

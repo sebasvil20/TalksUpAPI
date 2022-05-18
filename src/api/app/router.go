@@ -2,7 +2,7 @@ package app
 
 import (
 	"time"
-	
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/sebasvil20/TalksUpAPI/src/api/controllers"
@@ -33,8 +33,8 @@ func SetURLMappings(router *gin.Engine) {
 		users.Use(middleware.VerifyAPIKey())
 		users.GET("", middleware.AuthJWT(true), providerRoute.UserController.GetAllUsers)
 		users.GET("/:user_id/reviews", middleware.AuthJWT(false), providerRoute.UserController.GetAllReviews)
-		users.POST("/login", providerRoute.UserController.Login)
 		users.POST("", providerRoute.UserController.CreateUser)
+		users.PUT("", middleware.AuthJWT(false), providerRoute.UserController.UpdateUser)
 		users.POST("/associate", middleware.AuthJWT(false), providerRoute.UserController.AssociateCategoriesWithUser)
 	}
 

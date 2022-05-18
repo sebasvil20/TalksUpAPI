@@ -56,14 +56,21 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. 
 | `GET`  | `/health`                      | Healthcheck service provided for health checking purpose                                      |
 | `PUT`  | `/upload`                      | Requires a form-data content type with a file on it. Uploads an image and returns the cdn url |
 
+### Auth
+
+| Method | Endpoint           | Description                                      |
+|--------|--------------------|--------------------------------------------------|
+| `GET`  | `/auth/login`      | Login with user credentials to receive jwt token |
+| `GET`  | `/auth/validate`   | Validates the given jwt (passed by headers)      |   
+
 ### Users
 
 | Method | Endpoint                  | Description                                      |
 |--------|---------------------------|--------------------------------------------------|
 | `GET`  | `/users`                  | Get all users with their likes *                 |
 | `GET`  | `/users/:user_id/reviews` | Get all reviews by user id                       |
-| `POST` | `/users/login`            | Login with user credentials to receive jwt token |
 | `POST` | `/users`                  | Create new user                                  |
+| `PUT`  | `/users`                  | Updates given user                               |
 | `POST` | `/users/associate`        | Associate user with a list of categories (likes) |
 
 ### Categories

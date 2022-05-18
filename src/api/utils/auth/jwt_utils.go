@@ -10,14 +10,16 @@ import (
 
 type jwtCustomClaims struct {
 	Email   string `json:"email"`
+	UserID  string `json:"UserID"`
 	IsAdmin bool
 	jwt.StandardClaims
 }
 
-func GenerateJWT(email string, isAdmin bool) (string, error) {
+func GenerateJWT(email string, isAdmin bool, userID string) (string, error) {
 	claims := &jwtCustomClaims{
-		Email: email,
+		Email:   email,
 		IsAdmin: isAdmin,
+		UserID:  userID,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
 			Issuer:    config.JWTIssuer,

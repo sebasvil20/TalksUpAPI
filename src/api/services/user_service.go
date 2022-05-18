@@ -11,6 +11,7 @@ import (
 type IUserService interface {
 	Login(userLoginData models.UserCredentials) (string, error)
 	CreateUser(user models.NewUser) (models.User, error)
+	UpdateUser(user models.User, actualUserID string) (models.User, error)
 	GetAllUsers() ([]models.SimpleUser, error)
 	AssociateCategoriesWithUser(associationData models.CategoriesUserAssociation) error
 }
@@ -25,7 +26,8 @@ func (srv *UserService) Login(userCredentials models.UserCredentials) (string, e
 		return "", fmt.Errorf("incorrect email &/or password")
 	}
 
-	jwt, err := auth.GenerateJWT(userCredentials.Email, srv.UserRepository.IsAdmin(userCredentials.Email))
+	userID := srv.UserRepository.GetUserIDByEmail(userCredentials.Email)
+	jwt, err := auth.GenerateJWT(userCredentials.Email, srv.UserRepository.IsAdmin(userCredentials.Email), userID)
 	if err != nil {
 		return "", err
 	}
@@ -44,6 +46,10 @@ func (srv *UserService) CreateUser(user models.NewUser) (models.User, error) {
 		return models.User{}, err
 	}
 	return createdUser, nil
+}
+
+func (srv *UserService) UpdateUser(user models.User, actualUserID string) (models.User, error) {
+	return srv.UserRepository.UpdateUser(user, actualUserID)
 }
 
 func (srv *UserService) GetAllUsers() ([]models.SimpleUser, error) {

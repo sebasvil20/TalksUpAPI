@@ -3,6 +3,7 @@ package repository
 import (
 	"errors"
 	"fmt"
+	"gorm.io/gorm"
 	"log"
 
 	"github.com/google/uuid"
@@ -13,6 +14,8 @@ import (
 
 type IUserRepository interface {
 	CreateUser(bodyUser models.NewUser) (models.User, error)
+	UpdateUser(user models.User, actualUserID string) (models.User, error)
+	GetUserIDByEmail(email string) string
 	IsEmailTaken(email string) bool
 	IsAdmin(email string) bool
 	AreCredentialsOK(email string, password string) bool
@@ -30,7 +33,13 @@ func (repo *UserRepository) CreateUser(bodyUser models.NewUser) (models.User, er
 
 	userID, _ := uuid.NewUUID()
 	user := bodyUser.ToUser(userID, 2)
-	userResp := db.Table("users").Create(user)
+	var userResp *gorm.DB
+	if user.BirthDate != "" {
+		userResp = db.Table("users").Create(&user)
+	} else {
+		userResp = db.Table("users").Omit("BirthDate").Create(&user)
+	}
+
 	if userResp.Error != nil {
 		log.Printf("error creating new user: %v", userResp.Error)
 		return models.User{}, fmt.Errorf("error creating new user: %v", userResp.Error)
@@ -48,6 +57,39 @@ func (repo *UserRepository) CreateUser(bodyUser models.NewUser) (models.User, er
 	db.Raw("SELECT * FROM users WHERE user_id = ?", userID).Scan(&user)
 
 	return user, nil
+}
+
+func (repo *UserRepository) UpdateUser(user models.User, actualUserID string) (models.User, error) {
+	uuidActualUserID, _ := uuid.Parse(actualUserID)
+	if uuidActualUserID != user.UserID {
+		return models.User{}, errors.New("unauthorized to update. doesnt belong to you")
+	}
+
+	db := database.DBConnect()
+	defer database.CloseDBConnection(db)
+	var dbUser models.User
+	respGet := db.Table("users").Where("user_id=?", user.UserID).First(&dbUser)
+
+	if respGet.Error != nil || dbUser.UserID == uuid.Nil {
+		return models.User{}, respGet.Error
+	}
+
+	var updatedUser models.User
+	updatedUser = dbUser.ToUpdateUser(user)
+	respUpdate := db.Table("users").Where("user_id=?", updatedUser.UserID).Save(&updatedUser)
+	if respUpdate.Error != nil {
+		return models.User{}, respUpdate.Error
+	}
+
+	return updatedUser, nil
+}
+
+func (repo *UserRepository) GetUserIDByEmail(email string) string {
+	db := database.DBConnect()
+	defer database.CloseDBConnection(db)
+	var dbUser models.User
+	db.Table("users").Where("email=?", email).First(&dbUser)
+	return dbUser.UserID.String()
 }
 
 func (repo *UserRepository) IsEmailTaken(email string) bool {

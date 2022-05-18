@@ -25,6 +25,7 @@ func AuthJWT(needsAdmin bool) gin.HandlerFunc {
 
 		if err == nil && token.Valid {
 			claims := token.Claims.(jwt.MapClaims)
+			c.Set("UserID", claims["UserID"])
 			if !needsAdmin {
 				c.Next()
 				return
