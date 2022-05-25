@@ -74,8 +74,7 @@ func (repo *UserRepository) UpdateUser(user models.User, actualUserID string) (m
 		return models.User{}, respGet.Error
 	}
 
-	var updatedUser models.User
-	updatedUser = dbUser.ToUpdateUser(user)
+	updatedUser := dbUser.ToUpdateUser(user)
 	respUpdate := db.Table("users").Where("user_id=?", updatedUser.UserID).Save(&updatedUser)
 	if respUpdate.Error != nil {
 		return models.User{}, respUpdate.Error
