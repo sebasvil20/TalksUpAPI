@@ -38,11 +38,15 @@ func (ctrl *UserController) Login(c *gin.Context) {
 		utils.HandleResponse(c, http.StatusBadRequest, nil, err)
 		return
 	}
-	utils.HandleResponse(c, http.StatusOK, map[string]string{"token": token}, nil)
+
+	user, _ := ctrl.UserService.GetUserByEmail(userLogin.Email)
+	utils.HandleResponse(c, http.StatusOK, map[string]interface{}{"token": token, "user": user}, nil)
 }
 
 func (ctrl *UserController) ValidateToken(c *gin.Context) {
-	utils.HandleResponse(c, http.StatusOK, nil, nil)
+	email, _ := c.Get("Email")
+	user, _ := ctrl.UserService.GetUserByEmail(email.(string))
+	utils.HandleResponse(c, http.StatusOK, map[string]interface{}{"user": user}, nil)
 }
 
 func (ctrl *UserController) CreateUser(c *gin.Context) {

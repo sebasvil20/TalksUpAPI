@@ -1,7 +1,9 @@
 package services
 
 import (
+	"errors"
 	"fmt"
+	"github.com/google/uuid"
 
 	"github.com/sebasvil20/TalksUpAPI/src/api/models"
 	"github.com/sebasvil20/TalksUpAPI/src/api/repository"
@@ -13,6 +15,7 @@ type IUserService interface {
 	CreateUser(user models.NewUser) (models.User, error)
 	UpdateUser(user models.User, actualUserID string) (models.User, error)
 	GetAllUsers() ([]models.SimpleUser, error)
+	GetUserByEmail(email string) (models.SimpleUser, error)
 	AssociateCategoriesWithUser(associationData models.CategoriesUserAssociation) error
 }
 
@@ -66,6 +69,14 @@ func (srv *UserService) GetAllUsers() ([]models.SimpleUser, error) {
 	}
 
 	return users, nil
+}
+
+func (srv *UserService) GetUserByEmail(email string) (models.SimpleUser, error) {
+	user := srv.UserRepository.GetUserByEmail(email)
+	if user.UserID == uuid.Nil {
+		return models.SimpleUser{}, errors.New("cannot find that user")
+	}
+	return user, nil
 }
 
 func (srv *UserService) AssociateCategoriesWithUser(associationData models.CategoriesUserAssociation) error {
