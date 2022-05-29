@@ -29,9 +29,9 @@ type SimpleUser struct {
 	ProfilePicURL string         `json:"profile_pic_url,omitempty"`
 	Biography     string         `json:"biography,omitempty"`
 	Likes         []CategoryPill `json:"likes,omitempty" gorm:"-"`
-	Lang          string         `json:"lang"`
-	Country       string         `json:"country"`
-	Role          string         `json:"role,omitempty"`
+	LangID        string         `json:"lang"`
+	CountryID     string         `json:"country"`
+	RoleID        string         `json:"role,omitempty"`
 }
 
 type UserCredentials struct {

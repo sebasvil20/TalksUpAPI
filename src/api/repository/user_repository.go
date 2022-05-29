@@ -142,6 +142,7 @@ func (repo *UserRepository) GetUserByEmail(email string) models.SimpleUser {
 	var user models.SimpleUser
 
 	db.Raw("SELECT * FROM users WHERE email = ?", email).Scan(&user)
+	db.Raw("SELECT* FROM SP_GetLikesByUserID(?)", user.UserID).Scan(&user.Likes)
 	return user
 }
 

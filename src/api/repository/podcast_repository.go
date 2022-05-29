@@ -31,16 +31,20 @@ func (repo *PodcastRepository) GetAllPodcasts(langID string, categoryID string, 
 	var query string
 
 	if langID == "" && categoryID == "" {
-		query = db.ToSQL(func(tx *gorm.DB) *gorm.DB { return db.Raw("SELECT * FROM podcasts") })
+		query = db.ToSQL(func(tx *gorm.DB) *gorm.DB { return db.Raw("SELECT * FROM podcasts ORDER BY update_date DESC") })
 	}
 	if langID != "" {
-		query = db.ToSQL(func(tx *gorm.DB) *gorm.DB { return db.Raw("SELECT * FROM podcasts WHERE lang_id=?", langID) })
+		query = db.ToSQL(func(tx *gorm.DB) *gorm.DB {
+			return db.Raw("SELECT * FROM podcasts WHERE lang_id=? ORDER BY update_date DESC", langID)
+		})
 	}
 	if categoryID != "" {
 		query = db.ToSQL(func(tx *gorm.DB) *gorm.DB { return db.Raw("SELECT * FROM SP_GetPodcastsByCategoryID(?)", categoryID) })
 	}
 	if len(authorID) > 0 {
-		query = db.ToSQL(func(tx *gorm.DB) *gorm.DB { return db.Raw("SELECT * FROM podcasts WHERE author_id=?", authorID[0]) })
+		query = db.ToSQL(func(tx *gorm.DB) *gorm.DB {
+			return db.Raw("SELECT * FROM podcasts WHERE author_id=? ORDER BY update_date DESC", authorID[0])
+		})
 	}
 
 	db.Raw(query).Scan(&dbPodcasts)

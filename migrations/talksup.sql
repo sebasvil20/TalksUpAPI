@@ -505,6 +505,7 @@ SELECT (
 FROM podcasts
          INNER JOIN category_podcast cp on podcasts.podcast_id = cp.podcast_id
 WHERE cp.category_id = categoryID
+     ORDER BY podcasts.update_date DESC
 $$ LANGUAGE sql;
 
 

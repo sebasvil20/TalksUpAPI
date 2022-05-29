@@ -3,8 +3,8 @@ package services
 import (
 	"errors"
 	"fmt"
-	"github.com/google/uuid"
 
+	"github.com/google/uuid"
 	"github.com/sebasvil20/TalksUpAPI/src/api/models"
 	"github.com/sebasvil20/TalksUpAPI/src/api/repository"
 	"github.com/sebasvil20/TalksUpAPI/src/api/utils/auth"
