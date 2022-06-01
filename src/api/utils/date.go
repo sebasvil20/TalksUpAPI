@@ -11,9 +11,12 @@ const (
 )
 
 func ParseDate(dateStr string) string {
+	rstr := dateStr
 	i := strings.Index(dateStr, "T")
-	str := dateStr[:len(dateStr)-i]
-	return fmt.Sprint(str)
+	if i != -1 {
+		rstr = dateStr[:len(dateStr)-i]
+	}
+	return fmt.Sprint(rstr)
 }
 
 func GetNowDate() string {

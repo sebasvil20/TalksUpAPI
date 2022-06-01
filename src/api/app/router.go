@@ -49,6 +49,7 @@ func SetURLMappings(router *gin.Engine) {
 	{
 		podcasts.Use(middleware.VerifyAPIKey())
 		podcasts.GET("", middleware.AuthJWT(false), providerRoute.PodcastController.GetAllPodcasts)
+		podcasts.GET("/recommendation", middleware.AuthJWT(false), providerRoute.PodcastController.GetRecommendedPodcasts)
 		podcasts.GET("/:podcast_id", middleware.AuthJWT(false), providerRoute.PodcastController.GetPodcastByID)
 		podcasts.GET("/:podcast_id/reviews", middleware.AuthJWT(false), providerRoute.PodcastController.GetAllReviews)
 		podcasts.POST("", middleware.AuthJWT(true), providerRoute.PodcastController.CreatePodcast)

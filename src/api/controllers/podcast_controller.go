@@ -12,6 +12,7 @@ import (
 
 type IPodcastController interface {
 	GetAllPodcasts(c *gin.Context)
+	GetRecommendedPodcasts(c *gin.Context)
 	GetPodcastByID(c *gin.Context)
 	CreatePodcast(c *gin.Context)
 	AssociateCategoriesWithPodcast(c *gin.Context)
@@ -31,6 +32,16 @@ func (ctrl *PodcastController) GetAllPodcasts(c *gin.Context) {
 		return
 	}
 	podcasts := ctrl.PodcastService.GetAllPodcasts(lang, category)
+	utils.HandleResponse(c, http.StatusOK, podcasts, nil)
+}
+
+func (ctrl *PodcastController) GetRecommendedPodcasts(c *gin.Context) {
+	actualUserID, found := c.Get("UserID")
+	if !found {
+		utils.HandleResponse(c, http.StatusBadRequest, nil, errors.New("not allowed"))
+		return
+	}
+	podcasts := ctrl.PodcastService.GetRecommendedPodcasts(actualUserID.(string))
 	utils.HandleResponse(c, http.StatusOK, podcasts, nil)
 }
 

@@ -21,6 +21,7 @@ type IUserRepository interface {
 	AreCredentialsOK(email string, password string) bool
 	GetAllUsers() ([]models.SimpleUser, error)
 	GetUserByEmail(email string) models.SimpleUser
+	GetUserByID(userID string) models.SimpleUser
 	AssociateCategoriesWithUser(categories []string, userID string) error
 }
 
@@ -142,6 +143,16 @@ func (repo *UserRepository) GetUserByEmail(email string) models.SimpleUser {
 	var user models.SimpleUser
 
 	db.Raw("SELECT * FROM users WHERE email = ?", email).Scan(&user)
+	db.Raw("SELECT* FROM SP_GetLikesByUserID(?)", user.UserID).Scan(&user.Likes)
+	return user
+}
+
+func (repo *UserRepository) GetUserByID(userID string) models.SimpleUser {
+	db := database.DBConnect()
+	defer database.CloseDBConnection(db)
+	var user models.SimpleUser
+
+	db.Raw("SELECT * FROM users WHERE user_id = ?", userID).Scan(&user)
 	db.Raw("SELECT* FROM SP_GetLikesByUserID(?)", user.UserID).Scan(&user.Likes)
 	return user
 }

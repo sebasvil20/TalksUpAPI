@@ -14,12 +14,14 @@ import (
 
 type IPodcastRepository interface {
 	GetAllPodcasts(langID string, categoryID string, authorID ...string) []models.CompletePodcast
+	GetRecommendedPodcasts(userID string) []models.CompletePodcast
 	GetPodcastByID(podcastID string) models.CompletePodcast
 	CreatePodcast(podcast models.Podcast) (models.CompletePodcast, error)
 	AssociateCategoriesWithPodcast(categories []uuid.UUID, podcastID uuid.UUID) error
 }
 
 type PodcastRepository struct {
+	UserRepository UserRepository
 }
 
 func (repo *PodcastRepository) GetAllPodcasts(langID string, categoryID string, authorID ...string) []models.CompletePodcast {
@@ -55,6 +57,38 @@ func (repo *PodcastRepository) GetAllPodcasts(langID string, categoryID string, 
 		completePodcasts = append(completePodcasts, podcastFullInfo)
 	}
 	return completePodcasts
+}
+
+func (repo *PodcastRepository) GetRecommendedPodcasts(userID string) []models.CompletePodcast {
+	db := database.DBConnect()
+	defer database.CloseDBConnection(db)
+	completePodcasts := make([]models.CompletePodcast, 0)
+	user := repo.UserRepository.GetUserByID(userID)
+	for _, like := range user.Likes {
+		completePodcasts = repo.appendPodcastIfNotRepeated(completePodcasts, repo.GetAllPodcasts("", like.CategoryID.String()))
+	}
+
+	return completePodcasts
+}
+
+func (repo *PodcastRepository) appendPodcastIfNotRepeated(slice []models.CompletePodcast, elements []models.CompletePodcast) []models.CompletePodcast {
+	notRepeated := slice
+	for _, podcast := range elements {
+		if !repo.checkIsIn(notRepeated, podcast) {
+			notRepeated = append(notRepeated, podcast)
+		}
+	}
+
+	return notRepeated
+}
+func (repo *PodcastRepository) checkIsIn(slice []models.CompletePodcast, podcast models.CompletePodcast) bool {
+	for _, inPodcasts := range slice {
+		if inPodcasts.PodcastID == podcast.PodcastID {
+			return true
+		}
+	}
+
+	return false
 }
 
 func (repo *PodcastRepository) GetPodcastByID(podcastID string) models.CompletePodcast {
