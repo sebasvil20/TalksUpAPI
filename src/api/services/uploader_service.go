@@ -24,7 +24,7 @@ type UploaderService struct {
 func (srv *UploaderService) UploadImage(form models.Form) (string, error) {
 	formFile, fileExt, fileExtNoPoint := utils.GetFileInfo(form)
 	if !utils.IsImage(fileExt) {
-		return "", fmt.Errorf("file extension isn't valid, try with .png, .jpg, .jpeg")
+		return "", fmt.Errorf("file extension isn't valid, try with .png, .jpg, .jpeg, .webp")
 	}
 
 	openedFile, _ := formFile.Open()

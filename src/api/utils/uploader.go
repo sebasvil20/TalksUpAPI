@@ -13,6 +13,7 @@ var (
 		".png",
 		".jpg",
 		".jpeg",
+		".webp",
 	}
 )
 
