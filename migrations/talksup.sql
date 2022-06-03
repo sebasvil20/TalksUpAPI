@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS reviews
     review_id   uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     title       varchar(300) NOT NULL,
     review      varchar(500) NOT NULL,
-    rate        float        NOT NULL CHECK (rate > 0 and rate < 5),
+    rate        float        NOT NULL CHECK (rate >= 0 and rate <= 5),
     review_date date         NOT NULL,
     lang_id     varchar(3)   NOT NULL,
     user_id     uuid         NOT NULL,
@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS likes
 ALTER TABLE passwords
     ADD CONSTRAINT password_user_id_fk
         FOREIGN KEY (user_id)
-            REFERENCES users (user_id);
+            REFERENCES users (user_id) ON DELETE cascade;
 
 -- Likes table
 ALTER TABLE likes
@@ -505,7 +505,7 @@ SELECT (
 FROM podcasts
          INNER JOIN category_podcast cp on podcasts.podcast_id = cp.podcast_id
 WHERE cp.category_id = categoryID
-     ORDER BY podcasts.update_date DESC
+ORDER BY podcasts.update_date DESC
 $$ LANGUAGE sql;
 
 
@@ -652,21 +652,16 @@ VALUES ('CO', 'Colombia');
 
 INSERT INTO api_keys (api_key)
 VALUES ('11635d96-098d-4869-b7cf-baeae575ab20');
-
-INSERT INTO users (user_id, public_name, email, first_name, last_name, birth_date, phone_number, profile_pic_url,
-                   biography, lang_id, country_id, role_id)
-VALUES ('86f45ee6-c5a4-11ec-b46f-6a2f678b91f3', 'hinval', 'sebasvil20@gmail.com', 'Sebastian', 'Villegas',
-        '2002-08-12',
-        '3053190789', null, null, 'ESP', 'CO', 1),
-       ('2bac0baa-cef6-11ec-b31f-acde48001122', 'Trueni', 'sansepulveda90@gmail.com', 'Santiago', 'Sepulveda',
-        '2000-02-08',
-        '3016395335', null, null, 'ESP', 'CO', 1);
+INSERT INTO public.users (user_id, public_name, email, first_name, last_name, birth_date, phone_number, profile_pic_url,
+                          biography, lang_id, country_id, role_id)
+VALUES ('86f45ee6-c5a4-11ec-b46f-6a2f678b91f3', 'hinval', 'sebasvil20@gmail.com', 'Sebastian', 'Villegas', '2002-08-12',
+        '3053190789', 'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/6a0d58a4-e35f-11ec-ae2f-acde48001122.webp',
+        ' Un escritor, poeta, crítico y periodista romántico estadounidense, generalmente reconocido como uno de los maestros universales del relato corto, del cual fue uno de los primeros practicantes en su país. Fue renovador de la novela gótica, recordado especialmente por sus cuentos de terror.',
+        'ESP', 'CO', 1);
 
 INSERT INTO passwords (password_id, hashed_password, user_id)
 VALUES ('1b937b4b-b43f-4a70-8b0b-2255c2615151', '$2a$14$nP6hIrQ/.Uf2Ll8sA88zjuy01KmY/DzyVExkt3XKNpMO2073i9Smy',
-        '86f45ee6-c5a4-11ec-b46f-6a2f678b91f3'),
-       ('7c750388-683a-46c0-920e-0aa763eb65c4', '$2a$14$O893ha7HsJFYaf9gpKsxBO2jpowoSAum76ygPG0OTj9VVVJOfihn6',
-        '2bac0baa-cef6-11ec-b31f-acde48001122');
+        '86f45ee6-c5a4-11ec-b46f-6a2f678b91f3');
 
 INSERT INTO public.categories (category_id, name, description, selected_count, icon_url, lang_id)
 VALUES ('7ffc646a-d168-11ec-8bd1-acde48001122', 'Fantasía',
@@ -711,12 +706,6 @@ VALUES ('1cbb9c4d-2506-4c17-971a-736d7012cce1', '35b2881c-210c-4160-b3f7-6252b9e
 INSERT INTO public.category_user (category_user_id, category_id, user_id)
 VALUES ('9d6ef767-6f19-4acf-bf42-678fe9b28c05', '55abaa24-b920-43ea-bf94-aee5f614e326',
         '86f45ee6-c5a4-11ec-b46f-6a2f678b91f3');
-INSERT INTO public.category_user (category_user_id, category_id, user_id)
-VALUES ('c51868b7-6346-4e6f-aafe-04d53502364b', '472aa79f-fc3a-46d7-8b4b-b4fab318bb6b',
-        '2bac0baa-cef6-11ec-b31f-acde48001122');
-INSERT INTO public.category_user (category_user_id, category_id, user_id)
-VALUES ('cc81c61a-7c26-46a3-a540-7a113f45906d', 'f67a4547-31fe-4bba-8556-526cac7f4fa0',
-        '2bac0baa-cef6-11ec-b31f-acde48001122');
 
 INSERT INTO public.authors (author_id, name, biography, profile_pic_url)
 VALUES ('546e8d6a-f13e-405b-8bff-977463b691bb', 'Hernán Melana', null,
@@ -752,14 +741,15 @@ VALUES ('a857e002-d194-11ec-a455-acde48001122', 'Andrés Acevedo Niño',
         'https://media-exp1.licdn.com/dms/image/C4E03AQF0CTQHw-w-Vg/profile-displayphoto-shrink_200_200/0/1593875094690e=1657756800&v=beta&t=p2K6fDY_S64XiWkxNZUdr6PYbC1DA7xBWfbSJvqsUdU');
 
 INSERT INTO public.platforms (platform_id, name, logo_url)
+VALUES ('3eca4a4b-50fd-48e1-a683-fb1ed323eb1e', 'YouTube',
+        'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/1d65925a-e1f2-11ec-9f43-acde48001122.png');
+INSERT INTO public.platforms (platform_id, name, logo_url)
 VALUES ('eb4b1438-da09-4b37-be59-4d921aeba947', 'Spotify',
-        'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/spotify-logo.png');
+        'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/060bb832-e1f2-11ec-9f43-acde48001122.png');
 INSERT INTO public.platforms (platform_id, name, logo_url)
 VALUES ('6e1355a6-a6d0-4206-90d9-1ca2b4498318', 'iTunes',
-        'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/e39a212a-d16c-11ec-8bd1-acde48001122.png');
-INSERT INTO public.platforms (platform_id, name, logo_url)
-VALUES ('3eca4a4b-50fd-48e1-a683-fb1ed323eb1e', 'YouTube',
-        'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/1fff8664-d16d-11ec-8bd1-acde48001122.png');
+        'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/1227870e-e1f2-11ec-9f43-acde48001122.png');
+
 
 INSERT INTO public.podcasts (podcast_id, name, description, total_views, cover_pic_url, trailer_url, rating,
                              total_episodes, total_length, release_date, update_date, lang_id, author_id)
@@ -922,9 +912,6 @@ VALUES ('43f3e1dc-70c0-4f2d-88a4-355e8050a661', 'Psicologia a otro level', 'Podc
 INSERT INTO public.likes (like_id, list_id, user_id)
 VALUES ('38fbeab4-9cdb-4fe0-b22a-5153681731ce', '43f3e1dc-70c0-4f2d-88a4-355e8050a661',
         '86f45ee6-c5a4-11ec-b46f-6a2f678b91f3');
-INSERT INTO public.likes (like_id, list_id, user_id)
-VALUES ('34a2c938-8a90-4f89-aa72-cfb0a35da75c', '43f3e1dc-70c0-4f2d-88a4-355e8050a661',
-        '2bac0baa-cef6-11ec-b31f-acde48001122');
 
 INSERT INTO public.lists_podcast (lists_podcast_id, podcast_id, list_id)
 VALUES ('e54eed98-df85-488b-b260-a3f248d704c8', '57a179b8-d692-4c04-85f7-f95004f86565',
