@@ -27,6 +27,7 @@ type SimpleUser struct {
 	LastName      string         `json:"last_name" binding:"required"`
 	BirthDate     string         `json:"birth_date" binding:"required"`
 	ProfilePicURL string         `json:"profile_pic_url,omitempty"`
+	PhoneNumber   string         `json:"phone_number,omitempty"`
 	Biography     string         `json:"biography,omitempty"`
 	Likes         []CategoryPill `json:"likes,omitempty" gorm:"-"`
 	LangID        string         `json:"lang"`
