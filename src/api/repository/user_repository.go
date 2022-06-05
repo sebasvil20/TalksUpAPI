@@ -162,6 +162,8 @@ func (repo *UserRepository) AssociateCategoriesWithUser(categories []string, use
 	defer database.CloseDBConnection(db)
 	var errString string
 
+	userId, _ := uuid.Parse(userID)
+	db.Table("category_user").Where("user_id = ?", userId).Delete(&models.CategoryUser{UserID: userId})
 	for _, categoryID := range categories {
 		categoryID, _ := uuid.Parse(categoryID)
 		userID, _ := uuid.Parse(userID)

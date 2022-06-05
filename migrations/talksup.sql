@@ -639,13 +639,11 @@ VALUES (1, 'admin');
 INSERT INTO roles (role_id, name)
 VALUES (2, 'user');
 
-
 -- Default langs
 INSERT INTO languages (lang_id, name)
 VALUES ('ESP', 'Español');
 INSERT INTO languages (lang_id, name)
 VALUES ('ENG', 'English');
-
 
 INSERT INTO countries (country_id, name)
 VALUES ('CO', 'Colombia');
@@ -739,6 +737,8 @@ INSERT INTO public.authors (author_id, name, biography, profile_pic_url)
 VALUES ('a857e002-d194-11ec-a455-acde48001122', 'Andrés Acevedo Niño',
         'Andrés Acevedo Niño es cofundador de 13% Pasión por el trabajo, el principal podcast en español en temas de carrera profesional y trabajo. Escribe para CUMBRE, la plataforma especializada en liderazgo del Colegio de Estudios Superiores en Administración (CESA).',
         'https://media-exp1.licdn.com/dms/image/C4E03AQF0CTQHw-w-Vg/profile-displayphoto-shrink_200_200/0/1593875094690e=1657756800&v=beta&t=p2K6fDY_S64XiWkxNZUdr6PYbC1DA7xBWfbSJvqsUdU');
+INSERT INTO public.authors (author_id, name, biography, profile_pic_url)
+VALUES ('14719931-fb66-4d03-a16c-b04ddc64435b', 'Dudas Media', null, null);
 
 INSERT INTO public.platforms (platform_id, name, logo_url)
 VALUES ('3eca4a4b-50fd-48e1-a683-fb1ed323eb1e', 'YouTube',
@@ -749,7 +749,6 @@ VALUES ('eb4b1438-da09-4b37-be59-4d921aeba947', 'Spotify',
 INSERT INTO public.platforms (platform_id, name, logo_url)
 VALUES ('6e1355a6-a6d0-4206-90d9-1ca2b4498318', 'iTunes',
         'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/1227870e-e1f2-11ec-9f43-acde48001122.png');
-
 
 INSERT INTO public.podcasts (podcast_id, name, description, total_views, cover_pic_url, trailer_url, rating,
                              total_episodes, total_length, release_date, update_date, lang_id, author_id)
@@ -806,8 +805,24 @@ INSERT INTO public.podcasts (podcast_id, name, description, total_views, cover_p
                              total_episodes, total_length, release_date, update_date, lang_id, author_id)
 VALUES ('da66e8cc-d194-11ec-a455-acde48001122', '13%',
         'Contamos historias de personas que aman lo que hacen. Son una minoría especial: no odian los lunes, ni esperan toda la semana a que llegue el viernes.',
-        0, 'https://i.scdn.co/image/75f167805352b849105b87f889f521243c4af71f', '', 0, 78, '40h', '2018-01-20',
+        0, 'https://i.scdn.co/image/75f167805352b849105b87f889f521243c4af71f', null, 0, 78, '40h', '2018-01-20',
         '2022-03-27', 'ESP', 'a857e002-d194-11ec-a455-acde48001122');
+
+INSERT INTO public.podcasts (podcast_id, name, description, total_views, cover_pic_url, trailer_url, rating,
+                             total_episodes, total_length, release_date, update_date, lang_id, author_id)
+VALUES ('7e8381f4-3118-4483-b4b2-c24eaa81c06a', 'Se regalan dudas',
+        'Se regalan dudas nace de la infinita necesidad de cuestionarnos todo, todo lo que está a nuestro alrededor. ¿Por qué creemos lo que creemos? ¿Qué alternativas hay? ¿De dónde venimos y hacia dónde vamos? ¿Cómo tomar decisiones informadas? Coexistir para vivir más intensamente sin dejar de crecer. Tenemos tantas dudas que te las queremos regalar.  y  crearon este podcast para abrir un espacio donde invitan a expertos, amigos y gente que admiran, que sabe y no sabe de todo eso de lo que tendríamos que estar hablando.',
+        0, 'https://i.scdn.co/image/ab6765630000ba8a49715a42dbf536cd56a90930',
+        null, 0, 264, '220h', '2018-08-01',
+        '2022-06-02', 'ESP', '14719931-fb66-4d03-a16c-b04ddc64435b');
+
+INSERT INTO public.podcasts (podcast_id, name, description, total_views, cover_pic_url, trailer_url, rating,
+                             total_episodes, total_length, release_date, update_date, lang_id, author_id)
+VALUES ('6f548f1e-9753-46b4-8d23-a9196976ef99', 'Teorías de conspiración',
+        'La verdad rara vez es la mejor historia. Y cuando no es la única historia, la verdad merece otra mirada. Todos los miércoles, contamos las historias complicadas detrás de los eventos más controversiales del mundo y los posibles encubrimientos. ¿Conspiración? Tal vez. ¿Coincidencia? Tal vez. ¿Complicado? Absolutamente. Teorías de Conspiración es un original de Spotify y Parcast.',
+        0, 'https://i.scdn.co/image/ab6765630000ba8a20308585f0727bbb0dcf12e9',
+        null, 0, 151, '105h', '2020-07-01',
+        '2022-06-01', 'ESP', '14f108f6-d168-11ec-8bd1-acde48001122');
 
 INSERT INTO public.category_podcast (category_podcast_id, podcast_id, category_id)
 VALUES ('91c75c52-eea5-4bbd-8bfa-4be542bfedbc', '57a179b8-d692-4c04-85f7-f95004f86565',
@@ -866,6 +881,18 @@ VALUES ('2b79433d-65a7-4942-ac4c-718311e4ecea', '153c8e32-d16f-11ec-8bd1-acde480
 INSERT INTO public.category_podcast (category_podcast_id, podcast_id, category_id)
 VALUES ('363a3876-a9e7-4ffc-9b30-61bee10537c2', 'da66e8cc-d194-11ec-a455-acde48001122',
         '9562cf3e-d194-11ec-a455-acde48001122');
+INSERT INTO public.category_podcast (category_podcast_id, podcast_id, category_id)
+VALUES ('246e9af1-612a-4a09-af4d-5cd4786e4caf', '6f548f1e-9753-46b4-8d23-a9196976ef99',
+        '55abaa24-b920-43ea-bf94-aee5f614e326');
+INSERT INTO public.category_podcast (category_podcast_id, podcast_id, category_id)
+VALUES ('5ec91f47-0b48-412b-a386-ddde243f8f34', '6f548f1e-9753-46b4-8d23-a9196976ef99',
+        '7ffc646a-d168-11ec-8bd1-acde48001122');
+INSERT INTO public.category_podcast (category_podcast_id, podcast_id, category_id)
+VALUES ('671b5340-3b1f-47d7-bab1-6a66beb85c04', '7e8381f4-3118-4483-b4b2-c24eaa81c06a',
+        '73220619-faf6-498d-8800-e1d5f468d88a');
+INSERT INTO public.category_podcast (category_podcast_id, podcast_id, category_id)
+VALUES ('6cf5aec6-af18-44c9-8575-211c163f9f6c', '7e8381f4-3118-4483-b4b2-c24eaa81c06a',
+        '2da2f856-e235-436c-bdce-7471b0162846');
 
 INSERT INTO public.platform_podcast (platform_podcast_id, podcast_id, platform_id, redirect_url)
 VALUES ('06c802cb-5f3d-47d5-a252-b1566a35ae26', '57a179b8-d692-4c04-85f7-f95004f86565',
@@ -904,6 +931,12 @@ VALUES ('19f12935-e0ab-4533-b06a-b6b4fb3c85b8', '153c8e32-d16f-11ec-8bd1-acde480
 INSERT INTO public.platform_podcast (platform_podcast_id, podcast_id, platform_id, redirect_url)
 VALUES ('172d3f06-0e48-4052-bd3c-c9444c1551b7', 'da66e8cc-d194-11ec-a455-acde48001122',
         'eb4b1438-da09-4b37-be59-4d921aeba947', 'https://open.spotify.com/show/3PR2zd9DZNCDWefPlVwCA2');
+INSERT INTO public.platform_podcast (platform_podcast_id, podcast_id, platform_id, redirect_url)
+VALUES ('a0bd340f-ad22-4483-8e93-3e32e980d16e', '6f548f1e-9753-46b4-8d23-a9196976ef99',
+        'eb4b1438-da09-4b37-be59-4d921aeba947', 'https://open.spotify.com/show/7wQ5NNrWVmC7wDE9Y7cbwR');
+INSERT INTO public.platform_podcast (platform_podcast_id, podcast_id, platform_id, redirect_url)
+VALUES ('ac3008d8-aa1a-4ea4-b783-0ea345c728dc', '7e8381f4-3118-4483-b4b2-c24eaa81c06a',
+        'eb4b1438-da09-4b37-be59-4d921aeba947', 'https://open.spotify.com/show/0KUjSzqMyxrTyXuw15j4e8');
 
 INSERT INTO public.lists (list_id, name, description, icon_url, cover_pic_url, likes, user_id)
 VALUES ('43f3e1dc-70c0-4f2d-88a4-355e8050a661', 'Psicologia a otro level', 'Podcasts de filosofia y psicologia', null,
