@@ -3,6 +3,7 @@ package repository
 import (
 	"fmt"
 	"log"
+	"sort"
 
 	"github.com/google/uuid"
 	"github.com/sebasvil20/TalksUpAPI/src/api/models"
@@ -48,6 +49,9 @@ func (repo *CategoryRepository) GetAllCategories(langCode string) ([]models.Simp
 		db.Raw("SELECT count(category_id) FROM category_podcast WHERE category_id = ?", category.CategoryID).Scan(&categories[i].TotalPodcasts)
 	}
 
+	sort.Slice(categories, func(i, j int) bool {
+		return categories[i].TotalPodcasts > categories[j].TotalPodcasts
+	})
 	return categories, nil
 }
 
