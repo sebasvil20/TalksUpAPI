@@ -7,6 +7,7 @@ import (
 
 type ICategoryService interface {
 	GetAllCategories(langCode string) ([]models.SimpleCategory, error)
+	GetCategoryByID(categoryID string) (*models.SimpleCategory, error)
 	CreateCategory(category models.Category) (models.Category, error)
 }
 
@@ -21,6 +22,10 @@ func (srv *CategoryService) GetAllCategories(langCode string) ([]models.SimpleCa
 	}
 
 	return categories, nil
+}
+
+func (srv *CategoryService) GetCategoryByID(categoryID string) (*models.SimpleCategory, error) {
+	return srv.CategoryRepository.GetCategoryByID(categoryID)
 }
 
 func (srv *CategoryService) CreateCategory(category models.Category) (models.Category, error) {

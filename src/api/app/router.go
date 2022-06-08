@@ -42,6 +42,7 @@ func SetURLMappings(router *gin.Engine) {
 	{
 		categories.Use(middleware.VerifyAPIKey())
 		categories.GET("", providerRoute.CategoryController.GetAllCategories)
+		categories.GET("/:id", providerRoute.CategoryController.GetCategoryByID)
 		categories.POST("", middleware.AuthJWT(false), providerRoute.CategoryController.CreateCategory)
 	}
 

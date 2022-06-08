@@ -12,6 +12,7 @@ import (
 
 type ICategoryController interface {
 	GetAllCategories(c *gin.Context)
+	GetCategoryByID(c *gin.Context)
 	CreateCategory(c *gin.Context)
 }
 
@@ -26,6 +27,15 @@ func (ctrl *CategoryController) GetAllCategories(c *gin.Context) {
 		return
 	}
 	utils.HandleResponse(c, http.StatusOK, categories, nil)
+}
+
+func (ctrl *CategoryController) GetCategoryByID(c *gin.Context) {
+	category, err := ctrl.CategoryService.GetCategoryByID(c.Param("id"))
+	if err != nil {
+		utils.HandleResponse(c, http.StatusBadRequest, nil, err)
+		return
+	}
+	utils.HandleResponse(c, http.StatusOK, category, nil)
 }
 
 func (ctrl *CategoryController) CreateCategory(c *gin.Context) {

@@ -15,6 +15,7 @@ import (
 type ICategoryRepository interface {
 	GetLikesByUserID(userID string) []models.CategoryPill
 	GetAllCategories(langCode string) ([]models.SimpleCategory, error)
+	GetCategoryByID(categoryID string) (*models.SimpleCategory, error)
 	CreateCategory(category models.Category) (models.Category, error)
 }
 
@@ -53,6 +54,21 @@ func (repo *CategoryRepository) GetAllCategories(langCode string) ([]models.Simp
 		return categories[i].TotalPodcasts > categories[j].TotalPodcasts
 	})
 	return categories, nil
+}
+
+func (repo *CategoryRepository) GetCategoryByID(categoryID string) (*models.SimpleCategory, error) {
+	db := database.DBConnect()
+	defer database.CloseDBConnection(db)
+	var category models.SimpleCategory
+	resp := db.Raw("SELECT * FROM categories WHERE category_id=?", categoryID)
+
+	if resp.Error != nil {
+		return nil, resp.Error
+	}
+	resp.Scan(&category)
+	db.Raw("SELECT count(category_id) FROM category_podcast WHERE category_id = ?", category.CategoryID).Scan(&category.TotalPodcasts)
+
+	return &category, nil
 }
 
 func (repo *CategoryRepository) CreateCategory(category models.Category) (models.Category, error) {
