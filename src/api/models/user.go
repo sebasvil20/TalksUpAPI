@@ -19,6 +19,11 @@ type User struct {
 	RoleID        int       `json:"role_id,omitempty"`
 }
 
+type UserPill struct {
+	PublicName    string `json:"public_name"`
+	ProfilePicURL string `json:"profile_pic_url,omitempty"`
+}
+
 type SimpleUser struct {
 	UserID        uuid.UUID      `json:"user_id,omitempty"`
 	PublicName    string         `json:"public_name" binding:"required"`

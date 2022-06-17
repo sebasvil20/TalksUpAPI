@@ -3,7 +3,7 @@ package repository
 import (
 	"fmt"
 	"log"
-	
+
 	"github.com/google/uuid"
 	"github.com/sebasvil20/TalksUpAPI/src/api/models"
 	"github.com/sebasvil20/TalksUpAPI/src/api/services/database"
@@ -44,6 +44,10 @@ func (repo *ReviewRepository) GetReviewsByPodcastID(podcastID string) []models.R
 
 	db.Raw(buildReviewQuery(db, "", podcastID)).Scan(&reviews)
 
+	for i, review := range reviews {
+		db.Raw("SELECT * FROM users WHERE user_id=?", review.UserID).Scan(&reviews[i].User)
+	}
+
 	return reviews
 }
 
@@ -65,7 +69,9 @@ func buildReviewQuery(db *gorm.DB, userID string, podcastID string) string {
 	}
 
 	if podcastID != "" {
-		query = db.ToSQL(func(tx *gorm.DB) *gorm.DB { return db.Raw("SELECT * FROM reviews WHERE podcast_id=?", podcastID) })
+		query = db.ToSQL(func(tx *gorm.DB) *gorm.DB {
+			return db.Raw("SELECT * FROM reviews WHERE podcast_id=? ORDER BY reviews.review_date DESC", podcastID)
+		})
 	}
 
 	return query

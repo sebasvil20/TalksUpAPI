@@ -13,4 +13,5 @@ type Review struct {
 	LangID     string    `json:"lang_id,omitempty" binding:"required"`
 	UserID     string    `json:"user_id,omitempty" binding:"required"`
 	PodcastID  string    `json:"podcast_id,omitempty" binding:"required"`
+	User       UserPill  `json:"user,omitempty" gorm:"-"`
 }
