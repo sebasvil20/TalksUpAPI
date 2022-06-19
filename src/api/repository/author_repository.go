@@ -2,10 +2,12 @@ package repository
 
 import (
 	"fmt"
+	"log"
+	"sort"
+
 	"github.com/google/uuid"
 	"github.com/sebasvil20/TalksUpAPI/src/api/models"
 	"github.com/sebasvil20/TalksUpAPI/src/api/services/database"
-	"log"
 )
 
 type IAuthorRepository interface {
@@ -24,6 +26,15 @@ func (repo *AuthorRepository) GetAllAuthors() []models.Author {
 	dbAuthors := make([]models.Author, 0)
 
 	db.Raw("SELECT * FROM authors").Scan(&dbAuthors)
+
+	for i, author := range dbAuthors {
+		db.Raw("SELECT count(podcast_id) FROM podcasts WHERE author_id = ?", author.AuthorID).Scan(&dbAuthors[i].TotalPodcasts)
+	}
+
+	sort.Slice(dbAuthors, func(i, j int) bool {
+		return dbAuthors[i].TotalPodcasts > dbAuthors[j].TotalPodcasts
+	})
+
 	return dbAuthors
 }
 

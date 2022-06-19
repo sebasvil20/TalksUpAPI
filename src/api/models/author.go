@@ -7,6 +7,7 @@ type Author struct {
 	Name          string    `json:"name,omitempty" binding:"required"`
 	Biography     string    `json:"biography,omitempty"`
 	ProfilePicURL string    `json:"profile_pic_url,omitempty"`
+	TotalPodcasts int       `json:"total_podcasts" gorm:"-"`
 }
 
 type CompleteAuthor struct {

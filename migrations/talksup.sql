@@ -579,8 +579,8 @@ END ;
 $$
     LANGUAGE 'plpgsql';
 
-CREATE TRIGGER CalculateAvgRate
-    AFTER INSERT
+CREATE OR REPLACE TRIGGER CalculateAvgRate
+    AFTER INSERT OR DELETE
     ON reviews
     FOR EACH ROW
 EXECUTE PROCEDURE TRG_CalculateAvgRate();
@@ -707,20 +707,20 @@ VALUES ('9d6ef767-6f19-4acf-bf42-678fe9b28c05', '55abaa24-b920-43ea-bf94-aee5f61
 
 INSERT INTO public.authors (author_id, name, biography, profile_pic_url)
 VALUES ('546e8d6a-f13e-405b-8bff-977463b691bb', 'Hernán Melana', null,
-        'https://www.losandes.com.ar/resizer/bHFmkWl9vjk7DAum019Ap_GuKtA=/1200x630/smart/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/DXA2YEF37JANJF2LDTI7T3M2GE.jpg');
+        'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/6d800f84-f01d-11ec-b01c-acde48001122.jpeg');
 INSERT INTO public.authors (author_id, name, biography, profile_pic_url)
 VALUES ('2eaed1aa-0993-48c5-b95c-c0c2bb43ad1a', 'Cristian Diaz Rodriguez', null, null);
 INSERT INTO public.authors (author_id, name, biography, profile_pic_url)
 VALUES ('d6370d04-ec18-46a0-b995-a81a36c5a573', 'Bali Club', null, null);
 INSERT INTO public.authors (author_id, name, biography, profile_pic_url)
-VALUES ('587678a5-7fb8-49c2-b5d5-fcb0e4f36e0a', 'Relatos de la Noche', null, null);
+VALUES ('587678a5-7fb8-49c2-b5d5-fcb0e4f36e0a', 'Relatos de la Noche', null, 'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/f2bc426c-f01d-11ec-b01c-acde48001122.webp');
 INSERT INTO public.authors (author_id, name, biography, profile_pic_url)
 VALUES ('e2ba8436-d160-11ec-86d2-acde48001122', 'Marina Mammoliti',
         'Soy una apasionada de cada historia, de cada persona. Amo ir descubriendo cómo cada una/o va formando determinados modos de ser, adaptándose al entorno y construyendo herramientas tanto conscientes como inconscientes para lidiar con la cotidianeidad',
-        'https://psimammoliti.com/wp-content/uploads/2020/11/Marina-Mammoliti.jpg');
+        'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/4dfbb802-f01d-11ec-b01c-acde48001122.jpeg');
 INSERT INTO public.authors (author_id, name, biography, profile_pic_url)
 VALUES ('14f108f6-d168-11ec-8bd1-acde48001122', 'Spotify Studios', 'Podcasts originales de Spotify',
-        'https://i0.wp.com/hipertextual.com/wp-content/uploads/2021/03/Spotify-Logo-Green-Black.jpg');
+        'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/5247693e-f01c-11ec-b01c-acde48001122.webp');
 INSERT INTO public.authors (author_id, name, biography, profile_pic_url)
 VALUES ('74be97d2-d16b-11ec-8bd1-acde48001122', 'Sospechosamente light',
         'Liss Pereira, Tato Cepeda y Santiago Rendón, juntos en Sospechosamente Light.',
@@ -736,7 +736,7 @@ VALUES ('e8664e8a-d16d-11ec-8bd1-acde48001122', 'Con ánimo de ofender',
 INSERT INTO public.authors (author_id, name, biography, profile_pic_url)
 VALUES ('a857e002-d194-11ec-a455-acde48001122', 'Andrés Acevedo Niño',
         'Andrés Acevedo Niño es cofundador de 13% Pasión por el trabajo, el principal podcast en español en temas de carrera profesional y trabajo. Escribe para CUMBRE, la plataforma especializada en liderazgo del Colegio de Estudios Superiores en Administración (CESA).',
-        'https://media-exp1.licdn.com/dms/image/C4E03AQF0CTQHw-w-Vg/profile-displayphoto-shrink_200_200/0/1593875094690e=1657756800&v=beta&t=p2K6fDY_S64XiWkxNZUdr6PYbC1DA7xBWfbSJvqsUdU');
+        'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/e2817988-f01a-11ec-b01c-acde48001122.jpeg');
 INSERT INTO public.authors (author_id, name, biography, profile_pic_url)
 VALUES ('14719931-fb66-4d03-a16c-b04ddc64435b', 'Dudas Media', null, null);
 
