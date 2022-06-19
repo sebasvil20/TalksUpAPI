@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -11,6 +12,7 @@ import (
 
 type IReviewController interface {
 	CreateReview(c *gin.Context)
+	DeleteReview(c *gin.Context)
 }
 
 type ReviewController struct {
@@ -30,4 +32,20 @@ func (ctrl *ReviewController) CreateReview(c *gin.Context) {
 		return
 	}
 	utils.HandleResponse(c, http.StatusOK, review, nil)
+}
+
+func (ctrl *ReviewController) DeleteReview(c *gin.Context) {
+	reviewID := c.Param("id")
+	if reviewID == "" {
+		utils.HandleResponse(c, http.StatusBadRequest, nil, errors.New("review id not given"))
+		return
+	}
+
+	actualUserID, _ := c.Get("UserID")
+	err := ctrl.ReviewService.DeleteReviewByID(actualUserID.(string), reviewID)
+	if err != nil {
+		utils.HandleResponse(c, http.StatusBadRequest, nil, err)
+		return
+	}
+	utils.HandleResponse(c, http.StatusOK, nil, nil)
 }

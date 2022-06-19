@@ -15,6 +15,7 @@ type IReviewRepository interface {
 	CreateReview(review models.Review) (models.Review, error)
 	GetReviewsByPodcastID(podcastID string) []models.Review
 	GetReviewsByUserID(userID string) []models.Review
+	DeleteReviewByID(userID, reviewID string) error
 }
 
 type ReviewRepository struct {
@@ -75,4 +76,28 @@ func buildReviewQuery(db *gorm.DB, userID string, podcastID string) string {
 	}
 
 	return query
+}
+
+func (repo *ReviewRepository) DeleteReviewByID(userID, reviewID string) error {
+	db := database.DBConnect()
+	defer database.CloseDBConnection(db)
+	var review models.Review
+	reviewResp := db.Raw("SELECT user_id, review_id FROM reviews WHERE review_id = ?", reviewID).Scan(&review)
+	if reviewResp.Error != nil {
+		log.Printf("couldnt find review: %v", reviewResp.Error.Error())
+		return fmt.Errorf("couldnt find review: %v", reviewResp.Error.Error())
+	}
+
+	if review.UserID != userID {
+		log.Printf("review doesnt not belong to you")
+		return fmt.Errorf("review doesnt not belong to you")
+	}
+
+	resp := db.Table("reviews").Where("review_id=?", reviewID).Delete(&models.Review{})
+	if resp.Error != nil {
+		log.Printf("error deleting review: %v", resp.Error.Error())
+		return fmt.Errorf("error deleting review: %v", resp.Error.Error())
+	}
+
+	return nil
 }

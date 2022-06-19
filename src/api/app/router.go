@@ -80,6 +80,7 @@ func SetURLMappings(router *gin.Engine) {
 	{
 		reviews.Use(middleware.VerifyAPIKey())
 		reviews.POST("", middleware.AuthJWT(false), providerRoute.ReviewController.CreateReview)
+		reviews.DELETE("/:id", middleware.AuthJWT(false), providerRoute.ReviewController.DeleteReview)
 	}
 
 	uploader := router.Group("/upload")
