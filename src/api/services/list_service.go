@@ -13,6 +13,7 @@ type IListService interface {
 	DeleteList(listID string) error
 	GetListByID(listID string) models.DetailedList
 	AssociatePodcastsWithList(associationData models.ListPodcastAssociation) (models.DetailedList, error)
+	GetListsByUserID(userID string) []models.List
 }
 
 type ListService struct {
@@ -40,4 +41,8 @@ func (srv *ListService) GetListByID(listID string) models.DetailedList {
 
 func (srv *ListService) AssociatePodcastsWithList(associationData models.ListPodcastAssociation) (models.DetailedList, error) {
 	return srv.ListRepository.AssociatePodcastsWithList(associationData)
+}
+
+func (srv *ListService) GetListsByUserID(userID string) []models.List {
+	return srv.ListRepository.GetListsByUserID(userID)
 }

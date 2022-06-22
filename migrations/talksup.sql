@@ -579,7 +579,7 @@ END ;
 $$
     LANGUAGE 'plpgsql';
 
-CREATE OR REPLACE TRIGGER CalculateAvgRate
+CREATE TRIGGER CalculateAvgRate
     AFTER INSERT OR DELETE
     ON reviews
     FOR EACH ROW

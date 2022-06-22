@@ -33,7 +33,10 @@ func SetURLMappings(router *gin.Engine) {
 		users.Use(middleware.VerifyAPIKey())
 		users.GET("", middleware.AuthJWT(true), providerRoute.UserController.GetAllUsers)
 		users.GET("/:user_id/reviews", middleware.AuthJWT(false), providerRoute.UserController.GetAllReviews)
+		users.GET("/:user_id/lists", middleware.AuthJWT(false), providerRoute.ListController.GetListsByUserID)
+
 		users.POST("", providerRoute.UserController.CreateUser)
+
 		users.PUT("", middleware.AuthJWT(false), providerRoute.UserController.UpdateUser)
 		users.POST("/associate", middleware.AuthJWT(false), providerRoute.UserController.AssociateCategoriesWithUser)
 	}

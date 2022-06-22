@@ -18,6 +18,7 @@ type IListRepository interface {
 	DeleteList(listID string) error
 	GetListByID(listID string) models.DetailedList
 	AssociatePodcastsWithList(associationData models.ListPodcastAssociation) (models.DetailedList, error)
+	GetListsByUserID(userID string) []models.List
 }
 
 type ListRepository struct {
@@ -123,4 +124,13 @@ func (repo *ListRepository) AssociatePodcastsWithList(associationData models.Lis
 	}
 
 	return repo.GetListByID(associationData.ListID.String()), nil
+}
+
+func (repo *ListRepository) GetListsByUserID(userID string) []models.List {
+	db := database.DBConnect()
+	defer database.CloseDBConnection(db)
+	dbLists := make([]models.List, 0)
+
+	db.Raw("SELECT * FROM lists WHERE user_id=?", userID).Scan(&dbLists)
+	return dbLists
 }

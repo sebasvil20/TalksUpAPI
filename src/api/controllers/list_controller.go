@@ -98,3 +98,13 @@ func (ctrl *ListController) AssociatePodcastsWithList(c *gin.Context) {
 	}
 	utils.HandleResponse(c, http.StatusOK, list, nil)
 }
+
+func (ctrl *ListController) GetListsByUserID(c *gin.Context) {
+	userID := c.Param("user_id")
+	if userID == "" {
+		utils.HandleResponse(c, http.StatusBadRequest, nil, errors.New("user id not given"))
+		return
+	}
+	lists := ctrl.ListService.GetListsByUserID(userID)
+	utils.HandleResponse(c, http.StatusOK, lists, nil)
+}
