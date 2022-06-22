@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gorm.io/gorm"
 	"log"
+	"sort"
 
 	"github.com/google/uuid"
 	"github.com/sebasvil20/TalksUpAPI/src/api/models"
@@ -49,6 +50,10 @@ func (repo *ListRepository) GetAllLists() []models.List {
 		db.Raw("SELECT user_id FROM likes WHERE list_id=?", list.ListID).Scan(&dbLists[i].LikesIDs)
 		db.Raw("SELECT public_name, profile_pic_url FROM users WHERE user_id=?", list.UserID).Scan(&dbLists[i].UserPill)
 	}
+
+	sort.Slice(dbLists, func(i, j int) bool {
+		return dbLists[i].TotalPodcasts > dbLists[j].TotalPodcasts
+	})
 	return dbLists
 }
 
@@ -81,7 +86,7 @@ func (repo *ListRepository) LikeList(listID uuid.UUID, userID uuid.UUID) error {
 func (repo *ListRepository) DeleteList(listID string) error {
 	db := database.DBConnect()
 	defer database.CloseDBConnection(db)
-	resp := db.Table("lists").Where("list_id=?", listID).Delete(&models.Like{})
+	resp := db.Table("lists").Where("list_id=?", listID).Delete(&models.List{})
 	if resp.Error != nil {
 		return fmt.Errorf("error deleting list: %v", resp.Error.Error())
 	}
