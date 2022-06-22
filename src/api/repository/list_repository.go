@@ -46,6 +46,8 @@ func (repo *ListRepository) GetAllLists() []models.List {
 
 	for i, list := range dbLists {
 		db.Raw("SELECT count(list_id) FROM lists_podcast WHERE list_id=?", list.ListID).Scan(&dbLists[i].TotalPodcasts)
+		db.Raw("SELECT user_id FROM likes WHERE list_id=?", list.ListID).Scan(&dbLists[i].LikesIDs)
+		db.Raw("SELECT public_name, profile_pic_url FROM users WHERE user_id=?", list.UserID).Scan(&dbLists[i].UserPill)
 	}
 	return dbLists
 }
@@ -57,12 +59,16 @@ func (repo *ListRepository) LikeList(listID uuid.UUID, userID uuid.UUID) error {
 	var resp *gorm.DB
 	db.Raw("SELECT * FROM likes WHERE user_id=? and list_id=?", userID, listID).Scan(&like)
 	if like.LikeID == uuid.Nil {
-		resp = db.Table("likes").Omit("like_id").Create(models.Like{
+		resp = db.Table("likes").Omit("like_id").Create(&models.Like{
 			UserID: userID,
 			ListID: listID,
 		})
 	} else {
-		resp = db.Table("likes").Where("like_id=?", like.LikeID).Delete(models.Like{})
+		resp = db.Table("likes").Where("like_id=?", like.LikeID).Delete(&models.Like{
+			LikeID: like.LikeID,
+			UserID: userID,
+			ListID: listID,
+		})
 	}
 
 	if resp.Error != nil {

@@ -3,14 +3,16 @@ package models
 import "github.com/google/uuid"
 
 type List struct {
-	ListID        uuid.UUID `json:"list_id,omitempty"`
-	Name          string    `json:"name" binding:"required"`
-	Description   string    `json:"description,omitempty"`
-	IconURL       string    `json:"icon_url,omitempty"`
-	CoverPicURL   string    `json:"cover_pic_url,omitempty"`
-	Likes         int       `json:"likes,omitempty"`
-	TotalPodcasts int       `json:"total_podcasts,omitempty" gorm:"-"`
-	UserID        uuid.UUID `json:"user_id,omitempty"`
+	ListID        uuid.UUID   `json:"list_id,omitempty"`
+	Name          string      `json:"name" binding:"required"`
+	Description   string      `json:"description,omitempty"`
+	IconURL       string      `json:"icon_url,omitempty"`
+	CoverPicURL   string      `json:"cover_pic_url,omitempty"`
+	Likes         int         `json:"likes"`
+	LikesIDs      []uuid.UUID `json:"likes_ids,omitempty" gorm:"-"`
+	TotalPodcasts int         `json:"total_podcasts" gorm:"-"`
+	UserID        uuid.UUID   `json:"user_id,omitempty"`
+	UserPill      `json:"user,omitempty" gorm:"-"`
 }
 
 type DetailedList struct {

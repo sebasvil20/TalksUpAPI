@@ -20,7 +20,7 @@ type User struct {
 }
 
 type UserPill struct {
-	PublicName    string `json:"public_name"`
+	PublicName    string `json:"public_name,omitempty"`
 	ProfilePicURL string `json:"profile_pic_url,omitempty"`
 }
 
