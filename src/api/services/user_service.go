@@ -17,6 +17,8 @@ type IUserService interface {
 	GetAllUsers() ([]models.SimpleUser, error)
 	GetUserByEmail(email string) (models.SimpleUser, error)
 	AssociateCategoriesWithUser(associationData models.CategoriesUserAssociation) error
+	DeleteUserByID(userID string) error
+	UpgradeToAdmin(userID string) error
 }
 
 type UserService struct {
@@ -86,4 +88,12 @@ func (srv *UserService) AssociateCategoriesWithUser(associationData models.Categ
 	}
 
 	return nil
+}
+
+func (srv *UserService) DeleteUserByID(userID string) error {
+	return srv.UserRepository.DeleteUserByID(userID)
+}
+
+func (srv *UserService) UpgradeToAdmin(userID string) error {
+	return srv.UserRepository.UpgradeToAdmin(userID)
 }

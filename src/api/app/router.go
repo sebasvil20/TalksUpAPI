@@ -37,8 +37,12 @@ func SetURLMappings(router *gin.Engine) {
 
 		users.POST("", providerRoute.UserController.CreateUser)
 
-		users.PUT("", middleware.AuthJWT(false), providerRoute.UserController.UpdateUser)
 		users.POST("/associate", middleware.AuthJWT(false), providerRoute.UserController.AssociateCategoriesWithUser)
+
+		users.PUT("", middleware.AuthJWT(false), providerRoute.UserController.UpdateUser)
+		users.PUT("/admins/:user_id", middleware.AuthJWT(true), providerRoute.UserController.UpgradeUserToAdmin)
+
+		users.DELETE("/:user_id", middleware.AuthJWT(true), providerRoute.UserController.DeleteUser)
 	}
 
 	categories := router.Group("/categories")

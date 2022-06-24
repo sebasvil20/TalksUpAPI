@@ -23,6 +23,8 @@ type IUserRepository interface {
 	GetUserByEmail(email string) models.SimpleUser
 	GetUserByID(userID string) models.SimpleUser
 	AssociateCategoriesWithUser(categories []string, userID string) error
+	DeleteUserByID(userID string) error
+	UpgradeToAdmin(userID string) error
 }
 
 type UserRepository struct {
@@ -181,5 +183,40 @@ func (repo *UserRepository) AssociateCategoriesWithUser(categories []string, use
 		log.Print(errString)
 		return errors.New(errString)
 	}
+	return nil
+}
+
+func (repo *UserRepository) DeleteUserByID(userID string) error {
+	db := database.DBConnect()
+	defer database.CloseDBConnection(db)
+	resp := db.Table("users").Where("user_id=?", userID).Delete(&models.User{})
+	if resp.Error != nil {
+		return fmt.Errorf("error user list: %v", resp.Error.Error())
+	}
+
+	return nil
+}
+
+func (repo *UserRepository) UpgradeToAdmin(userID string) error {
+	db := database.DBConnect()
+	defer database.CloseDBConnection(db)
+	var dbUser models.User
+	respGet := db.Table("users").Where("user_id=?", userID).First(&dbUser)
+
+	if respGet.Error != nil || dbUser.UserID == uuid.Nil {
+		return respGet.Error
+	}
+
+	if dbUser.RoleID == 1 {
+		dbUser.RoleID = 2
+	} else {
+		dbUser.RoleID = 1
+	}
+
+	respUpdate := db.Table("users").Where("user_id=?", userID).Save(&dbUser)
+	if respUpdate.Error != nil {
+		return respUpdate.Error
+	}
+
 	return nil
 }

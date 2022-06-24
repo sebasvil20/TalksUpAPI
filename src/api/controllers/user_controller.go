@@ -19,6 +19,8 @@ type IUserController interface {
 	GetAllUsers(c *gin.Context)
 	AssociateCategoriesWithUser(c *gin.Context)
 	GetAllReviews(c *gin.Context)
+	DeleteUser(c *gin.Context)
+	UpgradeUserToAdmin(c *gin.Context)
 }
 
 type UserController struct {
@@ -112,4 +114,24 @@ func (ctrl *UserController) GetAllReviews(c *gin.Context) {
 	}
 	reviews := ctrl.ReviewService.GetReviewsByUserID(userID)
 	utils.HandleResponse(c, http.StatusOK, reviews, nil)
+}
+
+func (ctrl *UserController) DeleteUser(c *gin.Context) {
+	userID := c.Param("user_id")
+	if userID == "" {
+		utils.HandleResponse(c, http.StatusBadRequest, nil, errors.New("user_id not given"))
+		return
+	}
+	err := ctrl.UserService.DeleteUserByID(userID)
+	utils.HandleResponse(c, http.StatusOK, nil, err)
+}
+
+func (ctrl *UserController) UpgradeUserToAdmin(c *gin.Context) {
+	userID := c.Param("user_id")
+	if userID == "" {
+		utils.HandleResponse(c, http.StatusBadRequest, nil, errors.New("user_id not given"))
+		return
+	}
+	err := ctrl.UserService.UpgradeToAdmin(userID)
+	utils.HandleResponse(c, http.StatusOK, nil, err)
 }

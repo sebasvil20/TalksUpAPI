@@ -161,7 +161,7 @@ ALTER TABLE passwords
 ALTER TABLE likes
     ADD CONSTRAINT likes_user_id_fk
         FOREIGN KEY (user_id)
-            REFERENCES users (user_id);
+            REFERENCES users (user_id) ON DELETE CASCADE;
 
 ALTER TABLE likes
     ADD CONSTRAINT likes_list_id_fk
@@ -175,7 +175,7 @@ ALTER TABLE likes
 ALTER TABLE category_user
     ADD CONSTRAINT category_user_user_id_fk
         FOREIGN KEY (user_id)
-            REFERENCES users (user_id);
+            REFERENCES users (user_id) ON DELETE CASCADE;
 
 ALTER TABLE category_user
     ADD CONSTRAINT category_user_category_id_fk
@@ -233,7 +233,7 @@ ALTER TAbLE reviews
 ALTER TABLE reviews
     ADD CONSTRAINT reviews_user_id_fk
         FOREIGN KEY (user_id)
-            REFERENCES users (user_id);
+            REFERENCES users (user_id) ON DELETE CASCADE;
 
 
 ALTER TABLE reviews
@@ -271,12 +271,12 @@ ALTER TABLE podcasts
 ALTER TABLE lists
     ADD CONSTRAINT lists_user_id_fk
         FOREIGN KEY (user_id)
-            REFERENCES users (user_id);
+            REFERENCES users (user_id) ON DELETE CASCADE;
 
 ALTER TABLE lists_podcast
     ADD CONSTRAINT lists_podcast_podcast_id_fk
         FOREIGN KEY (podcast_id)
-            REFERENCES podcasts (podcast_id);
+            REFERENCES podcasts (podcast_id) ON DELETE CASCADE;
 
 ALTER TABLE lists_podcast
     ADD CONSTRAINT lists_podcast_list_id_fk
@@ -311,9 +311,9 @@ CREATE
                 phone_number    varchar,
                 profile_pic_url varchar,
                 biography       varchar,
-                lang            varchar,
-                country         varchar,
-                role            varchar
+                lang_id            varchar,
+                country_id         varchar,
+                role_id            varchar
             )
 AS
 $$
@@ -326,9 +326,9 @@ SELECT users.user_id,
        users.phone_number,
        users.profile_pic_url,
        users.biography,
-       languages.name as lang,
-       countries.name as country,
-       roles.name     as role
+       languages.lang_id,
+       countries.country_id,
+       roles.role_id
 FROM users
          INNER JOIN roles on roles.role_id = users.role_id
          INNER JOIN countries on countries.country_id = users.country_id

@@ -35,8 +35,8 @@ type SimpleUser struct {
 	PhoneNumber   string         `json:"phone_number,omitempty"`
 	Biography     string         `json:"biography,omitempty"`
 	Likes         []CategoryPill `json:"likes,omitempty" gorm:"-"`
-	LangID        string         `json:"lang"`
-	CountryID     string         `json:"country"`
+	LangID        string         `json:"lang,omitempty"`
+	CountryID     string         `json:"country,omitempty"`
 	RoleID        string         `json:"role,omitempty"`
 }
 
