@@ -14,6 +14,7 @@ type IAuthorRepository interface {
 	GetAllAuthors() []models.Author
 	GetAuthorByID(authorID string) models.CompleteAuthor
 	CreateAuthor(author models.Author) (models.Author, error)
+	DeleteAuthorByID(authorID string) error
 }
 
 type AuthorRepository struct {
@@ -60,4 +61,15 @@ func (repo *AuthorRepository) CreateAuthor(author models.Author) (models.Author,
 	}
 
 	return author, nil
+}
+
+func (repo *AuthorRepository) DeleteAuthorByID(authorID string) error {
+	db := database.DBConnect()
+	defer database.CloseDBConnection(db)
+	resp := db.Table("authors").Where("author_id=?", authorID).Delete(&models.Author{})
+	if resp.Error != nil {
+		return fmt.Errorf("error deleting author: %v", resp.Error.Error())
+	}
+
+	return nil
 }

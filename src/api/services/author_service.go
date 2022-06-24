@@ -9,6 +9,7 @@ type IAuthorService interface {
 	GetAllAuthors() []models.Author
 	GetAuthorByID(authorID string) models.CompleteAuthor
 	CreateAuthor(author models.Author) (models.Author, error)
+	DeleteAuthorByID(authorID string) error
 }
 
 type AuthorService struct {
@@ -25,4 +26,8 @@ func (srv *AuthorService) GetAuthorByID(authorID string) models.CompleteAuthor {
 
 func (srv *AuthorService) CreateAuthor(author models.Author) (models.Author, error) {
 	return srv.AuthorRepository.CreateAuthor(author)
+}
+
+func (srv *AuthorService) DeleteAuthorByID(authorID string) error {
+	return srv.AuthorRepository.DeleteAuthorByID(authorID)
 }

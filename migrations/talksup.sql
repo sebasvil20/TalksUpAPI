@@ -264,7 +264,7 @@ ALTER TABLE podcasts
 ALTER TABLE podcasts
     ADD CONSTRAINT podcasts_author_id_fk
         FOREIGN KEY (author_id)
-            REFERENCES authors (author_id);
+            REFERENCES authors (author_id) ON DELETE CASCADE;
 
 
 -- Lists table

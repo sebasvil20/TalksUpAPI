@@ -15,6 +15,7 @@ type IAuthorController interface {
 	GetAllAuthors(c *gin.Context)
 	GetAuthorByID(c *gin.Context)
 	CreateAuthor(c *gin.Context)
+	DeleteAuthor(c *gin.Context)
 }
 
 type AuthorController struct {
@@ -49,4 +50,14 @@ func (ctrl *AuthorController) CreateAuthor(c *gin.Context) {
 		return
 	}
 	utils.HandleResponse(c, http.StatusCreated, author, nil)
+}
+
+func (ctrl *AuthorController) DeleteAuthor(c *gin.Context) {
+	authorID := c.Query("author_id")
+	if authorID == "" {
+		utils.HandleResponse(c, http.StatusBadRequest, nil, errors.New("author_id not given"))
+		return
+	}
+	err := ctrl.AuthorService.DeleteAuthorByID(authorID)
+	utils.HandleResponse(c, http.StatusCreated, nil, err)
 }

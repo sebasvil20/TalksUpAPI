@@ -69,7 +69,9 @@ func SetURLMappings(router *gin.Engine) {
 		authors.Use(middleware.VerifyAPIKey())
 		authors.GET("", middleware.AuthJWT(false), providerRoute.AuthorController.GetAllAuthors)
 		authors.GET("/:author_id", middleware.AuthJWT(false), providerRoute.AuthorController.GetAuthorByID)
+
 		authors.POST("", middleware.AuthJWT(true), providerRoute.AuthorController.CreateAuthor)
+		authors.DELETE("", middleware.AuthJWT(true), providerRoute.AuthorController.DeleteAuthor)
 	}
 
 	lists := router.Group("/lists")

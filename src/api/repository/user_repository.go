@@ -191,7 +191,7 @@ func (repo *UserRepository) DeleteUserByID(userID string) error {
 	defer database.CloseDBConnection(db)
 	resp := db.Table("users").Where("user_id=?", userID).Delete(&models.User{})
 	if resp.Error != nil {
-		return fmt.Errorf("error user list: %v", resp.Error.Error())
+		return fmt.Errorf("error deleting user: %v", resp.Error.Error())
 	}
 
 	return nil
