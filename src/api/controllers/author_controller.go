@@ -59,5 +59,8 @@ func (ctrl *AuthorController) DeleteAuthor(c *gin.Context) {
 		return
 	}
 	err := ctrl.AuthorService.DeleteAuthorByID(authorID)
-	utils.HandleResponse(c, http.StatusCreated, nil, err)
+	if err != nil {
+		utils.HandleResponse(c, http.StatusBadRequest, nil, err)
+	}
+	utils.HandleResponse(c, http.StatusOK, nil, nil)
 }

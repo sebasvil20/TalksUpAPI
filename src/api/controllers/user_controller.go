@@ -123,7 +123,10 @@ func (ctrl *UserController) DeleteUser(c *gin.Context) {
 		return
 	}
 	err := ctrl.UserService.DeleteUserByID(userID)
-	utils.HandleResponse(c, http.StatusOK, nil, err)
+	if err != nil {
+		utils.HandleResponse(c, http.StatusBadRequest, nil, err)
+	}
+	utils.HandleResponse(c, http.StatusOK, nil, nil)
 }
 
 func (ctrl *UserController) UpgradeUserToAdmin(c *gin.Context) {
