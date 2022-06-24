@@ -23,7 +23,7 @@ func HandleResponse(c *gin.Context, statusCode int, data interface{}, err error,
 		response.Page = args[0]["page"].(int)
 		response.HasNext = args[0]["hasNext"].(bool)
 	}
-	log.Printf("[Response] - %v", response)
+	log.Printf("[Endpoint] - [%v] %v  [Response] - %v", c.Request.Method, c.Request.RequestURI, response)
 	c.Header("Content-Type", "application/json; charset=utf-8")
 	c.JSON(statusCode, response)
 }
