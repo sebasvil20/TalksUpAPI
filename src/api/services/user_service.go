@@ -3,6 +3,7 @@ package services
 import (
 	"errors"
 	"fmt"
+	"sort"
 
 	"github.com/google/uuid"
 	"github.com/sebasvil20/TalksUpAPI/src/api/models"
@@ -70,6 +71,9 @@ func (srv *UserService) GetAllUsers() ([]models.SimpleUser, error) {
 		}
 	}
 
+	sort.Slice(users, func(i, j int) bool {
+		return users[i].RoleID < users[j].RoleID
+	})
 	return users, nil
 }
 
