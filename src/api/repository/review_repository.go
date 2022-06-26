@@ -82,7 +82,7 @@ func (repo *ReviewRepository) DeleteReviewByID(userID, reviewID string) error {
 	db := database.DBConnect()
 	defer database.CloseDBConnection(db)
 	var review models.Review
-	reviewResp := db.Raw("SELECT user_id, review_id FROM reviews WHERE review_id = ?", reviewID).Scan(&review)
+	reviewResp := db.Raw("SELECT user_id, review_id, podcast_id FROM reviews WHERE review_id = ?", reviewID).Scan(&review)
 	if reviewResp.Error != nil {
 		log.Printf("couldnt find review: %v", reviewResp.Error.Error())
 		return fmt.Errorf("couldnt find review: %v", reviewResp.Error.Error())
@@ -97,6 +97,21 @@ func (repo *ReviewRepository) DeleteReviewByID(userID, reviewID string) error {
 	if resp.Error != nil {
 		log.Printf("error deleting review: %v", resp.Error.Error())
 		return fmt.Errorf("error deleting review: %v", resp.Error.Error())
+	}
+
+	var totalReviews int
+	db.Raw("SELECT count(review_id) FROM reviews WHERE podcast_id = ?", review.PodcastID).Scan(&totalReviews)
+	if totalReviews == 0 {
+		var dbPodcast models.Podcast
+		respGet := db.Raw("SELECT * FROM podcasts WHERE podcast_id=?", review.PodcastID).Scan(&dbPodcast)
+		if respGet.Error != nil {
+			log.Printf("[Review Repository][ERROR] -  Getting podcasts")
+		}
+		dbPodcast.Rating = 0
+		respUpdate := db.Table("podcasts").Where("podcast_id=?", review.PodcastID).Save(&dbPodcast)
+		if respUpdate.Error != nil {
+			log.Printf("[Review Repository][ERROR] -  Updating podcasts")
+		}
 	}
 
 	return nil
