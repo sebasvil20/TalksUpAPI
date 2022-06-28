@@ -75,19 +75,20 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. 
 
 ### Categories
 
-| Method | Endpoint                       | Description                                                                                   |
-|--------|--------------------------------|-----------------------------------------------------------------------------------------------|
-| `GET`  | `/categories?lang=`            | Get all categories, optional lang query param e.g. ESP                                        |
-| `GET`  | `/categories`                  | Get all users with their likes *                                                              |
-| `POST` | `/categories`                  | Create new category **                                                                        |
+| Method | Endpoint                       | Description                                                                                  |
+|--------|--------------------------------|----------------------------------------------------------------------------------------------|
+| `GET`  | `/categories?lang=`            | Get all categories, optional lang query param e.g. ESP                                       |
+| `GET`  | `/categories`                  | Get all users with their likes *                                                             |
+| `POST` | `/categories`                  | Create new category *                                                                        |
 
 ### Authors
 
-| Method | Endpoint                       | Description                                                                                   |
-|--------|--------------------------------|-----------------------------------------------------------------------------------------------|
-| `GET`  | `/authors`                     | Get all authors                                                                               |
-| `GET`  | `/authors/:authod_id`          | Get author by id. Returns author info and its podcasts                                        |
-| `POST` | `/authors`                     | Create new author **                                                                          |
+| Method   | Endpoint              | Description                                             |
+|----------|-----------------------|---------------------------------------------------------|
+| `GET`    | `/authors`            | Get all authors                                         |
+| `GET`    | `/authors/:authod_id` | Get author by id. Returns author info and its podcasts  |
+| `POST`   | `/authors`            | Create new author *                                     |
+| `DELETE` | `/authors/:id`        | Delete author *                                         |
 
 ### Podcasts
 
@@ -95,7 +96,7 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. 
 |--------|---------------------------------|------------------------------------------------------------------------|
 | `GET`  | `/podcasts?category_id=&lang=`  | Get all podcasts with fully info (categories, author, lang, platforms) |
 | `GET`  | `/podcasts/:podcast_id/reviews` | Get all reviews by podcast id                                          |
-| `POST` | `/podcasts`                     | Create new podcast **                                                  |
+| `POST` | `/podcasts`                     | Create new podcast *                                                   |
 | `POST` | `/podcasts/associate`           | Associate podcast with a list of categories                            |
 
 ### Lists
@@ -111,9 +112,10 @@ At this time, you have a RESTful API server running at `http://127.0.0.1:8080`. 
 
 ### Reviews
 
-| Method   | Endpoint   | Description                 |
-|----------|------------|-----------------------------|
-| `POST`   | `/reviews` | Create review for a podcast |
+| Method   | Endpoint       | Description                 |
+|----------|----------------|-----------------------------|
+| `POST`   | `/reviews`     | Create review for a podcast |
+| `DELETE` | `/reviews/:id` | Delete an owned review      |
 
 > (*) Admin role required
 

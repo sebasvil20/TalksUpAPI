@@ -49,12 +49,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{BaseUrl}}/users/login",
+							"raw": "{{BaseUrl}}/auth/login",
 							"host": [
 								"{{BaseUrl}}"
 							],
 							"path": [
-								"users",
+								"auth",
 								"login"
 							]
 						}
@@ -130,6 +130,16 @@
 				{
 					"name": "Update user",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [
 							{
@@ -140,7 +150,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"user_id\": \"c0244dc7-26e8-4543-aced-d68703a91b59\",\n    \"first_name\": \"Trueni cambiado 3\",\n    \"last_name\": \"Apllido cambiado 3\",\n    \"birth_date\": \"2222-10-08\",\n    \"profile_pic_url\": \"https://m.media-amazon.com/images/I/A1XmpeEe4BL.png\",\n    \"phone_number\": \"3016395339\"\n}",
+							"raw": "{\n    \"user_id\": \"86f45ee6-c5a4-11ec-b46f-6a2f678b91f3\",\n    \"public_name\": \"hinval updated\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -182,7 +192,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"user_id\": \"2bac0baa-cef6-11ec-b31f-acde48001122\",\n    \"categories\": [\n        \"472aa79f-fc3a-46d7-8b4b-b4fab318bb6b\",\n        \"f67a4547-31fe-4bba-8556-526cac7f4fa0\"\n    ]\n}",
+							"raw": "{\n    \"user_id\": \"86f45ee6-c5a4-11ec-b46f-6a2f678b91f3\",\n    \"categories\": [\n        \"73220619-faf6-498d-8800-e1d5f468d88a\",\n        \"dc9c3550-d169-11ec-8bd1-acde48001122\",\n        \"f67a4547-31fe-4bba-8556-526cac7f4fa0\",\n        \"73220619-faf6-498d-8800-e1d5f468d88a\"\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -345,17 +355,51 @@
 							}
 						],
 						"url": {
-							"raw": "{{BaseUrl}}/categories?lang=ESP",
+							"raw": "{{BaseUrl}}/categories",
 							"host": [
 								"{{BaseUrl}}"
 							],
 							"path": [
 								"categories"
-							],
-							"query": [
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get category by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
 								{
-									"key": "lang",
-									"value": "ESP"
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseUrl}}/categories/:id",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"categories",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "f67a4547-31fe-4bba-8556-526cac7f4fa0"
 								}
 							]
 						}
@@ -475,7 +519,7 @@
 							"variable": [
 								{
 									"key": "author_id",
-									"value": "e2ba8436-d160-11ec-86d2-acde48001122"
+									"value": "e8664e8a-d16d-11ec-8bd1-acde48001122"
 								}
 							]
 						}
@@ -612,6 +656,40 @@
 					"response": []
 				},
 				{
+					"name": "Get recommendations",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseUrl}}/podcasts/recommendation",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"podcasts",
+								"recommendation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get all podcasts by category",
 					"request": {
 						"auth": {
@@ -684,7 +762,7 @@
 							"variable": [
 								{
 									"key": "podcast_id",
-									"value": null
+									"value": "7e8381f4-3118-4483-b4b2-c24eaa81c06a"
 								}
 							]
 						}
@@ -724,7 +802,7 @@
 							"variable": [
 								{
 									"key": "podcast_id",
-									"value": "57a179b8-d692-4c04-85f7-f95004f86565"
+									"value": "b7b8c3a0-975e-46f0-88f0-3f1d9bc7b667"
 								}
 							]
 						}
@@ -803,6 +881,47 @@
 								{
 									"key": "id",
 									"value": "43f3e1dc-70c0-4f2d-88a4-355e8050a661"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get lists by user id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseUrl}}/users/:user_id/lists",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"users",
+								":user_id",
+								"lists"
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": "86f45ee6-c5a4-11ec-b46f-6a2f678b91f3"
 								}
 							]
 						}
@@ -917,7 +1036,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"user_id\": \"86f45ee6-c5a4-11ec-b46f-6a2f678b91f3\",\n    \"list_id\": \"0bd3b64e-d170-11ec-ae9f-acde48001122\"\n}",
+							"raw": "{\n    \"user_id\": \"86f45ee6-c5a4-11ec-b46f-6a2f678b91f3\",\n    \"list_id\": \"931e8624-f1d2-11ec-9936-acde48001122\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1005,7 +1124,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Increible podcast, 10/10\",\n    \"review\": \"Me gusta mucho como el autor relata los toques misticos. Su voz es inquietante.\",\n    \"rate\": 3,\n    \"lang_id\": \"ESP\",\n    \"podcast_id\": \"57a179b8-d692-4c04-85f7-f95004f86565\",\n    \"user_id\": \"2bac0baa-cef6-11ec-b31f-acde48001122\"\n}",
+							"raw": "{\n    \"title\": \"Increible podcast, 10/10\",\n    \"review\": \"Me gusta mucho como el autor relata los toques misticos. Su voz es inquietante.\",\n    \"rate\": 3,\n    \"lang_id\": \"ESP\",\n    \"podcast_id\": \"7e8381f4-3118-4483-b4b2-c24eaa81c06a\",\n    \"user_id\": \"86f45ee6-c5a4-11ec-b46f-6a2f678b91f3\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1019,6 +1138,46 @@
 							],
 							"path": [
 								"reviews"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete review",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt-token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "api-key",
+								"value": "{{api-key}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BaseUrl}}/reviews/:review_id",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"reviews",
+								":review_id"
+							],
+							"variable": [
+								{
+									"key": "review_id",
+									"value": "25b3bb00-f56e-11ec-8c7e-acde48001122"
+								}
 							]
 						}
 					},
@@ -1089,7 +1248,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": []
+									"src": "/Users/jvillega/Desktop/alvaro-rodriguez-el-nuevo-tiburon-que-llega-a-shark-tank-colombia_ftkjo-7vsaat4cw.jpeg"
 								}
 							]
 						},

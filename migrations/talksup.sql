@@ -666,42 +666,16 @@ INSERT INTO public.passwords (password_id, hashed_password, last_hashed_password
 INSERT INTO public.passwords (password_id, hashed_password, last_hashed_password, update_date, user_id) VALUES ('4775f9be-5c0f-4aaa-8131-2ae3f5b5f45e', '$2a$14$cu1qc/Vh9D8PYVBOFUvwROmvydgiwlX4ofUDY0SHaVvJRKB9Izaom', '', null, '809a9f57-f416-11ec-b6ff-7ee893ee5efc');
 
 
-INSERT INTO public.categories (category_id, name, description, selected_count, icon_url, lang_id)
-VALUES ('7ffc646a-d168-11ec-8bd1-acde48001122', 'Fantasía',
-        'Podcasts que te llevan a imaginar otro mundo fuera de las posibilidades de tu imaginación', 0,
-        'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/7894e1a2-d168-11ec-8bd1-acde48001122.png', 'ESP');
-INSERT INTO public.categories (category_id, name, description, selected_count, icon_url, lang_id)
-VALUES ('dc9c3550-d169-11ec-8bd1-acde48001122', 'Ciencia',
-        'Interesantes temas que te harán re-descubrir el mundo desde una perspectiva científica', 0,
-        'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/d561d31c-d169-11ec-8bd1-acde48001122.png', 'ESP');
-INSERT INTO public.categories (category_id, name, description, selected_count, icon_url, lang_id)
-VALUES ('73220619-faf6-498d-8800-e1d5f468d88a', 'Filosofía', 'Reflexiones', 0,
-        'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/8497a06a-d169-11ec-8bd1-acde48001122.png', 'ESP');
-INSERT INTO public.categories (category_id, name, description, selected_count, icon_url, lang_id)
-VALUES ('2da2f856-e235-436c-bdce-7471b0162846', 'Psicología', 'Análisis', 0,
-        'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/f7dac07a-d169-11ec-8bd1-acde48001122.png', 'ESP');
-INSERT INTO public.categories (category_id, name, description, selected_count, icon_url, lang_id)
-VALUES ('35b2881c-210c-4160-b3f7-6252b9ebee49', 'Terror', 'Podcasts que te hacen la piel de gallina', 0,
-        'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/7e0139d6-d16a-11ec-8bd1-acde48001122.png', 'ESP');
-INSERT INTO public.categories (category_id, name, description, selected_count, icon_url, lang_id)
-VALUES ('55abaa24-b920-43ea-bf94-aee5f614e326', 'Misterio',
-        'Perfectos para una tarde donde te sientes todo un detective', 0,
-        'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/51ecb71c-d16a-11ec-8bd1-acde48001122.png', 'ESP');
-INSERT INTO public.categories (category_id, name, description, selected_count, icon_url, lang_id)
-VALUES ('472aa79f-fc3a-46d7-8b4b-b4fab318bb6b', 'Historia', 'Aprende con los mejores en el tema', 0,
-        'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/89204ec4-d16a-11ec-8bd1-acde48001122.png', 'ESP');
-INSERT INTO public.categories (category_id, name, description, selected_count, icon_url, lang_id)
-VALUES ('f67a4547-31fe-4bba-8556-526cac7f4fa0', 'Influencers',
-        'Escucha la historia de vida de tus influences favoritos', 0,
-        'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/a7731492-d16a-11ec-8bd1-acde48001122.png', 'ESP');
-INSERT INTO public.categories (category_id, name, description, selected_count, icon_url, lang_id)
-VALUES ('4a0f3c26-d16b-11ec-8bd1-acde48001122', 'Comedia',
-        'Perfectos para esas tardes aburridas donde solo quieres reir sin parar.', 0,
-        'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/3a0c00a2-d16b-11ec-8bd1-acde48001122.png', 'ESP');
-INSERT INTO public.categories (category_id, name, description, selected_count, icon_url, lang_id)
-VALUES ('9562cf3e-d194-11ec-a455-acde48001122', 'Negocios y tecnología',
-        'Inversiones, criptomonedas, poder y mas en Negocios y Tecnología', 0,
-        'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/83b0103a-d194-11ec-a455-acde48001122.png', 'ESP');
+INSERT INTO public.categories (category_id, name, description, selected_count, icon_url, lang_id) VALUES ('7ffc646a-d168-11ec-8bd1-acde48001122', 'Fantasía', 'Podcasts que te llevan a imaginar otro mundo fuera de las posibilidades de tu imaginación', 0, 'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/7894e1a2-d168-11ec-8bd1-acde48001122.png', 'ESP');
+INSERT INTO public.categories (category_id, name, description, selected_count, icon_url, lang_id) VALUES ('dc9c3550-d169-11ec-8bd1-acde48001122', 'Ciencia', 'Interesantes temas que te harán re-descubrir el mundo desde una perspectiva científica', 0, 'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/d561d31c-d169-11ec-8bd1-acde48001122.png', 'ESP');
+INSERT INTO public.categories (category_id, name, description, selected_count, icon_url, lang_id) VALUES ('35b2881c-210c-4160-b3f7-6252b9ebee49', 'Terror', 'Podcasts que te hacen la piel de gallina', 0, 'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/7e0139d6-d16a-11ec-8bd1-acde48001122.png', 'ESP');
+INSERT INTO public.categories (category_id, name, description, selected_count, icon_url, lang_id) VALUES ('55abaa24-b920-43ea-bf94-aee5f614e326', 'Misterio', 'Perfectos para una tarde donde te sientes todo un detective', 0, 'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/51ecb71c-d16a-11ec-8bd1-acde48001122.png', 'ESP');
+INSERT INTO public.categories (category_id, name, description, selected_count, icon_url, lang_id) VALUES ('4a0f3c26-d16b-11ec-8bd1-acde48001122', 'Comedia', 'Perfectos para esas tardes aburridas donde solo quieres reir sin parar.', 0, 'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/3a0c00a2-d16b-11ec-8bd1-acde48001122.png', 'ESP');
+INSERT INTO public.categories (category_id, name, description, selected_count, icon_url, lang_id) VALUES ('9562cf3e-d194-11ec-a455-acde48001122', 'Negocios y tecnología', 'Inversiones, criptomonedas, poder y mas en Negocios y Tecnología', 0, 'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/83b0103a-d194-11ec-a455-acde48001122.png', 'ESP');
+INSERT INTO public.categories (category_id, name, description, selected_count, icon_url, lang_id) VALUES ('472aa79f-fc3a-46d7-8b4b-b4fab318bb6b', 'Historia', 'Estudia el pasado de la humanidad de la mano de los expertos en el tema.', 0, 'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/89204ec4-d16a-11ec-8bd1-acde48001122.png', 'ESP');
+INSERT INTO public.categories (category_id, name, description, selected_count, icon_url, lang_id) VALUES ('73220619-faf6-498d-8800-e1d5f468d88a', 'Filosofía', 'Vuélvete amante de la sabiduría, escucha sobre problemáticas diversas como el conocimiento, la mente, la consciencia, ética y más.', 0, 'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/8497a06a-d169-11ec-8bd1-acde48001122.png', 'ESP');
+INSERT INTO public.categories (category_id, name, description, selected_count, icon_url, lang_id) VALUES ('2da2f856-e235-436c-bdce-7471b0162846', 'Psicología', 'Escucha a los expertos hablar sobre procesos mentales, conductas humanas y psicología aplicada.', 0, 'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/f7dac07a-d169-11ec-8bd1-acde48001122.png', 'ESP');
+INSERT INTO public.categories (category_id, name, description, selected_count, icon_url, lang_id) VALUES ('f67a4547-31fe-4bba-8556-526cac7f4fa0', 'Influencers', 'Tus influencers favoritos hablando de temas variados.', 0, 'https://talksupcdn.sfo3.cdn.digitaloceanspaces.com/a7731492-d16a-11ec-8bd1-acde48001122.png', 'ESP');
 
 INSERT INTO public.category_user (category_user_id, category_id, user_id) VALUES ('1cbb9c4d-2506-4c17-971a-736d7012cce1', '35b2881c-210c-4160-b3f7-6252b9ebee49', '86f45ee6-c5a4-11ec-b46f-6a2f678b91f3');
 INSERT INTO public.category_user (category_user_id, category_id, user_id) VALUES ('9d6ef767-6f19-4acf-bf42-678fe9b28c05', '55abaa24-b920-43ea-bf94-aee5f614e326', '86f45ee6-c5a4-11ec-b46f-6a2f678b91f3');
